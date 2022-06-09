@@ -1,0 +1,63 @@
+---
+title: "MSDS Capstone Project"
+author: "Rochelle Rafn"
+date: '2022-06-09'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(caret)
+```
+
+```{r}
+articles <- read.csv("/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/articles.csv")
+customers <- read.csv("/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/customers.csv")
+transactions <- read.csv("/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/transactions_train.csv")
+```
+
+```{r}
+str(articles)
+```
+
+```{r}
+str(customers)
+```
+
+```{r}
+str(transactions)
+```
+
+```{r}
+transaction_age <- left_join(
+    transactions,
+    customers,
+    by = c("customer_id" = "customer_id"),
+    copy = FALSE,
+    keep = FALSE
+) 
+```
+
+```{r}
+transaction_age %>%
+  select(customer_id, age) %>%
+  group_by(customer_id) %>%
+  head()
+```
+
+```{r}
+ggplot(customers, aes(age))+
+  geom_bar()
+```
+
+```{r}
+ggplot(customers, aes(postal_code))+
+  geom_bar()
+```
+
+
+
