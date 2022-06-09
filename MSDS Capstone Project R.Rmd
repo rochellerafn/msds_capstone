@@ -54,10 +54,5 @@ ggplot(customers, aes(age))+
   geom_bar()
 ```
 
-```{r}
-ggplot(customers, aes(postal_code))+
-  geom_bar()
-```
-
 
 
