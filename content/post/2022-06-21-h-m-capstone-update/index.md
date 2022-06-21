@@ -68,7 +68,6 @@ ggplot(aged_customers, aes(age))+
   theme_bw()+
   xlim(15, 80)
 ```
-! [Alt text] (/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/Rplot01.jpg)
 
 Next, I broke down the two distributions and counted how many customers are within those groups. Within the older range distribution, 40-60, there are 442,894 individuals, making up about 33% of the total customer base in this set. Within the younger range distribution, 17-38, there are 818,938 individuals making up about 60% of the clientele. After breaking down the two 'humps', I was pondering the age difference. At first it surprised me that there would be a reasonable increase of customers in the ~50 range. However, if we look at that range compared to the largest range, could the ~50 range be parents purchasing for their kids? A curious question I would like to investigate further throughout my analysis. 
 
