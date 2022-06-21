@@ -5,4 +5,4 @@ title: About
 
 ## Bio
 
-My name is Rochelle Rafn. I am a data enthusiast, musician and lover of the outdoors. Aspiring data scientist and CDO.
+My name is Rochelle Rafn. I am a data enthusiast, musician and lover of the outdoors. Aspiring data scientist and CDO in fashion retail or journalism.
