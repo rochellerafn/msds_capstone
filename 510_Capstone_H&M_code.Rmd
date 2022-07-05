@@ -1,0 +1,291 @@
+---
+title: "510_MSDSCapstone_H&M"
+author: "Rochelle Rafn"
+date: '2022-05-16'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidytext)
+library(ggplot2)
+library(skimr)
+library(devtools)
+library(visdat)
+
+articles <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/articles.csv')
+customers <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/customers.csv')
+transactions <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
+```
+
+```{r}
+str(articles)
+```
+
+```{r}
+articles <- articles %>%
+  mutate(article_id = as.character(article_id))
+
+str(articles)
+```
+
+
+```{r}
+str(customers)
+```
+
+```{r}
+aged_customers <- customers %>%
+  filter(!is.na(age))
+
+str(aged_customers)
+```
+
+
+```{r}
+str(transactions)
+```
+
+```{r}
+unique(transactions$t_dat)
+```
+
+
+```{r}
+head(transactions)
+```
+
+```{r}
+ggplot(aged_customers, aes(age))+
+  geom_bar(fill = 'black')+
+  theme_bw()+
+  xlim(15, 80)
+```
+
+```{r}
+library(skimr)
+skim(aged_customers)
+```
+
+
+```{r}
+aged_customers %>%
+  select(customer_id, age, postal_code) %>%
+  group_by(customer_id)
+```
+
+```{r}
+aged_customers %>%
+  select(customer_id) %>%
+  duplicated()
+```
+
+```{r}
+length(unique(aged_customers$customer_id))
+```
+
+```{r}
+aged_customers %>% 
+  select(age) %>%
+  filter(is.na(age)) %>%
+  count()
+```
+
+```{r}
+fifty_plus <- aged_customers %>%
+  filter(age >= 50) %>%
+  relocate(customer_id, age)
+
+head(fifty_plus)
+```
+
+```{r}
+fifty_plus %>%
+  select(age) %>%
+  max()
+```
+
+```{r}
+summary(fifty_plus)
+```
+
+```{r}
+ggplot(fifty_plus, aes(age))+
+  geom_boxplot() +
+  theme(panel.background = element_blank(),
+        plot.background = element_blank())
+```
+
+```{r}
+forty_sixty <- aged_customers %>%
+  filter(age %in% c(40:60))
+
+forty_sixty
+```
+
+```{r}
+# write.csv(forty_sixty, '/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/forty_sixty')
+```
+
+```{r}
+gen_z_millenials <- aged_customers %>%
+  filter(age < 50)
+```
+
+```{r}
+skim(gen_z_millenials)
+```
+
+```{r}
+gen_z_millenials %>%
+  select(age) %>%
+  summary()
+```
+
+```{r}
+ggplot(gen_z_millenials, aes(age))+
+  geom_bar()
+```
+
+```{r}
+ggplot(gen_z_millenials, aes(age))+
+  geom_boxplot()
+```
+
+```{r}
+seventeen_thirty8 <- aged_customers %>%
+  filter(age %in% c(17:38)) %>%
+  relocate(customer_id, age)
+
+seventeen_thirty8
+```
+
+```{r}
+# write.csv(seventeen_thirty8, '/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/seventeen_thirty8')
+```
+
+```{r}
+count(forty_sixty)
+```
+
+```{r}
+count(seventeen_thirty8)
+```
+
+```{r}
+forty_sixty_trns <- forty_sixty %>%
+  merge(x=forty_sixty, y=transactions, by.x = 'customer_id', by.y = 'customer_id', all.x = TRUE) %>%
+  select(customer_id, t_dat, age, Active, fashion_news_frequency, postal_code, article_id, price) %>%
+  mutate(article_id = as.character(article_id))
+
+str(forty_sixty_trns)
+```
+
+```{r}
+head(forty_sixty_trns)
+```
+
+```{r}
+seventeen_thirty8_trns <- seventeen_thirty8 %>%
+  merge(x=seventeen_thirty8, y=transactions, by.x = 'customer_id', by.y = 'customer_id', all.x = TRUE) %>%
+  select(customer_id, t_dat, age, Active, fashion_news_frequency, postal_code, article_id, price) %>%
+  mutate(article_id = as.character(article_id))
+
+str(seventeen_thirty8_trns)
+```
+
+```{r}
+count(forty_sixty_trns)
+```
+
+
+```{r}
+forty_sixty_trns %>%
+  filter(is.na(price)) %>%
+  count()
+```
+
+```{r}
+forty_sixty_trns %>%
+  select(price) %>%
+  filter(!is.na(price)) %>%
+  sum()
+```
+
+```{r}
+count(seventeen_thirty8_trns)
+```
+
+
+```{r}
+seventeen_thirty8_trns %>%
+  filter(is.na(price)) %>%
+  count()
+```
+
+```{r}
+seventeen_thirty8_trns %>%
+  select(price) %>%
+  filter(!is.na(price)) %>%
+  sum()
+```
+
+```{r}
+# ggplot(fifty_sixty_trns, aes(article_id)) +
+#   geom_bar()
+```
+
+```{r}
+forty_sixty_top_items <- forty_sixty_trns %>%
+  select(article_id) %>%
+  group_by(article_id) %>%
+  count() %>%
+  arrange(desc(n))
+
+head(forty_sixty_top_items)
+```
+
+```{r}
+forty_sixty_top_desc <- articles %>%
+  filter(article_id %in% c('706016001', '706016002', '372860001', '610776002', '372860002')) %>%
+  select(detail_desc)
+
+forty_sixty_top_desc
+```
+
+```{r}
+seventeen_thirty8_top_items <- seventeen_thirty8_trns %>%
+  select(article_id) %>%
+  group_by(article_id) %>%
+  count() %>%
+  arrange(desc(n))
+
+head(seventeen_thirty8_top_items)
+```
+
+```{r}
+seventeen_thirty8_top_desc <- articles %>%
+  filter(article_id %in% c('706016001', '706016002', '372860001', '759871002', '610776002')) %>%
+  select(detail_desc)
+
+seventeen_thirty8_top_desc
+```
+
+```{r}
+articles %>%
+  filter(article_id %in% c('706016001', '706016002', '372860001', '759871002', '610776002', '372860002'))
+```
+
+```{r}
+str(seventeen_thirty8_trns)
+```
+
+
+```{r}
+# seventeen_thirty8_trns %>%
+#  group_by(customer_id, article_id) %>%
+#  mutate(article_count = count('article_id')) %>%
+#  select()
+```
+
