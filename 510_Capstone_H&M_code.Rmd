@@ -13,6 +13,7 @@ library(ggplot2)
 library(skimr)
 library(devtools)
 library(visdat)
+library(dplyr)
 
 articles <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/articles.csv')
 customers <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/customers.csv')
@@ -45,7 +46,16 @@ str(aged_customers)
 
 ```{r}
 str(transactions)
+head(transactions)
 ```
+
+```{r}
+transactions <- transactions %>%
+  mutate(article_id = as.character(article_id))
+
+head(transactions)
+```
+
 
 ```{r}
 unique(transactions$t_dat)
@@ -196,6 +206,19 @@ str(seventeen_thirty8_trns)
 ```
 
 ```{r}
+seventeen_thirty8_ta <- seventeen_thirty8_trns %>%
+  merge(x=seventeen_thirty8_trns, y=articles, by.x = 'article_id', by.y = 'article_id', all.x = TRUE) %>%
+  select(customer_id, age, prod_name, detail_desc, t_dat, Active, fashion_news_frequency, postal_code, article_id, price)
+
+str(seventeen_thirty8_ta)
+```
+
+```{r}
+head(seventeen_thirty8_ta)
+```
+
+
+```{r}
 count(forty_sixty_trns)
 ```
 
@@ -288,4 +311,13 @@ str(seventeen_thirty8_trns)
 #  mutate(article_count = count('article_id')) %>%
 #  select()
 ```
+
+
+```{r}
+transactions %>%
+  mutate(item_count = as.character(count(article_id))) %>%
+  group_by(t_dat, customer_id) %>%
+  select(t_day, customer_id, item_count)
+```
+
 
