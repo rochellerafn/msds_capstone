@@ -193,6 +193,15 @@ str(forty_sixty_trns)
 ```
 
 ```{r}
+forty_sixty_ta <- forty_sixty_trns %>%
+  merge(x=forty_sixty_trns, y=articles, by.x = 'article_id', by.y = 'article_id', all.x = TRUE) %>%
+  select(customer_id, age, prod_name, detail_desc, t_dat, Active, fashion_news_frequency, postal_code, article_id, price)
+
+str(forty_sixty_ta)
+```
+
+
+```{r}
 head(forty_sixty_trns)
 ```
 
@@ -315,8 +324,8 @@ str(seventeen_thirty8_trns)
 
 ```{r}
 transactions %>%
-  mutate(item_count = as.character(count(article_id))) %>%
   group_by(t_dat, customer_id) %>%
+  mutate(item_count = count(article_id)) %>%
   select(t_day, customer_id, item_count)
 ```
 
