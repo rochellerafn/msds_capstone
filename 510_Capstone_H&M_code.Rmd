@@ -78,13 +78,6 @@ library(skimr)
 skim(aged_customers)
 ```
 
-
-```{r}
-aged_customers %>%
-  select(customer_id, age, postal_code) %>%
-  group_by(customer_id)
-```
-
 ```{r}
 aged_customers %>%
   select(customer_id) %>%
@@ -101,6 +94,21 @@ aged_customers %>%
   filter(is.na(age)) %>%
   count()
 ```
+
+```{r}
+cust_id_age_all <- aged_customers %>%
+  select(customer_id, age, club_member_status)
+
+str(cust_id_age_all)
+```
+
+```{r}
+cust_age_trans_all <- transactions %>%
+  merge(x=transactions, y=cust_id_age_all, by.x = 'customer_id', by.y = 'customer_id', all.x = TRUE)
+
+head(cust_age_trans_all)
+```
+
 
 ```{r}
 fifty_plus <- aged_customers %>%
@@ -140,7 +148,7 @@ forty_sixty
 
 ```{r}
 gen_z_millenials <- aged_customers %>%
-  filter(age < 50)
+  filter(age < 40)
 ```
 
 ```{r}
@@ -164,15 +172,15 @@ ggplot(gen_z_millenials, aes(age))+
 ```
 
 ```{r}
-seventeen_thirty8 <- aged_customers %>%
-  filter(age %in% c(17:38)) %>%
+seventeen_thirty9 <- aged_customers %>%
+  filter(age %in% c(17:39)) %>%
   relocate(customer_id, age)
 
-seventeen_thirty8
+seventeen_thirty9
 ```
 
 ```{r}
-# write.csv(seventeen_thirty8, '/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/seventeen_thirty8')
+# write.csv(seventeen_thirty9, '/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/seventeen_thirty9')
 ```
 
 ```{r}
@@ -180,7 +188,7 @@ count(forty_sixty)
 ```
 
 ```{r}
-count(seventeen_thirty8)
+count(seventeen_thirty9)
 ```
 
 ```{r}
@@ -206,24 +214,24 @@ head(forty_sixty_trns)
 ```
 
 ```{r}
-seventeen_thirty8_trns <- seventeen_thirty8 %>%
-  merge(x=seventeen_thirty8, y=transactions, by.x = 'customer_id', by.y = 'customer_id', all.x = TRUE) %>%
+seventeen_thirty9_trns <- seventeen_thirty9 %>%
+  merge(x=seventeen_thirty9, y=transactions, by.x = 'customer_id', by.y = 'customer_id', all.x = TRUE) %>%
   select(customer_id, t_dat, age, Active, fashion_news_frequency, postal_code, article_id, price) %>%
   mutate(article_id = as.character(article_id))
 
-str(seventeen_thirty8_trns)
+str(seventeen_thirty9_trns)
 ```
 
 ```{r}
-seventeen_thirty8_ta <- seventeen_thirty8_trns %>%
-  merge(x=seventeen_thirty8_trns, y=articles, by.x = 'article_id', by.y = 'article_id', all.x = TRUE) %>%
+seventeen_thirty9_ta <- seventeen_thirty9_trns %>%
+  merge(x=seventeen_thirty9_trns, y=articles, by.x = 'article_id', by.y = 'article_id', all.x = TRUE) %>%
   select(customer_id, age, prod_name, detail_desc, t_dat, Active, fashion_news_frequency, postal_code, article_id, price)
 
-str(seventeen_thirty8_ta)
+str(seventeen_thirty9_ta)
 ```
 
 ```{r}
-head(seventeen_thirty8_ta)
+head(seventeen_thirty9_ta)
 ```
 
 
@@ -246,18 +254,18 @@ forty_sixty_trns %>%
 ```
 
 ```{r}
-count(seventeen_thirty8_trns)
+count(seventeen_thirty9_trns)
 ```
 
 
 ```{r}
-seventeen_thirty8_trns %>%
+seventeen_thirty9_trns %>%
   filter(is.na(price)) %>%
   count()
 ```
 
 ```{r}
-seventeen_thirty8_trns %>%
+seventeen_thirty9_trns %>%
   select(price) %>%
   filter(!is.na(price)) %>%
   sum()
@@ -287,21 +295,21 @@ forty_sixty_top_desc
 ```
 
 ```{r}
-seventeen_thirty8_top_items <- seventeen_thirty8_trns %>%
+seventeen_thirty9_top_items <- seventeen_thirty9_trns %>%
   select(article_id) %>%
   group_by(article_id) %>%
   count() %>%
   arrange(desc(n))
 
-head(seventeen_thirty8_top_items)
+head(seventeen_thirty9_top_items)
 ```
 
 ```{r}
-seventeen_thirty8_top_desc <- articles %>%
+seventeen_thirty9_top_desc <- articles %>%
   filter(article_id %in% c('706016001', '706016002', '372860001', '759871002', '610776002')) %>%
   select(detail_desc)
 
-seventeen_thirty8_top_desc
+seventeen_thirty9_top_desc
 ```
 
 ```{r}
@@ -310,23 +318,186 @@ articles %>%
 ```
 
 ```{r}
-str(seventeen_thirty8_trns)
+str(seventeen_thirty9_trns)
 ```
 
 
 ```{r}
-# seventeen_thirty8_trns %>%
+# seventeen_thirty9_trns %>%
 #  group_by(customer_id, article_id) %>%
 #  mutate(article_count = count('article_id')) %>%
 #  select()
 ```
 
+```{r}
+seventeen_thirty9 %>%
+  filter(!is.na(age)) %>%
+  summarize(mean(age), median(age), min(age), max(age))
+```
+
+```{r}
+forty_sixty %>%
+  filter(!is.na(age)) %>%
+  summarize(mean(age), median(age), min(age), max(age))
+```
+
+
+```{r}
+seventeen_thirty9_acount <- seventeen_thirty9_ta %>%
+  select(t_dat, customer_id, age, article_id, prod_name) %>%
+  group_by(t_dat, customer_id) %>%
+  count(article_id, sort = TRUE)
+
+head(seventeen_thirty9_acount)
+```
 
 ```{r}
 transactions %>%
-  group_by(t_dat, customer_id) %>%
-  mutate(item_count = count(article_id)) %>%
-  select(t_day, customer_id, item_count)
+  filter(customer_id == 'c163adbcac6e42e600224be5e1682a5b840e1d430c443a486ad9806e8b604cbc', t_dat == '2020-02-07')
 ```
 
+```{r}
+seventeen_thirty9_acount2 <- seventeen_thirty9_acount %>%
+  merge(x=seventeen_thirty9_acount, y=seventeen_thirty9_ta, by.x = c('t_dat', 'customer_id', 'article_id'), by.y = c('t_dat', 'customer_id', 'article_id'), all.x = TRUE)
+
+head(seventeen_thirty9_acount2)
+```
+
+```{r}
+seventeen_thirty9_acount2 <- seventeen_thirty9_acount2 %>%
+  relocate(t_dat, customer_id, age, prod_name, article_id, detail_desc, n) %>%
+  arrange(desc(n))
+
+head(seventeen_thirty9_acount2)
+```
+
+```{r}
+forty_sixty_acount <- forty_sixty_ta %>%
+  select(t_dat, customer_id, age, article_id, prod_name) %>%
+  group_by(t_dat, customer_id) %>%
+  count(article_id, sort = TRUE)
+
+head(forty_sixty_acount)
+```
+
+```{r}
+forty_sixty_acount2 <- forty_sixty_acount %>%
+  merge(x=forty_sixty_acount, y=forty_sixty_ta, by.x = c('t_dat', 'customer_id', 'article_id'), by.y = c('t_dat', 'customer_id', 'article_id'), all.x = TRUE)
+
+head(forty_sixty_acount2)
+```
+
+```{r}
+seventeen_thirty9_acount2 %>%
+  summarize(mean(n), median(n), min(n), max(n))
+```
+
+```{r}
+seventeen_thirty9_acount2 %>%
+  group_by(t_dat, customer_id) %>%
+  ggplot(aes(n))+
+    geom_histogram()+
+    scale_x_log10()
+```
+
+```{r}
+forty_sixty_acount2 %>%
+  summarize(mean(n), median(n), min(n), max(n))
+```
+
+```{r}
+ggplot(forty_sixty_acount2, aes(n))+
+  geom_bar()+
+  scale_x_log10()
+```
+
+```{r}
+seventeen_thirty9_acount2 %>%
+  group_by(t_dat, customer_id, n) %>%
+  count(n, sort = TRUE)
+```
+
+
+```{r}
+forty_sixty_acount2 %>%
+  group_by(t_dat, customer_id, n) %>%
+  count(n, sort = TRUE)
+```
+
+
+```{r}
+library(tidytext)
+
+prc_1738_w <- seventeen_thirty8_ta %>%
+  unnest_tokens(word, detail_desc) %>%
+  anti_join(stop_words) %>%
+  filter(!(word %in% c("cotton", "jersey", "slightly", "fly", "button"))) %>%
+  count(customer_id, word) %>%
+  group_by(word) %>%
+  mutate(total = sum(n)) %>%
+  filter(total > 50000) %>%
+  ungroup %>%
+  group_by(customer_id) %>%
+  mutate(exists = if_else(n>0, 1, 0)) %>%
+  ungroup %>%
+  pivot_wider(id_cols = customer_id, names_from = word, values_from = exists, values_fill = c(exists=0)) %>%
+  right_join(seventeen_thirty8_ta, by="customer_id") %>%
+  replace(.,is.na(.),0) %>% 
+  mutate(log_price = log(price)) %>% 
+  select(-customer_id, -price, -detail_desc)
+
+head(prc_1738_w)
+```
+
+```{r}
+prc_1738_d <- seventeen_thirty8_ta %>%
+  unnest_tokens(word, prod_name) %>%
+  anti_join(stop_words) %>%
+  count(customer_id, word) %>%
+  group_by(word) %>%
+  mutate(total = sum(n)) %>%
+  filter(total > 500000) %>%
+  ungroup %>%
+  group_by(customer_id) %>%
+  mutate(exists = if_else(n>0, 1, 0)) %>%
+  ungroup %>%
+  pivot_wider(id_cols = customer_id, names_from = word, values_from = exists, values_fill = c(exists=0)) %>%
+  right_join(seventeen_thirty8_ta, by="customer_id") %>%
+  replace(.,is.na(.),0) %>% 
+  mutate(log_price = log(price)) %>% 
+  select(-customer_id, -price, -detail_desc, -prod_name)
+
+head(prc_1738_d)
+```
+
+
+```{r}
+seventeen_thirty8_ta %>%
+  select(customer_id, prod_name) %>%
+  group_by(customer_id) %>%
+  count(prod_name)
+```
+
+```{r}
+seventeen_thirty8_ta %>%
+  select(prod_name) %>%
+  count()
+```
+
+```{r}
+seventeen_thirty8_ta %>%
+  count()
+```
+
+```{r}
+forty_sixty_ta %>%
+  count()
+```
+ 
+```{r}
+transactions %>%
+  select(price) %>%
+  head(n=10)
+```
+ 
 
