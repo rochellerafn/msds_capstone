@@ -435,7 +435,7 @@ prc_1738_w <- seventeen_thirty8_ta %>%
   count(customer_id, word) %>%
   group_by(word) %>%
   mutate(total = sum(n)) %>%
-  filter(total > 50000) %>%
+  filter(total > 1000000) %>%
   ungroup %>%
   group_by(customer_id) %>%
   mutate(exists = if_else(n>0, 1, 0)) %>%
@@ -456,9 +456,9 @@ prc_1738_d <- seventeen_thirty8_ta %>%
   count(customer_id, word) %>%
   group_by(word) %>%
   mutate(total = sum(n)) %>%
-  filter(total > 500000) %>%
+  filter(total > 1000000) %>%
   ungroup %>%
-  group_by(customer_id) %>%
+  group_by(custostr(mer_id) %>%
   mutate(exists = if_else(n>0, 1, 0)) %>%
   ungroup %>%
   pivot_wider(id_cols = customer_id, names_from = word, values_from = exists, values_fill = c(exists=0)) %>%
