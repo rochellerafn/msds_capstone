@@ -15,9 +15,10 @@ library(devtools)
 library(visdat)
 library(dplyr)
 
-articles <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/articles.csv')
-customers <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/customers.csv')
-transactions <- read.csv('/Users/rochellerafn/RStudio Files/MSDS Capstone/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
+articles <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/articles.csv')
+customers <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/customers.csv')
+transactions <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
+transaction_summary <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/transactions_summary.csv')
 ```
 
 ```{r}
@@ -412,22 +413,23 @@ ggplot(forty_sixty_acount2, aes(n))+
 ```
 
 ```{r}
-seventeen_thirty9_acount2 %>%
-  group_by(t_dat, customer_id, n) %>%
-  count(n, sort = TRUE)
+# seventeen_thirty9_acount2 %>%
+# group_by(t_dat, customer_id, n) %>%
+# count(n, sort = TRUE)
 ```
 
 
 ```{r}
-forty_sixty_acount2 %>%
-  group_by(t_dat, customer_id, n) %>%
-  count(n, sort = TRUE)
+# forty_sixty_acount2 %>%
+#  group_by(t_dat, customer_id, n) %>%
+#  count(n, sort = TRUE)
 ```
 
 
 ```{r}
 library(tidytext)
 
+<<<<<<< HEAD
 prc_1738_w <- seventeen_thirty8_ta %>%
   unnest_tokens(word, detail_desc) %>%
   anti_join(stop_words) %>%
@@ -468,6 +470,48 @@ prc_1738_d <- seventeen_thirty8_ta %>%
   select(-customer_id, -price, -detail_desc, -prod_name)
 
 head(prc_1738_d)
+=======
+# prc_1738_w <- seventeen_thirty8_ta %>%
+#  unnest_tokens(word, detail_desc) %>%
+#  anti_join(stop_words) %>%
+#  filter(!(word %in% c("cotton", "jersey", "slightly", "fly", "button"))) %>%
+#  count(customer_id, word) %>%
+#  group_by(word) %>%
+#  mutate(total = sum(n)) %>%
+#  filter(total > 50000) %>%
+#  ungroup %>%
+#  group_by(customer_id) %>%
+#  mutate(exists = if_else(n>0, 1, 0)) %>%
+#  ungroup %>%
+#  pivot_wider(id_cols = customer_id, names_from = word, values_from = exists, values_fill = c(exists=0)) %>%
+#  right_join(seventeen_thirty8_ta, by="customer_id") %>%
+#  replace(.,is.na(.),0) %>% 
+#  mutate(log_price = log(price)) %>% 
+# select(-customer_id, -price, -detail_desc)
+
+# head(prc_1738_w)
+```
+
+```{r}
+# prc_1738_d <- seventeen_thirty8_ta %>%
+#  unnest_tokens(word, prod_name) %>%
+#  anti_join(stop_words) %>%
+#  count(customer_id, word) %>%
+#  group_by(word) %>%
+#  mutate(total = sum(n)) %>%
+#  filter(total > 500000) %>%
+#  ungroup %>%
+#  group_by(customer_id) %>%
+#  mutate(exists = if_else(n>0, 1, 0)) %>%
+#  ungroup %>%
+#  pivot_wider(id_cols = customer_id, names_from = word, values_from = exists, values_fill = c(exists=0)) %>%
+#  right_join(seventeen_thirty8_ta, by="customer_id") %>%
+#  replace(.,is.na(.),0) %>% 
+#  mutate(log_price = log(price)) %>% 
+#  select(-customer_id, -price, -detail_desc, -prod_name)
+
+# head(prc_1738_d)
+>>>>>>> d77a9ba4db42b43c30c08349490352a3b05197ce
 ```
 
 
@@ -500,4 +544,4 @@ transactions %>%
   head(n=10)
 ```
  
-
+# test
