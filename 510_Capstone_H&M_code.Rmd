@@ -543,5 +543,3 @@ transactions %>%
   select(price) %>%
   head(n=10)
 ```
- 
-# test 3
