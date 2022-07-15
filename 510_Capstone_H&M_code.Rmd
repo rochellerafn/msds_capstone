@@ -32,7 +32,6 @@ articles <- articles %>%
 str(articles)
 ```
 
-
 ```{r}
 str(customers)
 ```
@@ -347,19 +346,19 @@ forty_sixty %>%
 seventeen_thirty9_acount <- seventeen_thirty9_ta %>%
   select(t_dat, customer_id, age, article_id, prod_name) %>%
   group_by(t_dat, customer_id) %>%
-  count(article_id, sort = TRUE)
+  count(customer_id, sort = TRUE)
 
 head(seventeen_thirty9_acount)
 ```
 
 ```{r}
 transactions %>%
-  filter(customer_id == 'c163adbcac6e42e600224be5e1682a5b840e1d430c443a486ad9806e8b604cbc', t_dat == '2020-02-07')
+  filter(customer_id == '61da44a2758206d5701771f4315637b40c8321b511191654fb1430a6408e4dfa', t_dat == '2019-02-23')
 ```
 
 ```{r}
 seventeen_thirty9_acount2 <- seventeen_thirty9_acount %>%
-  merge(x=seventeen_thirty9_acount, y=seventeen_thirty9_ta, by.x = c('t_dat', 'customer_id', 'article_id'), by.y = c('t_dat', 'customer_id', 'article_id'), all.x = TRUE)
+  merge(x=seventeen_thirty9_acount, y=seventeen_thirty9_ta, by.x = c('t_dat', 'customer_id'), by.y = c('t_dat', 'customer_id'), all.x = TRUE)
 
 head(seventeen_thirty9_acount2)
 ```
@@ -376,14 +375,14 @@ head(seventeen_thirty9_acount2)
 forty_sixty_acount <- forty_sixty_ta %>%
   select(t_dat, customer_id, age, article_id, prod_name) %>%
   group_by(t_dat, customer_id) %>%
-  count(article_id, sort = TRUE)
+  count(customer_id, sort = TRUE)
 
 head(forty_sixty_acount)
 ```
 
 ```{r}
 forty_sixty_acount2 <- forty_sixty_acount %>%
-  merge(x=forty_sixty_acount, y=forty_sixty_ta, by.x = c('t_dat', 'customer_id', 'article_id'), by.y = c('t_dat', 'customer_id', 'article_id'), all.x = TRUE)
+  merge(x=forty_sixty_acount, y=forty_sixty_ta, by.x = c('t_dat', 'customer_id'), by.y = c('t_dat', 'customer_id'), all.x = TRUE)
 
 head(forty_sixty_acount2)
 ```
@@ -394,11 +393,9 @@ seventeen_thirty9_acount2 %>%
 ```
 
 ```{r}
-seventeen_thirty9_acount2 %>%
-  group_by(t_dat, customer_id) %>%
-  ggplot(aes(n))+
-    geom_histogram()+
-    scale_x_log10()
+ggplot(seventeen_thirty9_acount2, aes(n))+
+  geom_histogram(bins = 30) +
+  scale_x_log10()
 ```
 
 ```{r}
@@ -408,7 +405,7 @@ forty_sixty_acount2 %>%
 
 ```{r}
 ggplot(forty_sixty_acount2, aes(n))+
-  geom_bar()+
+  geom_histogram()+
   scale_x_log10()
 ```
 
@@ -533,10 +530,22 @@ forty_sixty_ta %>%
   count()
 ```
  
+
 ```{r}
-transactions %>%
-  select(price) %>%
-  head(n=10)
+seventeen_thirty9_ta %>%
+  filter(!is.na(price)) %>%
+  summarize(mean(price), median(price), min(price), max(price))
+```
+
+```{r}
+forty_sixty_ta %>%
+  filter(!is.na(price)) %>%
+  summarize(mean(price), median(price), min(price), max(price))
+```
+
+```{r}
+ggplot(transactions, aes(price)) +
+  geom_histogram()
 ```
 
 
