@@ -15,10 +15,10 @@ library(devtools)
 library(visdat)
 library(dplyr)
 
-articles <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/articles.csv')
-customers <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/customers.csv')
-transactions <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
-# transaction_summary <- read.csv('/Users/rochellerafn/RStudio Files/msds_capstone/h-and-m-personalized-fashion-recommendations/transactions_summary.csv')
+articles <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/articles.csv')
+customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv')
+transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
+# transaction_summary <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/transactions_summary.csv')
 ```
 
 ```{r}
@@ -394,7 +394,7 @@ seventeen_thirty9_acount2 %>%
 
 ```{r}
 ggplot(seventeen_thirty9_acount2, aes(n))+
-  geom_histogram(bins = 30) +
+  geom_histogram(bins = 35) +
   scale_x_log10()
 ```
 
@@ -405,7 +405,7 @@ forty_sixty_acount2 %>%
 
 ```{r}
 ggplot(forty_sixty_acount2, aes(n))+
-  geom_histogram()+
+  geom_histogram(bins = 35)+
   scale_x_log10()
 ```
 
@@ -549,4 +549,40 @@ ggplot(transactions, aes(price)) +
   scale_x_log10()
 ```
 
+```{r}
+five_item_1739 <- seventeen_thirty9_acount2 %>%
+  filter(n == 5) %>%
+  select(article_id)
+```
+
+```{r}
+count(five_item_1739)
+```
+
+```{r}
+unique5_739 <- unique(five_item_1739)
+
+unique5_739
+```
+
+```{r}
+five_item_4060 <- forty_sixty_acount2 %>%
+  filter(n == 5) %>%
+  select(article_id)
+```
+
+```{r}
+count(five_item_4060)
+```
+
+```{r}
+unique5_4060 <- unique(five_item_4060)
+
+unique5_4060
+```
+
+```{r}
+# write.csv(unique5_739, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique5_1739')
+# write.csv(unique5_4060, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique5_4060')
+```
 
