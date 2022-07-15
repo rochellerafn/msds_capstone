@@ -545,7 +545,8 @@ forty_sixty_ta %>%
 
 ```{r}
 ggplot(transactions, aes(price)) +
-  geom_histogram()
+  geom_histogram() + 
+  scale_x_log10()
 ```
 
 
