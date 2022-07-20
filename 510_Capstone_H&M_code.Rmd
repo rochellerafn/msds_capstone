@@ -586,3 +586,4 @@ unique5_4060
 # write.csv(unique5_4060, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique5_4060')
 ```
 
+last update
