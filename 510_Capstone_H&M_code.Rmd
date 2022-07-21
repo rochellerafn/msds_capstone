@@ -560,9 +560,9 @@ count(five_item_1739)
 ```
 
 ```{r}
-unique5_739 <- unique(five_item_1739)
+unique5_1739 <- unique(five_item_1739)
 
-unique5_739
+unique5_1739
 ```
 
 ```{r}
@@ -582,8 +582,10 @@ unique5_4060
 ```
 
 ```{r}
-# write.csv(unique5_739, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique5_1739')
+# write.csv(unique5_1739, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique5_1739')
 # write.csv(unique5_4060, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique5_4060')
 ```
+
+
 
 last update
