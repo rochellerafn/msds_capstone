@@ -587,5 +587,16 @@ unique5_4060
 ```
 
 
+```{r}
+unique_1739_only <- dplyr::setdiff(unique5_1739,unique5_4060)
 
-last update
+unique_1739_only
+```
+
+```{r}
+unique_4060_only <- dplyr::setdiff(unique5_4060, unique5_1739)
+
+unique_4060_only
+```
+
+
