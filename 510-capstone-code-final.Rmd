@@ -1,0 +1,71 @@
+---
+title: "510 MSDS Captone Code 2"
+author: "Rochelle Rafn"
+date: '2022-07-24'
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(tidytext)
+library(ggplot2)
+library(skimr)
+library(devtools)
+library(visdat)
+library(dplyr)
+
+articles <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/articles.csv')
+customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv')
+transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
+```
+
+```{r}
+articles <- articles %>%
+  mutate(article_id = as.character(article_id))
+
+str(articles)
+```
+
+```{r}
+customers <- customers %>%
+  mutate(customer_id = as.character(customer_id)) %>%
+  filter(!is.na(age)) %>%
+  select(-FN, -fashion_news_frequency)
+
+customers[["Active"]][is.na(customers[["Active"]])] <- 0
+
+str(customers)
+```
+
+```{r}
+transactions <- transactions %>%
+  mutate(article_id = as.character(article_id), customer_id = as.character(customer_id), t_dat = as.Date(t_dat))
+
+str(transactions)
+```
+
+```{r}
+ggplot(customers, aes(age))+
+  geom_bar(fill = 'black')+
+  theme_bw()+
+  xlim(15, 80)
+```
+
+```{r}
+library(skimr)
+skim(customers)
+```
+
+
+```{r}
+# Number of total customers in data set
+length(unique(customers$customer_id))
+```
+
+```{r}
+
+```
+
+
