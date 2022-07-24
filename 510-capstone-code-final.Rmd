@@ -23,7 +23,8 @@ transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized
 
 ```{r}
 articles <- articles %>%
-  mutate(article_id = as.character(article_id))
+  mutate(article_id = as.character(article_id)) %>%
+  select(-product_code, -product_type_no, -graphical_appearance_no, -colour_group_code, -perceived_colour_master_id, -department_no, -index_code, -index_group_no, -index_group_no, -garment_group_no, -perceived_colour_value_id, -section_no)
 
 str(articles)
 ```
@@ -31,7 +32,7 @@ str(articles)
 ```{r}
 customers <- customers %>%
   mutate(customer_id = as.character(customer_id)) %>%
-  filter(!is.na(age)) %>%
+  filter(!is.na(age), club_member_status == "ACTIVE") %>%
   select(-FN, -fashion_news_frequency)
 
 customers[["Active"]][is.na(customers[["Active"]])] <- 0
@@ -41,7 +42,8 @@ str(customers)
 
 ```{r}
 transactions <- transactions %>%
-  mutate(article_id = as.character(article_id), customer_id = as.character(customer_id), t_dat = as.Date(t_dat))
+  mutate(article_id = as.character(article_id), customer_id = as.character(customer_id), t_dat = as.Date(t_dat)) %>%
+  filter(!is.na(price))
 
 str(transactions)
 ```
@@ -65,7 +67,44 @@ length(unique(customers$customer_id))
 ```
 
 ```{r}
+young_customers <- customers %>%
+  filter(age <= 39)
 
+str(young_customers)
 ```
+
+```{r}
+ggplot(young_customers, aes(age))+
+  geom_bar(fill="black")+
+  theme_bw()
+```
+
+
+```{r}
+mature_customers <- customers %>%
+  filter(age >= 40)
+
+str(mature_customers)
+```
+
+```{r}
+ggplot(mature_customers, aes(age))+
+  geom_bar(fill="black")+
+  theme_bw()+
+  xlim(39,80)
+```
+
+```{r}
+summary(young_customers)
+```
+
+```{r}
+summary(mature_customers)
+```
+
+```{r}
+mature_transactions <- 
+```
+
 
 
