@@ -62,6 +62,8 @@ After doing some high level analysis, the data set it initially looks very clean
 My first question and interest was to analyze the age distribution of the data set. It appears that there is a mildly bimodal distribution with peaks at 21 and 52. I found this to be initially extremely interesting knowing that the perceived target market for H&M is a young clientele. 
 
 ```{r}
+library(ggplot2)
+aged_customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/aged_customers')
 ggplot(aged_customers, aes(age))+
   geom_bar(fill = 'black')+
   theme_bw()+
