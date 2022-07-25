@@ -15,6 +15,7 @@ library(skimr)
 library(devtools)
 library(visdat)
 library(dplyr)
+library(caret)
 
 articles <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/articles.csv')
 customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv')
@@ -131,6 +132,15 @@ head(young_tcount)
 ```
 
 ```{r}
+young_tcount <- young_tcount %>%
+  mutate(n_items = n) %>%
+  select(-n)
+
+head(young_tcount)
+```
+
+
+```{r}
 young_transactions <- young_transactions %>%
   merge(x=young_transactions, y=young_tcount, by.x= c("t_dat", "customer_id"), by.y = c("t_dat", "customer_id"), all.x = TRUE)
 
@@ -138,9 +148,19 @@ head(young_transactions)
 ```
 
 
+```{r}
+summary(young_transactions$n_items)
+```
 
 ```{r}
-transactions %>%
+ggplot(young_transactions, aes(n_items))+
+  geom_boxplot()+
+  scale_x_log10()
+```
+
+
+```{r}
+young_transactions %>%
   filter(t_dat == "2019-02-23", customer_id == "61da44a2758206d5701771f4315637b40c8321b511191654fb1430a6408e4dfa")
 ```
 
@@ -162,7 +182,169 @@ head(mature_tcount)
 ```
 
 ```{r}
-young_tcount %>%
-summarize(mean(n), median(n), mode(n), max(n))
+mature_tcount <- mature_tcount %>%
+  mutate(n_items = n) %>%
+  select(-n)
+
+head(mature_tcount)
 ```
+
+
+```{r}
+mature_transactions <- mature_transactions %>%
+  merge(x=mature_transactions, y=mature_tcount, by.x= c("t_dat", "customer_id"), by.y = c("t_dat", "customer_id"), all.x = TRUE)
+
+head(mature_transactions)
+```
+
+
+```{r}
+summary(mature_transactions$n_items)
+```
+
+```{r}
+ggplot(mature_transactions, aes(n_items))+
+  geom_boxplot()+
+  scale_x_log10()
+```
+
+```{r}
+young_transactions_n <- young_transactions %>%
+  filter(n_items <= 15)
+
+str(young_transactions_n)
+```
+
+```{r}
+mature_transactions_n <- mature_transactions %>%
+  filter(n_items <= 15)
+
+str(mature_transactions_n)
+```
+
+```{r}
+summary(young_transactions_n$price)
+```
+
+```{r}
+summary(mature_transactions_n$price)
+```
+
+```{r}
+only_age <- customers %>%
+  select(customer_id, age)
+
+head(only_age)
+```
+
+```{r}
+all_age_transactions <- transactions %>%
+  inner_join(x=transactions, y=only_age, by="customer_id")
+
+str(all_age_transactions)
+```
+
+```{r}
+all_age_transactions <- all_age_transactions %>%
+  mutate(age_group = ifelse(age < 40, 0, 1))
+  
+str(all_age_transactions)
+```
+
+```{r}
+all_age_transactions <- all_age_transactions %>%
+  mutate(s_age = scale(age, center = TRUE, scale = TRUE)) %>%
+  select(-age)
+
+str(all_age_transactions)
+```
+
+
+```{r}
+# plot(s_age ~ price, all_age_transactions)
+```
+
+```{r}
+age_price_lm <- lm(s_age ~ price, data = all_age_transactions)
+
+summary(age_price_lm)
+```
+
+```{r}
+young_article_count <- young_transactions %>%
+  select(article_id) %>%
+  group_by(article_id) %>%
+  count() %>%
+  arrange(desc(n))
+
+young_article_count <- young_article_count %>%
+  mutate(total_items_sold = n) %>%
+  select(-n)
+
+head(young_article_count)
+```
+
+```{r}
+mature_article_count <- mature_transactions %>%
+  select(article_id) %>%
+  group_by(article_id) %>%
+  count() %>%
+  arrange(desc(n))
+
+mature_article_count <- mature_article_count %>%
+  mutate(total_items_sold = n) %>%
+  select(-n)
+
+head(mature_article_count)
+```
+
+```{r}
+young_unique <- unique(young_article_count$article_id)
+
+head(young_unique)
+```
+
+```{r}
+mature_unique <- unique(mature_article_count$article_id)
+
+head(mature_unique)
+```
+
+```{r}
+young_unique_items <- dplyr::setdiff(young_unique,mature_unique)
+
+head(young_unique_items)
+```
+
+```{r}
+mature_unique_items <- dplyr::setdiff(mature_unique, young_unique)
+
+head(mature_unique_items)
+```
+
+```{r}
+str(young_unique_items)
+```
+
+```{r}
+young_article_count %>%
+  filter(article_id %in% young_unique_items) %>%
+  arrange(desc(total_items_sold))
+```
+
+```{r}
+mature_article_count %>%
+  filter(article_id %in% mature_unique_items) %>%
+  arrange(desc(total_items_sold))
+```
+
+```{r}
+young_articles <- articles %>%
+  filter(article_id %in% young_article_count$article_id)
+
+young_articles
+```
+
+
+
 
