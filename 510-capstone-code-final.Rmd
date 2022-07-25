@@ -16,6 +16,8 @@ library(devtools)
 library(visdat)
 library(dplyr)
 library(caret)
+library(SnowballC)
+  data(stop_words)
 
 articles <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/articles.csv')
 customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv')
@@ -386,7 +388,7 @@ mature_article_words <- mature_articles %>%
   rowwise %>% 
   mutate(words = c_across(c(prod_name, product_type_name, product_group_name, graphical_appearance_name, colour_group_name, perceived_colour_value_name, perceived_colour_master_name, department_name, index_name, index_group_name, section_name, garment_group_name, detail_desc)) %>% 
   unique %>% 
-  str_c(collapse = " ")) %>% 
+  str_c(collapse = " ")) %>%
   ungroup %>%
   select(-prod_name, -product_type_name, -product_group_name, -graphical_appearance_name, -colour_group_name, -perceived_colour_value_name, -perceived_colour_master_name, -department_name, -index_name, -index_group_name, -section_name, -garment_group_name, -detail_desc)
 
@@ -414,16 +416,39 @@ head(mature_article_words)
 library(tm)
 library(wordcloud)
 
-young_article_words <- Corpus(VectorSource(young_article_words))
-mature_article_words <- Corpus(VectorSource(mature_article_words))
+young_cor_words <- young_article_words[[2]] 
+mature_cor_words <- mature_article_words[[2]] 
 ```
 
 ```{r}
-young_article_words <- tm_map(young_article_words, removeNumbers)
-mature_article_words <- tm_map(mature_article_words, removeNumbers)
+young_cor_words <- Corpus(VectorSource(young_article_words[[2]]))
+mature_cor_words <- Corpus(VectorSource(mature_article_words[[2]]))
 ```
 
 ```{r}
-young_article_words <- tm_map(young_article_words, removeWords, stopwords('english'))
-mature_article_words <- tm_map(mature_article_words, removeWords, stopwords('english'))
+young_cor_words <- tm_map(young_cor_words, removeNumbers)
 ```
+
+```{r}
+mature_cor_words <- tm_map(mature_cor_words, removeNumbers)
+```
+
+```{r}
+young_cor_words <- tm_map(young_cor_words, removeWords, stopwords('english'))
+```
+
+```{r}
+mature_cor_words <- tm_map(mature_cor_words, removeWords, stopwords('english'))
+```
+
+```{r}
+wordcloud(young_cor_words, scale = c(2, 1), min.freq = 500000, colors = rainbow(30))
+```
+
+
+
+
+
+
+
+
