@@ -372,10 +372,58 @@ young_article_words$words <- gsub("(", " ", young_article_words$words, fixed =TR
 young_article_words$words <- gsub(")", " ", young_article_words$words, fixed =TRUE)
 young_article_words$words <- gsub("/", " ", young_article_words$words, fixed =TRUE)
 
-young_article_words <- tolower(young_article_words)
+head(young_article_words)
+```
+
+```{r}
+young_article_words[[2]] <- tolower(young_article_words[[2]])
 
 head(young_article_words)
 ```
 
+```{r}
+mature_article_words <- mature_articles %>% 
+  rowwise %>% 
+  mutate(words = c_across(c(prod_name, product_type_name, product_group_name, graphical_appearance_name, colour_group_name, perceived_colour_value_name, perceived_colour_master_name, department_name, index_name, index_group_name, section_name, garment_group_name, detail_desc)) %>% 
+  unique %>% 
+  str_c(collapse = " ")) %>% 
+  ungroup %>%
+  select(-prod_name, -product_type_name, -product_group_name, -graphical_appearance_name, -colour_group_name, -perceived_colour_value_name, -perceived_colour_master_name, -department_name, -index_name, -index_group_name, -section_name, -garment_group_name, -detail_desc)
 
+head(mature_article_words)
+```
 
+```{r}
+mature_article_words$words <- gsub(".", " ", mature_article_words$words, fixed =TRUE)
+mature_article_words$words <- gsub(",", " ", mature_article_words$words, fixed =TRUE)
+mature_article_words$words <- gsub("-", " ", mature_article_words$words, fixed =TRUE)
+mature_article_words$words <- gsub("(", " ", mature_article_words$words, fixed =TRUE)
+mature_article_words$words <- gsub(")", " ", mature_article_words$words, fixed =TRUE)
+mature_article_words$words <- gsub("/", " ", mature_article_words$words, fixed =TRUE)
+
+head(mature_article_words)
+```
+
+```{r}
+mature_article_words[[2]] <- tolower(mature_article_words[[2]])
+
+head(mature_article_words)
+```
+
+```{r}
+library(tm)
+library(wordcloud)
+
+young_article_words <- Corpus(VectorSource(young_article_words))
+mature_article_words <- Corpus(VectorSource(mature_article_words))
+```
+
+```{r}
+young_article_words <- tm_map(young_article_words, removeNumbers)
+mature_article_words <- tm_map(mature_article_words, removeNumbers)
+```
+
+```{r}
+young_article_words <- tm_map(young_article_words, removeWords, stopwords('english'))
+mature_article_words <- tm_map(mature_article_words, removeWords, stopwords('english'))
+```
