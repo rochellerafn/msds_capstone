@@ -442,13 +442,227 @@ mature_cor_words <- tm_map(mature_cor_words, removeWords, stopwords('english'))
 ```
 
 ```{r}
-wordcloud(young_cor_words, scale = c(2, 1), min.freq = 500000, colors = rainbow(30))
+wordcloud(young_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
 ```
 
 
+```{r}
+young_words_df <- data_frame(Text = young_article_words$words)
+
+head(young_words_df, n = 20)
+```
+
+```{r}
+young_count_words <- young_words_df %>% 
+                  unnest_tokens(output = word, input = Text)
+```
+
+```{r}
+young_count_words <- young_count_words %>%
+  anti_join(stop_words)
+```
+
+```{r}
+young_wordcounts <- young_count_words %>% 
+  count(word, sort = TRUE)
+
+head(young_wordcounts, 20)
+```
+
+```{r}
+mature_words_df <- data_frame(Text = mature_article_words$words)
+
+head(mature_words_df, n = 20)
+```
+
+```{r}
+mature_count_words <- mature_words_df %>% 
+                  unnest_tokens(output = word, input = Text)
+```
+
+```{r}
+mature_count_words <- mature_count_words %>%
+  anti_join(stop_words)
+```
+
+```{r}
+mature_wordcounts <- mature_count_words %>% 
+  count(word, sort = TRUE)
+
+head(mature_wordcounts, 20)
+```
+
+```{r}
+wordcloud(mature_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
+```
+
+```{r}
+young_u_wordcount <- dplyr::setdiff(young_wordcounts$word, mature_wordcounts$word)
+
+young_u_wordcount
+```
+
+```{r}
+mature_u_wordcount <- dplyr::setdiff(mature_wordcounts$word, young_wordcounts$word)
+
+mature_u_wordcount
+```
+
+```{r}
+young_wordcounts %>%
+  filter(word %in% young_u_wordcount) %>%
+  arrange(desc(n))
+```
 
 
+```{r}
+mature_wordcounts %>%
+  filter(word %in% mature_u_wordcount) %>%
+  arrange(desc(n))
+```
+
+```{r}
+customer_index <- createDataPartition(customers$age, p = 0.3, list = FALSE)
+customer_sample <- customers[ customer_index, ]
+customer_remove <- customers[-customer_index, ]
+
+str(customer_sample)
+```
+
+```{r}
+ggplot(customer_sample, aes(age))+
+  geom_bar(fill = "black")+
+  theme_bw()+
+  xlim(16,80)
+```
+
+```{r}
+young_sample <- customer_sample %>%
+  filter(age < 40)
+
+str(young_sample)
+```
+
+```{r}
+mature_sample <- customer_sample %>%
+  filter(age >= 40)
+
+str(mature_sample)
+```
+
+```{r}
+summary(young_sample$age)
+```
+
+```{r}
+summary(mature_sample$age)
+```
+
+```{r}
+young_sample_trans <- transactions %>%
+  inner_join(x=transactions, y=young_sample, by = 'customer_id')
+
+str(young_sample_trans)
+```
+
+```{r}
+young_sample_trans <- young_sample_trans %>%
+  inner_join(x=young_sample_trans, y=young_article_words, by = 'article_id')
+
+str(young_sample_trans)
+```
+
+```{r}
+rename(young_sample_trans, words = words.x)
+```
+
+```{r}
+young_sample_words_df <- data_frame(Text = young_sample_trans$words)
+
+head(young_sample_words_df, n = 20)
+```
+
+```{r}
+young_sample_count_words <- young_sample_words_df %>% 
+                  unnest_tokens(output = word, input = Text)
+```
+
+```{r}
+young_sample_count_words <- young_sample_count_words %>%
+  anti_join(stop_words)
+```
+
+```{r}
+young_sample_wordcounts <- young_sample_count_words %>% 
+  count(word, sort = TRUE)
+
+head(young_sample_wordcounts, 20)
+```
+
+```{r}
+mature_sample_trans <- transactions %>%
+  inner_join(x=transactions, y=mature_sample, by = 'customer_id')
+
+str(mature_sample_trans)
+```
+
+```{r}
+mature_sample_trans <- mature_sample_trans %>%
+  inner_join(x=mature_sample_trans, y=mature_article_words, by = 'article_id')
+
+str(mature_sample_trans)
+```
 
 
+```{r}
+mature_sample_words_df <- data_frame(Text = mature_sample_trans$words)
 
+head(mature_sample_words_df, n = 20)
+```
+
+```{r}
+mature_sample_count_words <- mature_sample_words_df %>% 
+                  unnest_tokens(output = word, input = Text)
+```
+
+```{r}
+mature_sample_count_words <- mature_sample_count_words %>%
+  anti_join(stop_words)
+```
+
+```{r}
+mature_sample_wordcounts <- mature_sample_count_words %>% 
+  count(word, sort = TRUE)
+
+head(mature_sample_wordcounts, 20)
+```
+
+```{r}
+young_sample_cor <- Corpus(VectorSource(young_sample_words_df))
+mature_sample_cor <- Corpus(VectorSource(mature_sample_words_df))
+```
+
+```{r}
+young_sample_cor <- tm_map(young_sample_cor, removeNumbers)
+```
+
+```{r}
+mature_sample_cor <- tm_map(mature_sample_cor, removeNumbers)
+```
+
+```{r}
+young_sample_cor <- tm_map(young_sample_cor, removeWords, stopwords('english'))
+```
+
+```{r}
+mature_sample_cor <- tm_map(mature_sample_cor, removeWords, stopwords('english'))
+```
+
+```{r}
+wordcloud(young_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
+```
+
+```{r}
+wordcloud(mature_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
+```
 
