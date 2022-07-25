@@ -43,6 +43,10 @@ aged_customers <- customers %>%
 str(aged_customers)
 ```
 
+```{r}
+# write.csv(aged_customers, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/aged_customers')
+```
+
 
 ```{r}
 str(transactions)
@@ -599,4 +603,13 @@ unique_4060_only <- dplyr::setdiff(unique5_4060, unique5_1739)
 unique_4060_only
 ```
 
+```{r}
+unique_1739_only %>%
+  arrange(desc(article_id))
+```
+
+```{r}
+unique_4060_only %>%
+  arrange(desc(article_id))
+```
 

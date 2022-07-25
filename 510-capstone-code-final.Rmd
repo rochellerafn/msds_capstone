@@ -102,9 +102,67 @@ summary(young_customers)
 summary(mature_customers)
 ```
 
+
 ```{r}
-mature_transactions <- 
+young_transactions <- transactions %>%
+  inner_join(x=transactions, y=young_customers, by = 'customer_id')
+
+str(young_transactions)
 ```
 
 
+
+```{r}
+mature_transactions <- transactions %>%
+  inner_join(x=transactions, y=mature_customers, by = 'customer_id')
+
+str(mature_transactions)
+```
+
+```{r}
+# how many *different* items they purchased in a transaction 
+
+young_tcount <- young_transactions %>%
+  select(t_dat, customer_id, age, article_id) %>%
+  group_by(t_dat, customer_id) %>%
+  count(customer_id, sort = TRUE)
+
+head(young_tcount)
+```
+
+```{r}
+young_transactions <- young_transactions %>%
+  merge(x=young_transactions, y=young_tcount, by.x= c("t_dat", "customer_id"), by.y = c("t_dat", "customer_id"), all.x = TRUE)
+
+head(young_transactions)
+```
+
+
+
+```{r}
+transactions %>%
+  filter(t_dat == "2019-02-23", customer_id == "61da44a2758206d5701771f4315637b40c8321b511191654fb1430a6408e4dfa")
+```
+
+```{r}
+articles %>%
+  filter(article_id %in% c("507909001", "501616007"))
+```
+
+
+
+
+```{r}
+mature_tcount <- mature_transactions %>%
+  select(t_dat, customer_id, age, article_id) %>%
+  group_by(t_dat, customer_id) %>%
+  count(customer_id, sort = TRUE)
+
+head(mature_tcount)
+```
+
+```{r}
+young_tcount %>%
+summarize(mean(n), median(n), mode(n), max(n))
+```
 
