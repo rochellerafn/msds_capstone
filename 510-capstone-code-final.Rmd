@@ -573,10 +573,6 @@ str(young_sample_trans)
 ```
 
 ```{r}
-rename(young_sample_trans, words = words.x)
-```
-
-```{r}
 young_sample_words_df <- data_frame(Text = young_sample_trans$words)
 
 head(young_sample_words_df, n = 20)
@@ -638,33 +634,32 @@ head(mature_sample_wordcounts, 20)
 ```
 
 ```{r}
-young_sample_cor <- Corpus(VectorSource(young_sample_words_df))
-mature_sample_cor <- Corpus(VectorSource(mature_sample_words_df))
+# young_sample_cor <- Corpus(VectorSource(young_sample_words_df))
+# mature_sample_cor <- Corpus(VectorSource(mature_sample_words_df))
 ```
 
 ```{r}
-young_sample_cor <- tm_map(young_sample_cor, removeNumbers)
+# young_sample_cor <- tm_map(young_sample_cor, removeNumbers)
 ```
 
 ```{r}
-mature_sample_cor <- tm_map(mature_sample_cor, removeNumbers)
+# mature_sample_cor <- tm_map(mature_sample_cor, removeNumbers)
 ```
 
 ```{r}
-young_sample_cor <- tm_map(young_sample_cor, removeWords, stopwords('english'))
+# young_sample_cor <- tm_map(young_sample_cor, removeWords, stopwords('english'))
 ```
 
 ```{r}
-mature_sample_cor <- tm_map(mature_sample_cor, removeWords, stopwords('english'))
+# mature_sample_cor <- tm_map(mature_sample_cor, removeWords, stopwords('english'))
 ```
 
 ```{r}
-wordcloud(young_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
+# wordcloud(young_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
 ```
 
 ```{r}
-wordcloud(mature_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
+# wordcloud(mature_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
 ```
-
 
 
