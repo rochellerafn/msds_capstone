@@ -530,6 +530,14 @@ str(customer_sample)
 ```
 
 ```{r}
+customer_sample <- customer_sample %>%
+  filter(!is.na(age))
+
+str(customer_sample)
+```
+
+
+```{r}
 ggplot(customer_sample, aes(age))+
   geom_bar(fill = "black")+
   theme_bw()+
@@ -558,6 +566,43 @@ summary(young_sample$age)
 summary(mature_sample$age)
 ```
 
+
+```{r}
+all_article_words <- articles %>% 
+  rowwise %>% 
+  mutate(words = c_across(c(prod_name, product_type_name, product_group_name, graphical_appearance_name, colour_group_name, perceived_colour_value_name, perceived_colour_master_name, department_name, index_name, index_group_name, section_name, garment_group_name, detail_desc)) %>% 
+  unique %>% 
+  str_c(collapse = " ")) %>% 
+  ungroup %>%
+  select(-prod_name, -product_type_name, -product_group_name, -graphical_appearance_name, -colour_group_name, -perceived_colour_value_name, -perceived_colour_master_name, -department_name, -index_name, -index_group_name, -section_name, -garment_group_name, -detail_desc)
+
+head(all_article_words)
+```
+
+```{r}
+all_article_words$words <- gsub(".", " ", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub(",", " ", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub("-", " ", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub("(", " ", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub(")", " ", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub("/", " ", all_article_words$words, fixed =TRUE)
+
+head(all_article_words)
+```
+
+```{r}
+all_article_words[[2]] <- tolower(all_article_words[[2]])
+
+head(all_article_words)
+```
+
+```{r}
+all_article_words$words <- gsub("[[digits]]+", "", all_article_words$words, fixed =TRUE)
+
+head(all_article_words)
+```
+
+
 ```{r}
 young_sample_trans <- transactions %>%
   inner_join(x=transactions, y=young_sample, by = 'customer_id')
@@ -565,9 +610,10 @@ young_sample_trans <- transactions %>%
 str(young_sample_trans)
 ```
 
+
 ```{r}
 young_sample_trans <- young_sample_trans %>%
-  inner_join(x=young_sample_trans, y=young_article_words, by = 'article_id')
+  inner_join(x=young_sample_trans, y=all_article_words, by = 'article_id')
 
 str(young_sample_trans)
 ```
@@ -604,7 +650,7 @@ str(mature_sample_trans)
 
 ```{r}
 mature_sample_trans <- mature_sample_trans %>%
-  inner_join(x=mature_sample_trans, y=mature_article_words, by = 'article_id')
+  inner_join(x=mature_sample_trans, y=all_article_words, by = 'article_id')
 
 str(mature_sample_trans)
 ```
@@ -635,15 +681,10 @@ head(mature_sample_wordcounts, 20)
 
 ```{r}
 # young_sample_cor <- Corpus(VectorSource(young_sample_words_df))
+```
+
+```{r}
 # mature_sample_cor <- Corpus(VectorSource(mature_sample_words_df))
-```
-
-```{r}
-# young_sample_cor <- tm_map(young_sample_cor, removeNumbers)
-```
-
-```{r}
-# mature_sample_cor <- tm_map(mature_sample_cor, removeNumbers)
 ```
 
 ```{r}
@@ -662,4 +703,7 @@ head(mature_sample_wordcounts, 20)
 # wordcloud(mature_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
 ```
 
+```{r}
+
+```
 
