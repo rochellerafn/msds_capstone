@@ -248,15 +248,14 @@ str(all_age_transactions)
 
 ```{r}
 all_age_transactions <- all_age_transactions %>%
-  mutate(age_group = ifelse(age < 40, 0, 1))
+  mutate(age_group = ifelse(age < 40, "young", "mature"))
   
 str(all_age_transactions)
 ```
 
 ```{r}
 all_age_transactions <- all_age_transactions %>%
-  mutate(s_age = scale(age, center = TRUE, scale = TRUE)) %>%
-  select(-age)
+  mutate(s_age = scale(age, center = TRUE, scale = TRUE))
 
 str(all_age_transactions)
 ```
@@ -545,6 +544,14 @@ ggplot(customer_sample, aes(age))+
 ```
 
 ```{r}
+all_sample_transactions <- customer_sample %>%
+  left_join(x=customer_sample, y=all_age_transactions, by="customer_id")
+
+str(all_sample_transactions)
+```
+
+
+```{r}
 young_sample <- customer_sample %>%
   filter(age < 40)
 
@@ -600,6 +607,17 @@ head(all_article_words)
 all_article_words$words <- gsub("[[digits]]+", "", all_article_words$words, fixed =TRUE)
 
 head(all_article_words)
+```
+
+```{r}
+all_sample_transactions <- all_sample_transactions %>%
+  left_join(x=all_sample_transactions, y=all_article_words, by="article_id")
+
+str(all_sample_transactions)
+```
+
+```{r}
+write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
 ```
 
 
@@ -704,6 +722,43 @@ head(mature_sample_wordcounts, 20)
 ```
 
 ```{r}
+graphic_appearance <- articles %>%
+  select(article_id, graphical_appearance_name)
 
+head(graphic_appearance)
+```
+
+```{r}
+all_sample_transactions <- left_join(x=all_sample_transactions, y=graphic_appearance, by="article_id")
+
+str(all_sample_transactions)
+```
+
+```{r}
+all_sample_transactions %>%
+  group_by(age_group) %>%
+  count(graphical_appearance_name) %>%
+  arrange(desc(n))
+```
+
+```{r}
+graphic_lm <- lm(age ~ graphical_appearance_name, data = all_sample_transactions)
+
+summary(graphic_lm)
+```
+
+```{r}
+all_sample_transactions %>%
+  filter(!is.na(graphical_appearance_name)) %>%
+ggplot() +
+  aes(
+    x = graphical_appearance_name,
+    fill = graphical_appearance_name
+  ) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  theme_minimal() +
+  scale_x_discrete(guide = guide_axis(angle = 90))+
+  facet_wrap(vars(age_group))
 ```
 
