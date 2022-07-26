@@ -1,0 +1,62 @@
+---
+title: "510-Capstone-Code-ML"
+author: "Rochelle Rafn"
+date: "2022-07-26"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(ggplot2)
+library(skimr)
+library(devtools)
+library(visdat)
+library(dplyr)
+library(caret)
+library(SnowballC)
+  data(stop_words)
+
+all_sample_trans <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+```
+
+```{r}
+str(all_sample_trans)
+```
+
+```{r}
+age_group <- all_sample_trans %>%
+  select(customer_id, t_dat, age, age_group) %>%
+  group_by(customer_id, t_dat)
+
+str(age_group)
+```
+
+
+```{r}
+items_per_tran <- all_sample_trans %>%
+  group_by(customer_id, t_dat) %>%
+  count(customer_id) %>%
+  arrange(desc(n))
+
+head(items_per_tran)
+```
+
+
+```{r}
+items_per_tran_age <- left_join(items_per_tran, age_group, by= c("customer_id", "t_dat"))
+
+str(items_per_tran_age)
+```
+
+### The join is ON t_dat... so why are there NA's in the t_dat??
+```{r}
+colSums(is.na(items_per_tran_age))
+```
+
