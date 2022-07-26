@@ -48,20 +48,67 @@ head(items_per_tran)
 
 
 ```{r}
-items_per_tran <- left_join(x=items_per_tran, y=age_group, by="customer_id")
+items_per_tran <- left_join(x=items_per_tran, y=age_group, by=c("customer_id"="customer_id", "t_dat"="t_dat"))
 
 str(items_per_tran)
 ```
 
 ```{r}
-rename(items_per_tran, n_items = n)
+items_per_tran <- rename(items_per_tran, n_items = n)
+
+head(items_per_tran)
 ```
 
 ```{r}
 items_per_tran %>%
-  filter(age <=60) %>%
+  filter(age <=60, n_items < 200) %>%
 ggplot(aes(age, n_items))+
-  geom_point()
+  geom_jitter()
+```
+
+```{r}
+str(all_sample_trans)
+```
+
+
+```{r}
+all_sample_trans_count <- merge(x=all_sample_trans, y=items_per_tran, by.x=c("t_dat", "customer_id", "age", "age_group"), by.y = c("t_dat", "customer_id", "age", "age_group"))
+
+str(all_sample_trans_count)
+```
+
+```{r}
+all_sample_trans_count <- all_sample_trans_count %>%
+  mutate(item_7_plus = ifelse(n_items >= 7, 1, 0))
+
+head(all_sample_trans_count)
+```
+
+```{r}
+all_sample_trans_count <- all_sample_trans_count %>%
+  filter(!is.na(age_group))
+```
+
+```{r}
+all_sample_trans_count <- all_sample_trans_count %>%
+  filter(!is.na(item_7_plus))
+```
+
+```{r}
+str(all_sample_trans_count)
+```
+
+```{r}
+colSums(is.na(all_sample_trans_count))
+```
+
+
+```{r}
+library(moderndive)
+more_than_7 <- lm(age ~ item_7_plus, data = all_sample_trans_count)
+
+get_regression_table(more_than_7)
+get_regression_summaries(more_than_7)
 ```
 
 
