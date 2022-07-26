@@ -58,11 +58,15 @@ head(all_sample_trans_count)
 ```
 
 ```{r}
-all_sample_trans_count <- rename(all_sample_trans_count, n_items = n)
+all_sample_trans_count <- rename(all_sample_trans_count, age = age.x)
+```
+
+```{r}
+all_sample_trans_count <- all_sample_trans_count %>%
+  select(-age.y)
 
 head(all_sample_trans_count)
 ```
-
 
 ```{r}
 all_sample_trans_count %>%
@@ -77,12 +81,6 @@ str(all_sample_trans)
 
 
 ```{r}
-all_sample_trans_count <- merge(x=all_sample_trans, y=items_per_tran, by.x=c("t_dat", "customer_id"), by.y = c("t_dat", "customer_id"))
-
-str(all_sample_trans_count)
-```
-
-```{r}
 all_sample_trans_count <- all_sample_trans_count %>%
   mutate(item_7_plus = ifelse(n_items >= 7, 1, 0))
 
@@ -90,70 +88,30 @@ head(all_sample_trans_count)
 ```
 
 ```{r}
-all_sample_trans_count <- all_sample_trans_count %>%
-  filter(!is.na(age_group))
-```
-
-```{r}
-all_sample_trans_count <- all_sample_trans_count %>%
-  filter(!is.na(item_7_plus))
-```
-
-```{r}
 str(all_sample_trans_count)
 ```
 
 ```{r}
-colSums(is.na(all_sample_trans_count))
+library(moderndive)
+
+more_than_7 <- lm(age ~ item_7_plus, data = all_sample_trans_count)
 ```
 
+```{r}
+get_regression_table(more_than_7)
+```
 
 ```{r}
-library(moderndive)
-more_than_7 <- lm(age ~ item_7_plus, data = all_sample_trans_count)
-
-get_regression_table(more_than_7)
 get_regression_summaries(more_than_7)
 ```
 
-
 ```{r}
-article_words <- function(df, j = 300000, stem=F){ 
-  library(tidytext)
-  library(SnowballC)
-  data(stop_words)
-
-  words <- df %>%
-    unnest_tokens(word, description) %>%
-    anti_join(stop_words) %>% # get rid of stop words
-    filter(!(word %in% c("jersey", )))
-  
-  if(stem){
-    words <- words %>% 
-      mutate(word = wordStem(word))
-  }
-  
-  words <- words %>% 
-    count(id, word) %>% 
-    group_by(id) %>% 
-    mutate(exists = (n>0)) %>% 
-    ungroup %>% 
-    group_by(word) %>% 
-    mutate(total = sum(n)) %>% 
-    filter(total > j) %>% 
-    pivot_wider(id_cols = id, names_from = word, values_from = exists, values_fill = list(exists=0)) %>% 
-    right_join(select(df,id,province)) %>% 
-    select(-id) %>% 
-    mutate(across(-province, ~replace_na(.x, F)))
-}
-
-wino <- wine_words(wine, j=500, stem=F) %>% 
-  filter(province %in% c("Oregon","California")) %>% 
-  head() %>% 
-  arrange(province)
-
-wino
+# all_sample_trans_count$words <- sapply(strsplit(as.character(all_sample_trans_count$words), " "), function(x) paste(unique(x), collapse=" "))
 ```
+
+
+
+
 
 
 
