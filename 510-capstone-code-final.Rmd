@@ -628,7 +628,7 @@ head(all_article_words)
 ```
 
 ```{r}
-all_sample_transactions <- left_join(x=all_sample_transactions, y=all_article_words_u, by="article_id")
+all_sample_transactions <- left_join(x=all_sample_transactions, y=all_article_words, by="article_id")
 
 str(all_sample_transactions)
 ```
