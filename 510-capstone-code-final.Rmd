@@ -46,7 +46,7 @@ str(customers)
 ```{r}
 transactions <- transactions %>%
   mutate(article_id = as.character(article_id), customer_id = as.character(customer_id), t_dat = as.Date(t_dat)) %>%
-  filter(!is.na(price))
+  filter(!is.na(price), !is.na(t_dat))
 
 str(transactions)
 ```
@@ -439,6 +439,9 @@ mature_cor_words <- tm_map(mature_cor_words, removeWords, stopwords('english'))
 wordcloud(young_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
 ```
 
+```{r}
+wordcloud(mature_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
+```
 
 ```{r}
 young_words_df <- data_frame(Text = young_article_words$words)
@@ -447,26 +450,47 @@ head(young_words_df, n = 20)
 ```
 
 ```{r}
+young_words_df$Text <- gsub('[0-9]+', '', young_words_df$Text)
+
+head(young_words_df, 10)
+```
+
+```{r}
+# paste(unique(young_words_df), collapse = ' ')
+```
+
+
+```{r}
 young_count_words <- young_words_df %>% 
                   unnest_tokens(output = word, input = Text)
+
+young_count_words
 ```
 
 ```{r}
 young_count_words <- young_count_words %>%
   anti_join(stop_words)
+
+young_count_words
 ```
 
 ```{r}
 young_wordcounts <- young_count_words %>% 
-  count(word, sort = TRUE)
+  count(word, )
 
-head(young_wordcounts, 20)
+head(young_count_words, 20)
 ```
 
 ```{r}
 mature_words_df <- data_frame(Text = mature_article_words$words)
 
 head(mature_words_df, n = 20)
+```
+
+```{r}
+mature_words_df$Text <- gsub('[0-9]+', '', mature_words_df$Text)
+
+head(mature_words_df, 10)
 ```
 
 ```{r}
@@ -484,10 +508,6 @@ mature_wordcounts <- mature_count_words %>%
   count(word, sort = TRUE)
 
 head(mature_wordcounts, 20)
-```
-
-```{r}
-wordcloud(mature_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
 ```
 
 ```{r}
@@ -539,7 +559,7 @@ ggplot(customer_sample, aes(age))+
 ```
 
 ```{r}
-all_sample_transactions <- left_join(x=customer_sample, y=all_age_transactions, by="customer_id")
+all_sample_transactions <- left_join(x=customer_sample, y=all_age_transactions, by=c("customer_id", "age"))
 
 str(all_sample_transactions)
 ```
@@ -572,7 +592,7 @@ summary(mature_sample$age)
 all_article_words <- articles %>% 
   rowwise %>% 
   mutate(words = c_across(c(prod_name, product_type_name, product_group_name, graphical_appearance_name, colour_group_name, perceived_colour_value_name, perceived_colour_master_name, department_name, index_name, index_group_name, section_name, garment_group_name, detail_desc)) %>% 
-  unique %>% 
+  unique() %>% 
   str_c(collapse = " ")) %>% 
   ungroup %>%
   select(-prod_name, -product_type_name, -product_group_name, -graphical_appearance_name, -colour_group_name, -perceived_colour_value_name, -perceived_colour_master_name, -department_name, -index_name, -index_group_name, -section_name, -garment_group_name, -detail_desc)
@@ -587,21 +607,19 @@ all_article_words$words <- gsub("-", " ", all_article_words$words, fixed =TRUE)
 all_article_words$words <- gsub("(", " ", all_article_words$words, fixed =TRUE)
 all_article_words$words <- gsub(")", " ", all_article_words$words, fixed =TRUE)
 all_article_words$words <- gsub("/", " ", all_article_words$words, fixed =TRUE)
-
-head(all_article_words)
-```
-
-```{r}
 all_article_words[[2]] <- tolower(all_article_words[[2]])
 
 head(all_article_words)
 ```
 
 ```{r}
-all_article_words$words <- gsub("[[digits]]+", "", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub("[0-9]+", "", all_article_words$words, fixed =TRUE)
 
-head(all_article_words)
+mature_words_df$Text <- gsub('[0-9]+', '', mature_words_df$Text)
+
+head(mature_words_df, 10)
 ```
+
 
 ```{r}
 all_sample_transactions <- left_join(x=all_sample_transactions, y=all_article_words, by="article_id")
@@ -615,14 +633,8 @@ str(all_sample_transactions)
 
 
 ```{r}
-young_sample_trans <- inner_join(x=transactions, y=young_sample, by = 'customer_id')
-
-str(young_sample_trans)
-```
-
-
-```{r}
-young_sample_trans <- inner_join(x=young_sample_trans, y=all_article_words, by = 'article_id')
+young_sample_trans <- all_sample_transactions %>%
+  filter(age < 40)
 
 str(young_sample_trans)
 ```
@@ -631,6 +643,12 @@ str(young_sample_trans)
 young_sample_words_df <- data_frame(Text = young_sample_trans$words)
 
 head(young_sample_words_df, n = 20)
+```
+
+```{r}
+young_sample_words_df$Text <- gsub('[0-9]+', '', young_sample_words_df$Text)
+
+head(young_sample_words_df, 10)
 ```
 
 ```{r}
@@ -643,6 +661,21 @@ young_sample_count_words <- young_sample_count_words %>%
   anti_join(stop_words)
 ```
 
+
+```{r}
+# d <- unlist(strsplit(as.character(young_sample_words_df), split=" "))
+
+# paste(unique(young_sample_words_df), collapse = ' ')
+```
+
+
+```{r}
+# rem_dup_word <- function(x){
+# paste(unique(trimws(unlist(strsplit(young_sample_words_df,split=" ",fixed=F,perl=T)))),collapse = " ")
+# }
+```
+
+
 ```{r}
 young_sample_wordcounts <- young_sample_count_words %>% 
   count(word, sort = TRUE)
@@ -651,7 +684,15 @@ head(young_sample_wordcounts, 20)
 ```
 
 ```{r}
-mature_sample_trans <- inner_join(x=transactions, y=mature_sample, by = 'customer_id')
+young_sample_cor <- Corpus(VectorSource(young_sample_words_df$Text))
+```
+
+```{r}
+# wordcloud(young_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
+```
+
+```{r}
+mature_sample_trans <- left_join(x=transactions, y=mature_sample, by = 'customer_id')
 
 str(mature_sample_trans)
 ```
@@ -668,6 +709,13 @@ mature_sample_words_df <- data_frame(Text = mature_sample_trans$words)
 
 head(mature_sample_words_df, n = 20)
 ```
+
+```{r}
+mature_sample_words_df$Text <- gsub('[0-9]+', '', mature_sample_words_df$Text)
+
+head(mature_sample_words_df, 10)
+```
+
 
 ```{r}
 mature_sample_count_words <- mature_sample_words_df %>% 
@@ -731,9 +779,11 @@ all_sample_transactions %>%
 ```
 
 ```{r}
+library(moderndive)
 graphic_lm <- lm(age ~ graphical_appearance_name, data = all_sample_transactions)
 
-summary(graphic_lm)
+get_regression_table(graphic_lm)
+get_regression_summaries(graphic_lm)
 ```
 
 ```{r}
@@ -746,8 +796,8 @@ ggplot() +
   ) +
   geom_bar() +
   scale_fill_hue(direction = 1) +
+  scale_y_log10()+
   theme_minimal() +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
-
