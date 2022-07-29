@@ -384,6 +384,22 @@ young_words_df <- data_frame(Text = young_article_words_u)
 head(young_words_df, n = 20)
 ```
 
+```{r}
+young_count_words <- young_words_df %>% 
+                  unnest_tokens(output = word, input = Text)
+```
+
+```{r}
+young_count_words <- young_count_words %>%
+  anti_join(stop_words)
+```
+
+```{r}
+young_wordcounts <- young_count_words %>% 
+  count(word, sort = TRUE)
+
+head(young_wordcounts, 20)
+```
 
 ```{r}
 mature_article_words <- mature_articles %>% 
