@@ -801,3 +801,4 @@ ggplot() +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
+
