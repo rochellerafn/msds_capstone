@@ -646,15 +646,16 @@ str(young_sample_trans)
 ```
 
 ```{r}
-young_sample_words_df <- data_frame(Text = young_sample_trans$words)
+young_sample_words_u <- strsplit(young_sample_trans$words, " ")
 
-head(young_sample_words_df, n = 20)
+young_sample_words_u <- sapply(young_sample_words_u, Compose(unique, Curry(paste, collapse=' ')))
 ```
 
-```{r}
-young_sample_words_df$Text <- gsub('[0-9]+', '', young_sample_words_df$Text)
 
-head(young_sample_words_df, 10)
+```{r}
+young_sample_words_df <- data_frame(Text = young_sample_words_u)
+
+head(young_sample_words_df, n = 20)
 ```
 
 ```{r}
@@ -667,21 +668,6 @@ young_sample_count_words <- young_sample_count_words %>%
   anti_join(stop_words)
 ```
 
-
-```{r}
-# d <- unlist(strsplit(as.character(young_sample_words_df), split=" "))
-
-# paste(unique(young_sample_words_df), collapse = ' ')
-```
-
-
-```{r}
-# rem_dup_word <- function(x){
-# paste(unique(trimws(unlist(strsplit(young_sample_words_df,split=" ",fixed=F,perl=T)))),collapse = " ")
-# }
-```
-
-
 ```{r}
 young_sample_wordcounts <- young_sample_count_words %>% 
   count(word, sort = TRUE)
@@ -690,7 +676,7 @@ head(young_sample_wordcounts, 20)
 ```
 
 ```{r}
-young_sample_cor <- Corpus(VectorSource(young_sample_words_df$Text))
+# young_sample_cor <- Corpus(VectorSource(young_sample_count_words$Text))
 ```
 
 ```{r}
@@ -705,17 +691,16 @@ str(mature_sample_trans)
 ```
 
 ```{r}
+mature_sample_words_u <- strsplit(mature_sample_trans$words, " ")
+
+mature_sample_words_u <- sapply(mature_sample_words_u, Compose(unique, Curry(paste, collapse=' ')))
+```
+
+```{r}
 mature_sample_words_df <- data_frame(Text = mature_sample_trans$words)
 
 head(mature_sample_words_df, n = 20)
 ```
-
-```{r}
-mature_sample_words_df$Text <- gsub('[0-9]+', '', mature_sample_words_df$Text)
-
-head(mature_sample_words_df, 10)
-```
-
 
 ```{r}
 mature_sample_count_words <- mature_sample_words_df %>% 
@@ -725,14 +710,40 @@ mature_sample_count_words <- mature_sample_words_df %>%
 ```{r}
 mature_sample_count_words <- mature_sample_count_words %>%
   anti_join(stop_words)
+
+head(mature_sample_count_words)
 ```
 
 ```{r}
 mature_sample_wordcounts <- mature_sample_count_words %>% 
   count(word, sort = TRUE)
 
-head(mature_sample_wordcounts, 20)
+head(mature_sample_wordcounts)
 ```
+
+```{r}
+mature_sample_uwords <- dplyr::setdiff(mature_sample_count_words, young_sample_count_words)
+
+mature_sample_uwords <- mature_sample_uwords %>%
+  filter(!is.na(word))
+
+head(mature_sample_uwords, 20)
+```
+
+```{r}
+young_sample_uwords <- dplyr::setdiff(young_sample_count_words, mature_sample_count_words)
+
+young_sample_uwords <- young_sample_uwords %>%
+  filter(!is.na(word))
+
+head(young_sample_uwords, 20)
+```
+
+```{r}
+mature_sample_wordcounts %>%
+  filter(word %in% mature_sample_uwords)
+```
+
 
 ```{r}
 # young_sample_cor <- Corpus(VectorSource(young_sample_words_df))
