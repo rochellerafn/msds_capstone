@@ -612,4 +612,3 @@ unique_1739_only %>%
 unique_4060_only %>%
   arrange(desc(article_id))
 ```
-
