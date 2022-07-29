@@ -692,17 +692,11 @@ young_sample_cor <- Corpus(VectorSource(young_sample_words_df$Text))
 ```
 
 ```{r}
-mature_sample_trans <- left_join(x=transactions, y=mature_sample, by = 'customer_id')
+mature_sample_trans <- all_sample_transactions %>%
+  filter(age >= 40)
 
 str(mature_sample_trans)
 ```
-
-```{r}
-mature_sample_trans <- inner_join(x=mature_sample_trans, y=all_article_words, by = 'article_id')
-
-str(mature_sample_trans)
-```
-
 
 ```{r}
 mature_sample_words_df <- data_frame(Text = mature_sample_trans$words)
