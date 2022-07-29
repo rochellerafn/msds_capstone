@@ -361,21 +361,29 @@ head(young_article_words)
 ```
 
 ```{r}
-young_article_words$words <- gsub(".", " ", young_article_words$words, fixed =TRUE)
-young_article_words$words <- gsub(",", " ", young_article_words$words, fixed =TRUE)
-young_article_words$words <- gsub("-", " ", young_article_words$words, fixed =TRUE)
-young_article_words$words <- gsub("(", " ", young_article_words$words, fixed =TRUE)
-young_article_words$words <- gsub(")", " ", young_article_words$words, fixed =TRUE)
-young_article_words$words <- gsub("/", " ", young_article_words$words, fixed =TRUE)
+young_article_words$words <- gsub("[[:punct:]]", "", young_article_words$words)
+young_article_words$words <- gsub('[0-9]+', '', young_article_words$words)
+young_article_words[[2]] <- tolower(young_article_words[[2]])
 
 head(young_article_words)
 ```
 
 ```{r}
-young_article_words[[2]] <- tolower(young_article_words[[2]])
+library(functional)
 
-head(young_article_words)
+young_article_words_u <- strsplit(young_article_words$words, " ")
+
+young_article_words_u <- sapply(young_article_words_u, Compose(unique, Curry(paste, collapse=' ')))
+
+head(young_article_words_u)
 ```
+
+```{r}
+young_words_df <- data_frame(Text = young_article_words_u)
+
+head(young_words_df, n = 20)
+```
+
 
 ```{r}
 mature_article_words <- mature_articles %>% 
@@ -390,20 +398,44 @@ head(mature_article_words)
 ```
 
 ```{r}
-mature_article_words$words <- gsub(".", " ", mature_article_words$words, fixed =TRUE)
-mature_article_words$words <- gsub(",", " ", mature_article_words$words, fixed =TRUE)
-mature_article_words$words <- gsub("-", " ", mature_article_words$words, fixed =TRUE)
-mature_article_words$words <- gsub("(", " ", mature_article_words$words, fixed =TRUE)
-mature_article_words$words <- gsub(")", " ", mature_article_words$words, fixed =TRUE)
-mature_article_words$words <- gsub("/", " ", mature_article_words$words, fixed =TRUE)
+mature_article_words$words <- gsub("[[:punct:]]", "", mature_article_words$words)
+mature_article_words[[2]] <- tolower(mature_article_words[[2]])
+mature_article_words$words <- gsub('[0-9]+', '', mature_article_words$words)
 
 head(mature_article_words)
 ```
 
 ```{r}
-mature_article_words[[2]] <- tolower(mature_article_words[[2]])
+mature_article_words_u <- strsplit(mature_article_words$words, " ")
 
-head(mature_article_words)
+mature_article_words_u <- sapply(mature_article_words_u, Compose(unique, Curry(paste, collapse=' ')))
+```
+
+```{r}
+head(mature_article_words_u)
+```
+
+```{r}
+mature_words_df <- data_frame(Text = mature_article_words_u)
+
+head(mature_words_df, n = 20)
+```
+
+```{r}
+mature_count_words <- mature_words_df %>% 
+                  unnest_tokens(output = word, input = Text)
+```
+
+```{r}
+mature_count_words <- mature_count_words %>%
+  anti_join(stop_words)
+```
+
+```{r}
+mature_wordcounts <- mature_count_words %>% 
+  count(word, sort = TRUE)
+
+head(mature_wordcounts, 20)
 ```
 
 ```{r}
@@ -411,7 +443,7 @@ library(tm)
 library(wordcloud)
 
 young_cor_words <- young_article_words[[2]] 
-mature_cor_words <- mature_article_words[[2]] 
+mature_cor_words <- mature_article_words_u[[1]] 
 ```
 
 ```{r}
@@ -479,35 +511,6 @@ young_wordcounts <- young_count_words %>%
   count(word, )
 
 head(young_count_words, 20)
-```
-
-```{r}
-mature_words_df <- data_frame(Text = mature_article_words$words)
-
-head(mature_words_df, n = 20)
-```
-
-```{r}
-mature_words_df$Text <- gsub('[0-9]+', '', mature_words_df$Text)
-
-head(mature_words_df, 10)
-```
-
-```{r}
-mature_count_words <- mature_words_df %>% 
-                  unnest_tokens(output = word, input = Text)
-```
-
-```{r}
-mature_count_words <- mature_count_words %>%
-  anti_join(stop_words)
-```
-
-```{r}
-mature_wordcounts <- mature_count_words %>% 
-  count(word, sort = TRUE)
-
-head(mature_wordcounts, 20)
 ```
 
 ```{r}
@@ -601,34 +604,21 @@ head(all_article_words)
 ```
 
 ```{r}
-all_article_words$words <- gsub(".", " ", all_article_words$words, fixed =TRUE)
-all_article_words$words <- gsub(",", " ", all_article_words$words, fixed =TRUE)
-all_article_words$words <- gsub("-", " ", all_article_words$words, fixed =TRUE)
-all_article_words$words <- gsub("(", " ", all_article_words$words, fixed =TRUE)
-all_article_words$words <- gsub(")", " ", all_article_words$words, fixed =TRUE)
-all_article_words$words <- gsub("/", " ", all_article_words$words, fixed =TRUE)
+all_article_words$words <- gsub("[[:punct:]]", "", all_article_words$words)
 all_article_words[[2]] <- tolower(all_article_words[[2]])
+all_article_words$words <- gsub('[0-9]+', '', all_article_words$words)
 
 head(all_article_words)
 ```
 
 ```{r}
-all_article_words$words <- gsub("[0-9]+", "", all_article_words$words, fixed =TRUE)
-
-mature_words_df$Text <- gsub('[0-9]+', '', mature_words_df$Text)
-
-head(mature_words_df, 10)
-```
-
-
-```{r}
-all_sample_transactions <- left_join(x=all_sample_transactions, y=all_article_words, by="article_id")
+all_sample_transactions <- left_join(x=all_sample_transactions, y=all_article_words_u, by="article_id")
 
 str(all_sample_transactions)
 ```
 
 ```{r}
-# write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
 ```
 
 
