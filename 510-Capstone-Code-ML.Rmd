@@ -62,13 +62,6 @@ all_sample_trans_count <- rename(all_sample_trans_count, age = age.x)
 ```
 
 ```{r}
-all_sample_trans_count <- all_sample_trans_count %>%
-  select(-age.y)
-
-head(all_sample_trans_count)
-```
-
-```{r}
 all_sample_trans_count %>%
   filter(age <=60, n_items < 200) %>%
 ggplot(aes(age, n_items))+
@@ -79,10 +72,9 @@ ggplot(aes(age, n_items))+
 str(all_sample_trans)
 ```
 
-
 ```{r}
 all_sample_trans_count <- all_sample_trans_count %>%
-  mutate(item_7_plus = ifelse(n_items >= 7, 1, 0))
+  mutate(item_10_plus = ifelse(n_items >= 10, 1, 0))
 
 head(all_sample_trans_count)
 ```
@@ -94,17 +86,16 @@ str(all_sample_trans_count)
 ```{r}
 library(moderndive)
 
-more_than_7 <- lm(age ~ item_7_plus, data = all_sample_trans_count)
+more_than_10 <- lm(age ~ item_10_plus, data = all_sample_trans_count)
 ```
 
 ```{r}
-get_regression_table(more_than_7)
+get_regression_table(more_than_10)
 ```
 
 ```{r}
-get_regression_summaries(more_than_7)
+get_regression_summaries(more_than_10)
 ```
 
-```{r}
-# all_sample_trans_count$words <- sapply(strsplit(as.character(all_sample_trans_count$words), " "), function(x) paste(unique(x), collapse=" "))
-```
+# Ideas for features... closelyfitting strappy straps crop
+
