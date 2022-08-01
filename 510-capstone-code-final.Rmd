@@ -35,10 +35,12 @@ str(articles)
 ```{r}
 customers <- customers %>%
   mutate(customer_id = as.character(customer_id)) %>%
-  filter(!is.na(age), club_member_status == "ACTIVE") %>%
+  filter(!is.na(age)) 
   select(-FN, -fashion_news_frequency)
 
 customers[["Active"]][is.na(customers[["Active"]])] <- 0
+customers$club_member_status <- replace(customers$club_member_status, customers$club_member_status == "", "INNACTIVE") 
+
 
 str(customers)
 ```
@@ -323,33 +325,37 @@ str(young_unique_items)
 ```
 
 ```{r}
-young_article_count %>%
+young_u_article_count <- young_article_count %>%
   filter(article_id %in% young_unique_items) %>%
   arrange(desc(total_items_sold))
+
+head(young_u_article_count, 10)
 ```
 
 ```{r}
-mature_article_count %>%
+mature_u_article_count <- mature_article_count %>%
   filter(article_id %in% mature_unique_items) %>%
   arrange(desc(total_items_sold))
+
+head(mature_u_article_count, 10)
 ```
 
 ```{r}
-young_articles <- articles %>%
-  filter(article_id %in% young_article_count$article_id)
+young_u_articles <- articles %>%
+  filter(article_id %in% young_u_article_count$article_id)
 
-young_articles
+young_u_articles
 ```
 
 ```{r}
-mature_articles <- articles %>%
-  filter(article_id %in% mature_article_count$article_id)
+mature_u_articles <- articles %>%
+  filter(article_id %in% mature_u_article_count$article_id)
 
-mature_articles
+mature_u_articles
 ```
 
 ```{r}
-young_article_words <- young_articles %>% 
+young_u_article_words <- young_u_articles %>% 
   rowwise %>% 
   mutate(words = c_across(c(prod_name, product_type_name, product_group_name, graphical_appearance_name, colour_group_name, perceived_colour_value_name, perceived_colour_master_name, department_name, index_name, index_group_name, section_name, garment_group_name, detail_desc)) %>% 
   unique %>% 
@@ -357,21 +363,21 @@ young_article_words <- young_articles %>%
   ungroup %>%
   select(-prod_name, -product_type_name, -product_group_name, -graphical_appearance_name, -colour_group_name, -perceived_colour_value_name, -perceived_colour_master_name, -department_name, -index_name, -index_group_name, -section_name, -garment_group_name, -detail_desc)
 
-head(young_article_words)
+head(young_u_article_words)
 ```
 
 ```{r}
-young_article_words$words <- gsub("[[:punct:]]", "", young_article_words$words)
-young_article_words$words <- gsub('[0-9]+', '', young_article_words$words)
-young_article_words[[2]] <- tolower(young_article_words[[2]])
+young_u_article_words$words <- gsub("[[:punct:]]", "", young_u_article_words$words)
+young_u_article_words$words <- gsub('[0-9]+', '', young_u_article_words$words)
+young_u_article_words[[2]] <- tolower(young_u_article_words[[2]])
 
-head(young_article_words)
+head(young_u_article_words)
 ```
 
 ```{r}
 library(functional)
 
-young_article_words_u <- strsplit(young_article_words$words, " ")
+young_article_words_u <- strsplit(young_u_article_words$words, " ")
 
 young_article_words_u <- sapply(young_article_words_u, Compose(unique, Curry(paste, collapse=' ')))
 
@@ -402,7 +408,7 @@ head(young_wordcounts, 20)
 ```
 
 ```{r}
-mature_article_words <- mature_articles %>% 
+mature_u_article_words <- mature_u_articles %>% 
   rowwise %>% 
   mutate(words = c_across(c(prod_name, product_type_name, product_group_name, graphical_appearance_name, colour_group_name, perceived_colour_value_name, perceived_colour_master_name, department_name, index_name, index_group_name, section_name, garment_group_name, detail_desc)) %>% 
   unique %>% 
@@ -410,19 +416,19 @@ mature_article_words <- mature_articles %>%
   ungroup %>%
   select(-prod_name, -product_type_name, -product_group_name, -graphical_appearance_name, -colour_group_name, -perceived_colour_value_name, -perceived_colour_master_name, -department_name, -index_name, -index_group_name, -section_name, -garment_group_name, -detail_desc)
 
-head(mature_article_words)
+head(mature_u_article_words)
 ```
 
 ```{r}
-mature_article_words$words <- gsub("[[:punct:]]", "", mature_article_words$words)
-mature_article_words[[2]] <- tolower(mature_article_words[[2]])
-mature_article_words$words <- gsub('[0-9]+', '', mature_article_words$words)
+mature_u_article_words$words <- gsub("[[:punct:]]", "", mature_u_article_words$words)
+mature_u_article_words[[2]] <- tolower(mature_u_article_words[[2]])
+mature_u_article_words$words <- gsub('[0-9]+', '', mature_u_article_words$words)
 
-head(mature_article_words)
+head(mature_u_article_words)
 ```
 
 ```{r}
-mature_article_words_u <- strsplit(mature_article_words$words, " ")
+mature_article_words_u <- strsplit(mature_u_article_words$words, " ")
 
 mature_article_words_u <- sapply(mature_article_words_u, Compose(unique, Curry(paste, collapse=' ')))
 ```
@@ -457,76 +463,34 @@ head(mature_wordcounts, 20)
 ```{r}
 library(tm)
 library(wordcloud)
+library(NLP)
 
-young_cor_words <- young_article_words[[2]] 
-mature_cor_words <- mature_article_words_u[[1]] 
+young_cor_words_u <- Corpus(VectorSource(young_words_df))
+mature_cor_words_u <- Corpus(VectorSource(mature_words_df))
 ```
 
 ```{r}
-young_cor_words <- Corpus(VectorSource(young_article_words[[2]]))
-mature_cor_words <- Corpus(VectorSource(mature_article_words[[2]]))
+young_cor_words_u <- tm_map(young_cor_words_u, removeNumbers)
 ```
 
 ```{r}
-young_cor_words <- tm_map(young_cor_words, removeNumbers)
+mature_cor_words_u <- tm_map(mature_cor_words_u, removeNumbers)
 ```
 
 ```{r}
-mature_cor_words <- tm_map(mature_cor_words, removeNumbers)
+young_cor_words_u <- tm_map(young_cor_words_u, removeWords, stopwords('english'))
 ```
 
 ```{r}
-young_cor_words <- tm_map(young_cor_words, removeWords, stopwords('english'))
+mature_cor_words_u <- tm_map(mature_cor_words_u, removeWords, stopwords('english'))
 ```
 
 ```{r}
-mature_cor_words <- tm_map(mature_cor_words, removeWords, stopwords('english'))
+wordcloud(young_cor_words_u, scale = c(2, 1), min.freq = 500, colors = rainbow(30))
 ```
 
 ```{r}
-wordcloud(young_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
-```
-
-```{r}
-wordcloud(mature_cor_words, scale = c(2, 1), min.freq = 10000, colors = rainbow(30))
-```
-
-```{r}
-young_words_df <- data_frame(Text = young_article_words$words)
-
-head(young_words_df, n = 20)
-```
-
-```{r}
-young_words_df$Text <- gsub('[0-9]+', '', young_words_df$Text)
-
-head(young_words_df, 10)
-```
-
-```{r}
-# paste(unique(young_words_df), collapse = ' ')
-```
-
-
-```{r}
-young_count_words <- young_words_df %>% 
-                  unnest_tokens(output = word, input = Text)
-
-young_count_words
-```
-
-```{r}
-young_count_words <- young_count_words %>%
-  anti_join(stop_words)
-
-young_count_words
-```
-
-```{r}
-young_wordcounts <- young_count_words %>% 
-  count(word, )
-
-head(young_count_words, 20)
+wordcloud(mature_cor_words_u, scale = c(2, 1), min.freq = 500, colors = rainbow(30))
 ```
 
 ```{r}
@@ -542,17 +506,27 @@ mature_u_wordcount
 ```
 
 ```{r}
-young_wordcounts %>%
+unique_young_words <- young_wordcounts %>%
   filter(word %in% young_u_wordcount) %>%
   arrange(desc(n))
+
+head(unique_young_words)
 ```
 
 
 ```{r}
-mature_wordcounts %>%
+unique_mature_words <- mature_wordcounts %>%
   filter(word %in% mature_u_wordcount) %>%
   arrange(desc(n))
+
+head(unique_mature_words)
 ```
+
+```{r}
+# write.csv(unique_mature_words, "/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique_mature_words")
+# write.csv(unique_young_words, "/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique_young_words")
+```
+
 
 ```{r}
 customer_index <- createDataPartition(customers$age, p = 0.3, list = FALSE)
@@ -791,10 +765,10 @@ all_sample_transactions %>%
 
 ```{r}
 library(moderndive)
-graphic_lm <- lm(age ~ graphical_appearance_name, data = all_sample_transactions)
+age_graphic_lm <- lm(age ~ graphical_appearance_name, data = all_sample_transactions)
 
-get_regression_table(graphic_lm)
-get_regression_summaries(graphic_lm)
+get_regression_table(age_graphic_lm)
+get_regression_summaries(age_graphic_lm)
 ```
 
 ```{r}
@@ -812,5 +786,54 @@ ggplot() +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
+ #### "Front print" mature goes up young goes down, same with "mixed solid/pattern" and "placement print"
 
+```{r}
+age_date_lm <- lm(age ~ t_dat, data = all_sample_transactions)
+
+get_regression_table(age_date_lm)
+get_regression_summaries(age_date_lm)
+```
+
+
+```{r}
+age_price_lm <- lm(age ~ price, data = all_sample_transactions)
+
+get_regression_table(age_price_lm)
+get_regression_summaries(age_price_lm)
+```
+
+```{r}
+age_active_lm <- lm(age ~ Active, data = all_sample_transactions)
+
+get_regression_table(age_active_lm)
+get_regression_summaries(age_active_lm)
+```
+
+```{r}
+age_post_lm <- lm(age ~ postal_code, data = all_sample_transactions)
+
+get_regression_table(age_post_lm)
+get_regression_summaries(age_post_lm)
+```
+
+```{r}
+customers <- customers %>%
+  mutate(club_member_status = ifelse(club_member_status == "ACTIVE", 1, 0))
+
+customers[["club_member_status"]][is.na(customers[["club_member_status"]])] <- 0
+```
+
+
+```{r}
+customer_active_club_lm <- lm(Active ~ club_member_status, data = customers)
+
+get_regression_table(customer_active_club_lm)
+get_regression_summaries(customer_active_club_lm)
+```
+
+```{r}
+ggplot(customers, aes(Active, club_member_status))+
+  geom_point()
+```
 
