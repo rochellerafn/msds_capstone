@@ -62,25 +62,14 @@ I started with, what are the most popular items in each age group? This might sh
 ![](images/0759871002.jpg)
 
 
-### What is the summary of price per age group?
-```{r}
-mature_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
-young_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
-
-summary(mature_transactions$price)
-summary(young_transactions$price)
-```
-
-
-### How many items are each group purchasing per transaction?
-```{r}
-summary(mature_transactions$n_items)
-summary(young_transactions$n_items)
-```
-
-
 ### What are the most popular unique items in each age group?
+I reduce down even further the items that young and mature purchased by figuring out what each group purchased that the other did not. I found some interesting items, but the quantity was insignificant. 
+
 #### Young
+![](images/0803545002.jpg)
+![](images/0814307002.jpg)
+![](images/0533261025.jpg)
+![](images/0695662008.jpg)
 
 #### Mature
 
@@ -109,8 +98,21 @@ head(all_graphic_pct)
 
 Is there a noticeable difference in graphic appearance for each age group?
 
+### What is the summary of price per age group?
+```{r}
+mature_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
+young_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
+
+summary(mature_transactions$price)
+summary(young_transactions$price)
+```
 
 
+### How many items are each group purchasing per transaction?
+```{r}
+summary(mature_transactions$n_items)
+summary(young_transactions$n_items)
+```
 
 
 
