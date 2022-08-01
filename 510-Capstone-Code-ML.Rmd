@@ -94,16 +94,15 @@ get_regression_summaries(more_than_10)
 
 ```{r}
 all_sample_trans_features <- all_sample_trans_count %>%
-  mutate(strappy = as.integer(str_detect(words,"[Ss]trappy | strap"))) %>% 
-  mutate(cropped = as.integer(str_detect(words,"[Cc]ropped | crop"))) %>%
-  mutate(fitted = as.integer(str_detect(words,"[Ff]itted"))) %>%
-  mutate(front_print = as.integer(str_detect(words,"[Ff]ront | [Pp]rint"))) %>%
-  mutate(mixed_solid_p = as.integer(str_detect(words,"[Mm]ixed | [Ss]olid | [Pp]rint"))) %>%
-  mutate(placement_p = as.integer(str_detect(words,"[Pp]lacement | [Pp]rint"))) %>%
-  mutate(underwear = as.integer(str_detect(words,"[Uu]nderwear"))) %>%
-  mutate(men = as.integer(str_detect(words,"[Mm]en"))) %>%
+  mutate(strappy = as.factor(str_detect(words,"[Ss]trappy | strap"))) %>% 
+  mutate(cropped = as.factor(str_detect(words,"[Cc]ropped | crop"))) %>%
+  mutate(fitted = as.factor(str_detect(words,"[Ff]itted"))) %>%
+  mutate(front_print = as.factor(str_detect(words,"[Ff]ront | [Pp]rint"))) %>%
+  mutate(mixed_solid_p = as.factor(str_detect(words,"[Mm]ixed | [Ss]olid | [Pp]rint"))) %>%
+  mutate(placement_p = as.factor(str_detect(words,"[Pp]lacement | [Pp]rint"))) %>%
+  mutate(underwear = as.factor(str_detect(words,"[Uu]nderwear"))) %>%
+  mutate(men = as.factor(str_detect(words,"[Mm]en"))) %>%
   mutate(article_id = as.character(article_id)) %>%
-  mutate(item_10_plus = as.integer(item_10_plus)) %>%
   select(-words, -s_age, -X)
 
 head(all_sample_trans_features)

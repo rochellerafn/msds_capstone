@@ -37,7 +37,7 @@ str(articles)
 ```{r}
 customers <- customers %>%
   mutate(customer_id = as.character(customer_id)) %>%
-  filter(!is.na(age)) %>%str
+  filter(!is.na(age)) %>%
   select(-FN, -fashion_news_frequency)
 
 customers[["Active"]][is.na(customers[["Active"]])] <- 0
