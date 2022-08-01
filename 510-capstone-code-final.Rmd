@@ -535,6 +535,12 @@ mature_cor_words_u <- Corpus(VectorSource(mature_words_df))
 
 
 ```{r}
+writeCorpus(young_cor_words_u, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_cor_words_u')
+writeCorpus(mature_cor_words_u, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_cor_words_u')
+```
+
+
+```{r}
 young_cor_words_u <- tm_map(young_cor_words_u, removeNumbers)
 ```
 

@@ -49,13 +49,13 @@ Given the question and data that I have, I decided to make age the outcome varia
 
 I started with, what are the most popular items in each age group? This might show me if there are any differences. As we can see here, the top 3 items are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate a generational difference. However, the more I dug, the less significant this difference became.
 
-#### Mature Top Items
+### Mature Top Items
 ![](images/0706016001.jpg)
 ![](images/0706016002.jpg)
 ![](images/0372860001.jpg)
 ![](images/0610776105.jpg)
 
-#### Young Top Items
+### Young Top Items
 ![](images/0706016001.jpg)
 ![](images/0706016002.jpg)
 ![](images/0372860001.jpg)
@@ -65,13 +65,14 @@ I started with, what are the most popular items in each age group? This might sh
 ### What are the most popular unique items in each age group?
 I reduced the items even further by figuring out what each group purchased that the other did not. 
 
-#### Young
+### Young Unique Items
 ![](images/0803545002.jpg)
 ![](images/0814307002.jpg)
 ![](images/0533261025.jpg)
 ![](images/0695662008.jpg)
 
-#### Mature
+### Mature Unique Items
+
 
 
 On the surface it seemed that the younger group was purchasing more baby clothes and the mature generation not so much. However, each of the items were only purchased as much as 86 times out of more than 21million items purchased. Unfortunately the math here is not significant enough to consider.
@@ -80,38 +81,49 @@ On the surface it seemed that the younger group was purchasing more baby clothes
 ### What are the top descriptive words for the unique items in each age group?
 To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words of these items. As I had guessed, the unique items really did not hold any significance due to the small amount. Also, even though the items are different, there are still many purchases by both groups that have the same descriptive words despite the specific item differing.
 
-```{r}
-library(tidyverse)
-library(wordcloud)
+### Mature Top Words
+![](images/mature_wordcloud.jpeg)
 
+### Young Top Words
+![](images/young_wordcloud_u.jpeg)
 
-
-wordcloud(young_cor_words_u, scale = c(2, 1), min.freq = 600, colors = rainbow(30))
-wordcloud(mature_cor_words_u, scale = c(2, 1), min.freq = 300, colors = rainbow(30))
-```
-
-
-#### Young Top Words 
+### Young Top Word Count 
 ```{r}
 head(young_wordcounts, 10)
 ```
 
-#### Mature Top Words
+### Mature Top Word Count
 ```{r}
 head(mature_wordcounts, 10)
 ```
 
+## What about percentage of descriptive words?
 
-
-
-
-What about percentage of descriptive words?
-
-all_graphic_pct <- read.csv(‘/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct’)
+```{r}
+all_graphic_pct <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct')
 
 head(all_graphic_pct)
+```
 
-Is there a noticeable difference in graphic appearance for each age group?
+### Is there a noticeable difference in graphic appearance for each age group?
+```{r}
+all_sample_trans <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+
+all_sample_transactions %>%
+  filter(!is.na(graphical_appearance_name)) %>%
+ggplot() +
+  aes(
+    x = graphical_appearance_name,
+    fill = graphical_appearance_name
+  ) +
+  geom_bar() +
+  scale_fill_hue(direction = 1) +
+  scale_y_log10()+
+  theme_minimal() +
+  scale_x_discrete(guide = guide_axis(angle = 90))+
+  facet_wrap(vars(age_group))
+```
+
 
 ### What is the summary of price per age group?
 ```{r}
