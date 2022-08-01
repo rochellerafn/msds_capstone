@@ -23,7 +23,8 @@ The importance of these questions lies within the realm of demographics and mark
 
 I started this project with a very different question in mind. However. the very first thing I checked in the data was the age distribution. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 50 years old. I remember thinking, “What?? That is so bizarre.” Twice as many 50 somethings as 30 somethings seemed just, wrong. 
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 library(ggplot2)
@@ -34,6 +35,16 @@ ggplot(customers, aes(age))+
   theme_bw()+
   xlim(15, 80)
 ```
+
+```
+## Warning: Removed 16973 rows containing non-finite values (stat_count).
+```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_bar).
+```
+
+<img src="index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
 My immediate thought was that it is a group of ‘young at heart’ and fashion conscious 50 year olds. Then, as I looked a little closer at the distribution I did the math and realized the peaks moved almost identically within about 30 years of each other. That logically seems pretty close to a parent-child age gap. This lead me to the question, does the age even matter? If the 50 year olds are actually purchasing for their children the items would be virtually the same.
 
@@ -88,60 +99,15 @@ To move forward with the theme of unique items I decided to take those unique it
 ![](images/young_wordcloud_u.jpeg)
 
 ### Young Top Word Count 
-```{r}
-young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts') %>%
-  select(-X)
-head(young_wordcounts, 10)
-```
-
-### Mature Top Word Count
-```{r}
-mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_wordcounts') %>%
-  select(-X)
-head(mature_wordcounts, 10)
-```
-
-## What about percentage of descriptive words?
-
-```{r}
-all_graphic_pct <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct')
-
-head(all_graphic_pct)
-```
-
-### Is there a noticeable difference in graphic appearance for each age group?
-```{r}
-all_sample_trans <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
-
-all_sample_transactions %>%
-  filter(!is.na(graphical_appearance_name)) %>%
-ggplot() +
-  aes(
-    x = graphical_appearance_name,
-    fill = graphical_appearance_name
-  ) +
-  geom_bar() +
-  scale_fill_hue(direction = 1) +
-  scale_y_log10()+
-  theme_minimal() +
-  scale_x_discrete(guide = guide_axis(angle = 90))+
-  facet_wrap(vars(age_group))
-```
 
 
-### What is the summary of price per age group?
-```{r}
-mature_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
-young_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
-
-summary(mature_transactions$price)
-summary(young_transactions$price)
-```
 
 
-### How many items are each group purchasing per transaction?
-```{r}
-summary(mature_transactions$n_items)
-summary(young_transactions$n_items)
-```
+
+
+
+
+
+
+
 
