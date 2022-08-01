@@ -675,7 +675,7 @@ str(all_sample_transactions)
 
 
 ```{r}
-write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+# write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
 ```
 
 

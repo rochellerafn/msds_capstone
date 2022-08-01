@@ -103,12 +103,12 @@ all_sample_trans_features <- all_sample_trans_count %>%
   mutate(underwear = as.integer(str_detect(words,"[Uu]nderwear"))) %>%
   mutate(men = as.integer(str_detect(words,"[Mm]en"))) %>%
   mutate(article_id = as.character(article_id)) %>%
-  replace(.,is.na(.),0) %>%
   mutate(item_10_plus = as.integer(item_10_plus)) %>%
   select(-words, -s_age, -X)
 
 head(all_sample_trans_features)
 ```
+
 
 ```{r}
 strappy_crop_lm <- lm(age ~ strappy * cropped, data = all_sample_trans_features)
@@ -116,6 +116,15 @@ strappy_crop_lm <- lm(age ~ strappy * cropped, data = all_sample_trans_features)
 get_regression_table(strappy_crop_lm)
 get_regression_summaries(strappy_crop_lm)
 ```
+
+
+```{r}
+front_print_lm <- lm(age ~ front_print * placement_p, data = all_sample_trans_features)
+
+get_regression_table(front_print_lm)
+get_regression_summaries(front_print_lm)
+```
+
 
 
 
