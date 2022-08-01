@@ -101,6 +101,7 @@ all_sample_trans_features <- all_sample_trans_count %>%
   mutate(mixed_solid_p = as.factor(str_detect(words,"[Mm]ixed | [Ss]olid | [Pp]rint"))) %>%
   mutate(placement_p = as.factor(str_detect(words,"[Pp]lacement | [Pp]rint"))) %>%
   mutate(underwear = as.factor(str_detect(words,"[Uu]nderwear"))) %>%
+  mutate(bandeau = as.factor(str_detect(words,"[Bb]andeau"))) %>%
   mutate(men = as.factor(str_detect(words,"[Mm]en"))) %>%
   mutate(article_id = as.character(article_id)) %>%
   select(-words, -s_age, -X)

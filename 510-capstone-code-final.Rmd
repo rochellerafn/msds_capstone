@@ -28,7 +28,7 @@ transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized
 ```{r}
 articles <- articles %>%
   mutate(article_id = as.character(article_id)) %>%
-  select(-product_code, -product_type_no, -graphical_appearance_no, -colour_group_code, -perceived_colour_master_id, -department_no, -index_code, -index_group_no, -index_group_no, -garment_group_no, -perceived_colour_value_id, -section_no)
+ select(-product_code, -product_type_no, -graphical_appearance_no, -colour_group_code, -perceived_colour_master_id, -department_no, -index_code, -index_group_no, -index_group_no, -garment_group_no, -perceived_colour_value_id, -section_no)
 
 str(articles)
 ```
@@ -675,7 +675,7 @@ str(all_sample_transactions)
 
 
 ```{r}
-# write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
 ```
 
 
@@ -831,10 +831,20 @@ str(all_sample_transactions)
 
 
 ```{r}
-all_sample_transactions %>%
+all_graphic_count <- all_sample_transactions %>%
   group_by(age_group) %>%
   count(graphical_appearance_name) %>%
   arrange(desc(n))
+
+head(all_graphic_count, 20)
+```
+
+```{r}
+young_graphic_pct <- all_graphic_count %>%
+  filter(age_group == "young") %>%
+  mutate(graphic_count = n, graphic_pct = n / sum(n) * 100)
+
+head(all_graphic_count)
 ```
 
 
@@ -904,4 +914,8 @@ get_regression_table(age_channel_lm)
 get_regression_summaries(age_channel_lm)
 ```
 
+
+```{r}
+
+```
 
