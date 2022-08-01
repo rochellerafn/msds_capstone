@@ -159,6 +159,12 @@ young_transactions <- merge(x=young_transactions, y=young_tcount, by.x= c("t_dat
 head(young_transactions)
 ```
 
+```{r}
+# write.csv(young_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
+# write.csv(mature_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
+```
+
+
 
 ```{r}
 summary(young_transactions$n_items)
@@ -447,6 +453,10 @@ young_wordcounts <- young_count_words %>%
 head(young_wordcounts, 20)
 ```
 
+```{r}
+# write.csv(young_wordcounts, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts')
+```
+
 
 ```{r}
 mature_u_article_words <- mature_u_articles %>% 
@@ -506,6 +516,11 @@ mature_wordcounts <- mature_count_words %>%
   count(word, sort = TRUE)
 
 head(mature_wordcounts, 20)
+```
+
+
+```{r}
+# write.csv(mature_wordcounts, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_wordcounts')
 ```
 
 
@@ -675,7 +690,7 @@ str(all_sample_transactions)
 
 
 ```{r}
-write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+# write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
 ```
 
 
@@ -842,10 +857,39 @@ head(all_graphic_count, 20)
 ```{r}
 young_graphic_pct <- all_graphic_count %>%
   filter(age_group == "young") %>%
-  mutate(graphic_count = n, graphic_pct = n / sum(n) * 100)
+  mutate(y_graphic_count = n, y_graphic_pct = n / sum(n) * 100) %>%
+  select(-n)
 
-head(all_graphic_count)
+head(young_graphic_pct)
 ```
+
+
+```{r}
+mature_graphic_pct <- all_graphic_count %>%
+  filter(age_group == "mature") %>%
+  mutate(m_graphic_count = n, m_graphic_pct = n / sum(n) * 100) %>%
+  select(-n)
+
+head(mature_graphic_pct)
+```
+
+
+```{r}
+all_graphic_pct <- merge(x=young_graphic_pct, y=mature_graphic_pct, by.x = "graphical_appearance_name", by.y = "graphical_appearance_name")
+
+all_graphic_pct <- all_graphic_pct %>%
+  select(-age_group.x, -age_group.y) %>%
+  mutate(pct_difference = abs(y_graphic_pct - m_graphic_pct)) %>%
+  arrange(desc(pct_difference)) %>%
+  relocate(graphical_appearance_name, pct_difference, y_graphic_pct, m_graphic_pct)
+
+head(all_graphic_pct)
+```
+
+```{r}
+# write.csv(all_graphic_pct, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct')
+```
+
 
 
 ```{r}
