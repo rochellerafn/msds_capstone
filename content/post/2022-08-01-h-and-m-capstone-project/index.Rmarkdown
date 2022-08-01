@@ -63,7 +63,7 @@ I started with, what are the most popular items in each age group? This might sh
 
 
 ### What are the most popular unique items in each age group?
-I reduce down even further the items that young and mature purchased by figuring out what each group purchased that the other did not. I found some interesting items, but the quantity was insignificant. 
+I reduced the items even further by figuring out what each group purchased that the other did not. 
 
 #### Young
 ![](images/0803545002.jpg)
@@ -74,9 +74,13 @@ I reduce down even further the items that young and mature purchased by figuring
 #### Mature
 
 
+On the surface it seemed that the younger group was purchasing more baby clothes and the mature generation not so much. However, each of the items were only purchased as much as 86 times out of more than 21million items purchased. Unfortunately the math here is not significant enough to consider.
 
-What are the top descriptive words for the unique items in each age group?
- 
+
+### What are the top descriptive words for the unique items in each age group?
+To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words of these items. As I had guessed, the unique items really did not hold any significance due to the small amount. Also, even though the items are different, there are still many purchases by both groups that have the same descriptive words despite the specific item differing.
+
+```{r}
 library(tidyverse)
 library(wordcloud)
 
@@ -84,10 +88,21 @@ library(wordcloud)
 
 wordcloud(young_cor_words_u, scale = c(2, 1), min.freq = 600, colors = rainbow(30))
 wordcloud(mature_cor_words_u, scale = c(2, 1), min.freq = 300, colors = rainbow(30))
+```
 
+
+#### Young Top Words 
+```{r}
 head(young_wordcounts, 10)
+```
 
+#### Mature Top Words
+```{r}
 head(mature_wordcounts, 10)
+```
+
+
+
 
 
 What about percentage of descriptive words?
