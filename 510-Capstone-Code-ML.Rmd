@@ -126,8 +126,6 @@ get_regression_summaries(front_print_lm)
 ```
 
 
-
-
 ```{r}
 pr_all_sample_feature <- prcomp(x = select(all_sample_trans_features,-age), scale = T, center = T)
 summary(pr_all_sample_feature)
