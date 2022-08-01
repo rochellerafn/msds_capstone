@@ -24,8 +24,6 @@ The importance of these questions lies within the realm of demographics and mark
 I started this project with a very different question in mind. However. the very first thing I checked in the data was the age distribution. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 50 years old. I remember thinking, “What?? That is so bizarre.” Twice as many 50 somethings as 30 somethings seemed just, wrong. 
 
 ```{r}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-
 library(ggplot2)
 customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv') 
 
@@ -106,7 +104,7 @@ head(mature_wordcounts, 10)
 ```
 
 ## What about percentage of descriptive words?
-
+Knowing that there are about twice as many in the young group as the mature group I thought I would go one step further and check proportion of the popularity. Still appears that there are no major and obvious differences.
 ```{r}
 all_graphic_pct <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct')
 
@@ -115,6 +113,7 @@ head(all_graphic_pct)
 
 
 ### Is there a noticeable difference in graphic appearance for each age group?
+When analyzing the number of items with certain graphical appearances it is almost eerie how mirror like the purchasing habits are. Besides two variables, they move at extremely similar rates.
 ![](images/Rplot.jpeg)
 
 
@@ -133,4 +132,3 @@ summary(young_transactions$price)
 summary(mature_transactions$n_items)
 summary(young_transactions$n_items)
 ```
-

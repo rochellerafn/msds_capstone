@@ -25,8 +25,6 @@ I started this project with a very different question in mind. However. the very
 
 
 ```r
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-
 library(ggplot2)
 customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv') 
 
@@ -34,14 +32,6 @@ ggplot(customers, aes(age))+
   geom_bar(fill = 'black')+
   theme_bw()+
   xlim(15, 80)
-```
-
-```
-## Warning: Removed 16973 rows containing non-finite values (stat_count).
-```
-
-```
-## Warning: Removed 1 rows containing missing values (geom_bar).
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
@@ -100,6 +90,34 @@ To move forward with the theme of unique items I decided to take those unique it
 
 ### Young Top Word Count 
 
+```r
+library(tidyverse)
+```
+
+```
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+```
+
+```
+## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1
+## ✔ purrr   0.3.4
+```
+
+```
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+```
+
+```r
+young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts') %>%
+  select(-X)
+
+head(young_wordcounts, 10)
+```
+
 ```
 ##            word    n
 ## 1          body 4499
@@ -115,6 +133,13 @@ To move forward with the theme of unique items I decided to take those unique it
 ```
 
 ### Mature Top Word Count
+
+```r
+mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_wordcounts') %>%
+  select(-X)
+
+head(mature_wordcounts, 10)
+```
 
 ```
 ##            word    n
@@ -132,6 +157,12 @@ To move forward with the theme of unique items I decided to take those unique it
 
 ## What about percentage of descriptive words?
 
+
+```r
+all_graphic_pct <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct')
+
+head(all_graphic_pct)
+```
 
 ```
 ##   X graphical_appearance_name pct_difference y_graphic_pct m_graphic_pct
@@ -157,9 +188,20 @@ To move forward with the theme of unique items I decided to take those unique it
 
 ### What is the summary of price per age group?
 
+```r
+mature_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
+young_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
+
+summary(mature_transactions$price)
+```
+
 ```
 ##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
 ## 0.0000339 0.0169322 0.0254068 0.0287606 0.0338814 0.5915254
+```
+
+```r
+summary(young_transactions$price)
 ```
 
 ```
@@ -170,9 +212,17 @@ To move forward with the theme of unique items I decided to take those unique it
 
 ### How many items are each group purchasing per transaction?
 
+```r
+summary(mature_transactions$n_items)
+```
+
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     1.0     3.0     5.0     6.6     8.0   336.0
+```
+
+```r
+summary(young_transactions$n_items)
 ```
 
 ```
