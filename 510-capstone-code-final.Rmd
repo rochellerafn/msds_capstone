@@ -24,6 +24,7 @@ customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fa
 transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
 ```
 
+
 ```{r}
 articles <- articles %>%
   mutate(article_id = as.character(article_id)) %>%
@@ -32,10 +33,11 @@ articles <- articles %>%
 str(articles)
 ```
 
+
 ```{r}
 customers <- customers %>%
   mutate(customer_id = as.character(customer_id)) %>%
-  filter(!is.na(age)) 
+  filter(!is.na(age)) %>%str
   select(-FN, -fashion_news_frequency)
 
 customers[["Active"]][is.na(customers[["Active"]])] <- 0
@@ -45,6 +47,7 @@ customers$club_member_status <- replace(customers$club_member_status, customers$
 str(customers)
 ```
 
+
 ```{r}
 transactions <- transactions %>%
   mutate(article_id = as.character(article_id), customer_id = as.character(customer_id), t_dat = as.Date(t_dat)) %>%
@@ -53,12 +56,14 @@ transactions <- transactions %>%
 str(transactions)
 ```
 
+
 ```{r}
 ggplot(customers, aes(age))+
   geom_bar(fill = 'black')+
   theme_bw()+
   xlim(15, 80)
 ```
+
 
 ```{r}
 library(skimr)
@@ -71,12 +76,14 @@ skim(customers)
 length(unique(customers$customer_id))
 ```
 
+
 ```{r}
 young_customers <- customers %>%
   filter(age <= 39)
 
 str(young_customers)
 ```
+
 
 ```{r}
 ggplot(young_customers, aes(age))+
@@ -92,6 +99,7 @@ mature_customers <- customers %>%
 str(mature_customers)
 ```
 
+
 ```{r}
 ggplot(mature_customers, aes(age))+
   geom_bar(fill="black")+
@@ -99,9 +107,11 @@ ggplot(mature_customers, aes(age))+
   xlim(39,80)
 ```
 
+
 ```{r}
 summary(young_customers)
 ```
+
 
 ```{r}
 summary(mature_customers)
@@ -115,12 +125,12 @@ str(young_transactions)
 ```
 
 
-
 ```{r}
 mature_transactions <- inner_join(x=transactions, y=mature_customers, by = 'customer_id')
 
 str(mature_transactions)
 ```
+
 
 ```{r}
 # how many *different* items they purchased in a transaction 
@@ -132,6 +142,7 @@ young_tcount <- young_transactions %>%
 
 head(young_tcount)
 ```
+
 
 ```{r}
 young_tcount <- young_tcount %>%
@@ -153,6 +164,7 @@ head(young_transactions)
 summary(young_transactions$n_items)
 ```
 
+
 ```{r}
 ggplot(young_transactions, aes(n_items))+
   geom_boxplot()+
@@ -165,12 +177,11 @@ young_transactions %>%
   filter(t_dat == "2019-02-23", customer_id == "61da44a2758206d5701771f4315637b40c8321b511191654fb1430a6408e4dfa")
 ```
 
+
 ```{r}
 articles %>%
   filter(article_id %in% c("507909001", "501616007"))
 ```
-
-
 
 
 ```{r}
@@ -181,6 +192,7 @@ mature_tcount <- mature_transactions %>%
 
 head(mature_tcount)
 ```
+
 
 ```{r}
 mature_tcount <- mature_tcount %>%
@@ -202,11 +214,13 @@ head(mature_transactions)
 summary(mature_transactions$n_items)
 ```
 
+
 ```{r}
 ggplot(mature_transactions, aes(n_items))+
   geom_boxplot()+
   scale_x_log10()
 ```
+
 
 ```{r}
 young_transactions_n <- young_transactions %>%
@@ -215,6 +229,7 @@ young_transactions_n <- young_transactions %>%
 str(young_transactions_n)
 ```
 
+
 ```{r}
 mature_transactions_n <- mature_transactions %>%
   filter(n_items <= 15)
@@ -222,13 +237,16 @@ mature_transactions_n <- mature_transactions %>%
 str(mature_transactions_n)
 ```
 
+
 ```{r}
 summary(young_transactions_n$price)
 ```
 
+
 ```{r}
 summary(mature_transactions_n$price)
 ```
+
 
 ```{r}
 only_age <- customers %>%
@@ -237,11 +255,13 @@ only_age <- customers %>%
 head(only_age)
 ```
 
+
 ```{r}
 all_age_transactions <- inner_join(x=transactions, y=only_age, by="customer_id")
 
 str(all_age_transactions)
 ```
+
 
 ```{r}
 all_age_transactions <- all_age_transactions %>%
@@ -249,6 +269,7 @@ all_age_transactions <- all_age_transactions %>%
   
 str(all_age_transactions)
 ```
+
 
 ```{r}
 all_age_transactions <- all_age_transactions %>%
@@ -262,11 +283,13 @@ str(all_age_transactions)
 # plot(s_age ~ price, all_age_transactions)
 ```
 
+
 ```{r}
 age_price_lm <- lm(s_age ~ price, data = all_age_transactions)
 
 summary(age_price_lm)
 ```
+
 
 ```{r}
 young_article_count <- young_transactions %>%
@@ -282,6 +305,7 @@ young_article_count <- young_article_count %>%
 head(young_article_count)
 ```
 
+
 ```{r}
 mature_article_count <- mature_transactions %>%
   select(article_id) %>%
@@ -296,11 +320,13 @@ mature_article_count <- mature_article_count %>%
 head(mature_article_count)
 ```
 
+
 ```{r}
 young_unique <- unique(young_article_count$article_id)
 
 head(young_unique)
 ```
+
 
 ```{r}
 mature_unique <- unique(mature_article_count$article_id)
@@ -308,11 +334,13 @@ mature_unique <- unique(mature_article_count$article_id)
 head(mature_unique)
 ```
 
+
 ```{r}
 young_unique_items <- dplyr::setdiff(young_unique,mature_unique)
 
 head(young_unique_items)
 ```
+
 
 ```{r}
 mature_unique_items <- dplyr::setdiff(mature_unique, young_unique)
@@ -320,9 +348,11 @@ mature_unique_items <- dplyr::setdiff(mature_unique, young_unique)
 head(mature_unique_items)
 ```
 
+
 ```{r}
 str(young_unique_items)
 ```
+
 
 ```{r}
 young_u_article_count <- young_article_count %>%
@@ -332,6 +362,7 @@ young_u_article_count <- young_article_count %>%
 head(young_u_article_count, 10)
 ```
 
+
 ```{r}
 mature_u_article_count <- mature_article_count %>%
   filter(article_id %in% mature_unique_items) %>%
@@ -340,6 +371,7 @@ mature_u_article_count <- mature_article_count %>%
 head(mature_u_article_count, 10)
 ```
 
+
 ```{r}
 young_u_articles <- articles %>%
   filter(article_id %in% young_u_article_count$article_id)
@@ -347,12 +379,14 @@ young_u_articles <- articles %>%
 young_u_articles
 ```
 
+
 ```{r}
 mature_u_articles <- articles %>%
   filter(article_id %in% mature_u_article_count$article_id)
 
 mature_u_articles
 ```
+
 
 ```{r}
 young_u_article_words <- young_u_articles %>% 
@@ -366,6 +400,7 @@ young_u_article_words <- young_u_articles %>%
 head(young_u_article_words)
 ```
 
+
 ```{r}
 young_u_article_words$words <- gsub("[[:punct:]]", "", young_u_article_words$words)
 young_u_article_words$words <- gsub('[0-9]+', '', young_u_article_words$words)
@@ -373,6 +408,7 @@ young_u_article_words[[2]] <- tolower(young_u_article_words[[2]])
 
 head(young_u_article_words)
 ```
+
 
 ```{r}
 library(functional)
@@ -384,21 +420,25 @@ young_article_words_u <- sapply(young_article_words_u, Compose(unique, Curry(pas
 head(young_article_words_u)
 ```
 
+
 ```{r}
 young_words_df <- data_frame(Text = young_article_words_u)
 
 head(young_words_df, n = 20)
 ```
 
+
 ```{r}
 young_count_words <- young_words_df %>% 
                   unnest_tokens(output = word, input = Text)
 ```
 
+
 ```{r}
 young_count_words <- young_count_words %>%
   anti_join(stop_words)
 ```
+
 
 ```{r}
 young_wordcounts <- young_count_words %>% 
@@ -406,6 +446,7 @@ young_wordcounts <- young_count_words %>%
 
 head(young_wordcounts, 20)
 ```
+
 
 ```{r}
 mature_u_article_words <- mature_u_articles %>% 
@@ -419,6 +460,7 @@ mature_u_article_words <- mature_u_articles %>%
 head(mature_u_article_words)
 ```
 
+
 ```{r}
 mature_u_article_words$words <- gsub("[[:punct:]]", "", mature_u_article_words$words)
 mature_u_article_words[[2]] <- tolower(mature_u_article_words[[2]])
@@ -427,15 +469,18 @@ mature_u_article_words$words <- gsub('[0-9]+', '', mature_u_article_words$words)
 head(mature_u_article_words)
 ```
 
+
 ```{r}
 mature_article_words_u <- strsplit(mature_u_article_words$words, " ")
 
 mature_article_words_u <- sapply(mature_article_words_u, Compose(unique, Curry(paste, collapse=' ')))
 ```
 
+
 ```{r}
 head(mature_article_words_u)
 ```
+
 
 ```{r}
 mature_words_df <- data_frame(Text = mature_article_words_u)
@@ -443,15 +488,18 @@ mature_words_df <- data_frame(Text = mature_article_words_u)
 head(mature_words_df, n = 20)
 ```
 
+
 ```{r}
 mature_count_words <- mature_words_df %>% 
                   unnest_tokens(output = word, input = Text)
 ```
 
+
 ```{r}
 mature_count_words <- mature_count_words %>%
   anti_join(stop_words)
 ```
+
 
 ```{r}
 mature_wordcounts <- mature_count_words %>% 
@@ -459,6 +507,7 @@ mature_wordcounts <- mature_count_words %>%
 
 head(mature_wordcounts, 20)
 ```
+
 
 ```{r}
 library(tm)
@@ -469,29 +518,36 @@ young_cor_words_u <- Corpus(VectorSource(young_words_df))
 mature_cor_words_u <- Corpus(VectorSource(mature_words_df))
 ```
 
+
 ```{r}
 young_cor_words_u <- tm_map(young_cor_words_u, removeNumbers)
 ```
+
 
 ```{r}
 mature_cor_words_u <- tm_map(mature_cor_words_u, removeNumbers)
 ```
 
+
 ```{r}
 young_cor_words_u <- tm_map(young_cor_words_u, removeWords, stopwords('english'))
 ```
+
 
 ```{r}
 mature_cor_words_u <- tm_map(mature_cor_words_u, removeWords, stopwords('english'))
 ```
 
-```{r}
-wordcloud(young_cor_words_u, scale = c(2, 1), min.freq = 500, colors = rainbow(30))
-```
 
 ```{r}
-wordcloud(mature_cor_words_u, scale = c(2, 1), min.freq = 500, colors = rainbow(30))
+wordcloud(young_cor_words_u, scale = c(2, 1), min.freq = 600, colors = rainbow(30))
 ```
+
+
+```{r}
+wordcloud(mature_cor_words_u, scale = c(2, 1), min.freq = 300, colors = rainbow(30))
+```
+
 
 ```{r}
 young_u_wordcount <- dplyr::setdiff(young_wordcounts$word, mature_wordcounts$word)
@@ -499,11 +555,13 @@ young_u_wordcount <- dplyr::setdiff(young_wordcounts$word, mature_wordcounts$wor
 young_u_wordcount
 ```
 
+
 ```{r}
 mature_u_wordcount <- dplyr::setdiff(mature_wordcounts$word, young_wordcounts$word)
 
 mature_u_wordcount
 ```
+
 
 ```{r}
 unique_young_words <- young_wordcounts %>%
@@ -522,6 +580,7 @@ unique_mature_words <- mature_wordcounts %>%
 head(unique_mature_words)
 ```
 
+
 ```{r}
 # write.csv(unique_mature_words, "/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique_mature_words")
 # write.csv(unique_young_words, "/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/unique_young_words")
@@ -535,6 +594,7 @@ customer_remove <- customers[-customer_index, ]
 
 str(customer_sample)
 ```
+
 
 ```{r}
 customer_sample <- customer_sample %>%
@@ -551,6 +611,7 @@ ggplot(customer_sample, aes(age))+
   xlim(16,80)
 ```
 
+
 ```{r}
 all_sample_transactions <- left_join(x=customer_sample, y=all_age_transactions, by=c("customer_id", "age"))
 
@@ -565,6 +626,7 @@ young_sample <- customer_sample %>%
 str(young_sample)
 ```
 
+
 ```{r}
 mature_sample <- customer_sample %>%
   filter(age >= 40)
@@ -572,9 +634,11 @@ mature_sample <- customer_sample %>%
 str(mature_sample)
 ```
 
+
 ```{r}
 summary(young_sample$age)
 ```
+
 
 ```{r}
 summary(mature_sample$age)
@@ -593,6 +657,7 @@ all_article_words <- articles %>%
 head(all_article_words)
 ```
 
+
 ```{r}
 all_article_words$words <- gsub("[[:punct:]]", "", all_article_words$words)
 all_article_words[[2]] <- tolower(all_article_words[[2]])
@@ -601,14 +666,16 @@ all_article_words$words <- gsub('[0-9]+', '', all_article_words$words)
 head(all_article_words)
 ```
 
+
 ```{r}
 all_sample_transactions <- left_join(x=all_sample_transactions, y=all_article_words, by="article_id")
 
 str(all_sample_transactions)
 ```
 
+
 ```{r}
-# write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
+write.csv(all_sample_transactions, '/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_sample_transactions')
 ```
 
 
@@ -618,6 +685,7 @@ young_sample_trans <- all_sample_transactions %>%
 
 str(young_sample_trans)
 ```
+
 
 ```{r}
 young_sample_words_u <- strsplit(young_sample_trans$words, " ")
@@ -632,15 +700,18 @@ young_sample_words_df <- data_frame(Text = young_sample_words_u)
 head(young_sample_words_df, n = 20)
 ```
 
+
 ```{r}
 young_sample_count_words <- young_sample_words_df %>% 
                   unnest_tokens(output = word, input = Text)
 ```
 
+
 ```{r}
 young_sample_count_words <- young_sample_count_words %>%
   anti_join(stop_words)
 ```
+
 
 ```{r}
 young_sample_wordcounts <- young_sample_count_words %>% 
@@ -649,13 +720,6 @@ young_sample_wordcounts <- young_sample_count_words %>%
 head(young_sample_wordcounts, 20)
 ```
 
-```{r}
-# young_sample_cor <- Corpus(VectorSource(young_sample_count_words$Text))
-```
-
-```{r}
-# wordcloud(young_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
-```
 
 ```{r}
 mature_sample_trans <- all_sample_transactions %>%
@@ -664,11 +728,13 @@ mature_sample_trans <- all_sample_transactions %>%
 str(mature_sample_trans)
 ```
 
+
 ```{r}
 mature_sample_words_u <- strsplit(mature_sample_trans$words, " ")
 
 mature_sample_words_u <- sapply(mature_sample_words_u, Compose(unique, Curry(paste, collapse=' ')))
 ```
+
 
 ```{r}
 mature_sample_words_df <- data_frame(Text = mature_sample_trans$words)
@@ -676,10 +742,12 @@ mature_sample_words_df <- data_frame(Text = mature_sample_trans$words)
 head(mature_sample_words_df, n = 20)
 ```
 
+
 ```{r}
 mature_sample_count_words <- mature_sample_words_df %>% 
                   unnest_tokens(output = word, input = Text)
 ```
+
 
 ```{r}
 mature_sample_count_words <- mature_sample_count_words %>%
@@ -688,6 +756,7 @@ mature_sample_count_words <- mature_sample_count_words %>%
 head(mature_sample_count_words)
 ```
 
+
 ```{r}
 mature_sample_wordcounts <- mature_sample_count_words %>% 
   count(word, sort = TRUE)
@@ -695,14 +764,16 @@ mature_sample_wordcounts <- mature_sample_count_words %>%
 head(mature_sample_wordcounts)
 ```
 
+
 ```{r}
 mature_sample_uwords <- dplyr::setdiff(mature_sample_count_words, young_sample_count_words)
 
 mature_sample_uwords <- mature_sample_uwords %>%
   filter(!is.na(word))
 
-head(mature_sample_uwords, 20)
+mature_sample_uwords
 ```
+
 
 ```{r}
 young_sample_uwords <- dplyr::setdiff(young_sample_count_words, mature_sample_count_words)
@@ -710,12 +781,7 @@ young_sample_uwords <- dplyr::setdiff(young_sample_count_words, mature_sample_co
 young_sample_uwords <- young_sample_uwords %>%
   filter(!is.na(word))
 
-head(young_sample_uwords, 20)
-```
-
-```{r}
-mature_sample_wordcounts %>%
-  filter(word %in% mature_sample_uwords)
+young_sample_uwords
 ```
 
 
@@ -723,25 +789,31 @@ mature_sample_wordcounts %>%
 # young_sample_cor <- Corpus(VectorSource(young_sample_words_df))
 ```
 
+
 ```{r}
 # mature_sample_cor <- Corpus(VectorSource(mature_sample_words_df))
 ```
+
 
 ```{r}
 # young_sample_cor <- tm_map(young_sample_cor, removeWords, stopwords('english'))
 ```
 
+
 ```{r}
 # mature_sample_cor <- tm_map(mature_sample_cor, removeWords, stopwords('english'))
 ```
+
 
 ```{r}
 # wordcloud(young_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
 ```
 
+
 ```{r}
 # wordcloud(mature_sample_cor, scale = c(2, 1), min.freq = 800000, colors = rainbow(30))
 ```
+
 
 ```{r}
 graphic_appearance <- articles %>%
@@ -750,11 +822,13 @@ graphic_appearance <- articles %>%
 head(graphic_appearance)
 ```
 
+
 ```{r}
 all_sample_transactions <- left_join(x=all_sample_transactions, y=graphic_appearance, by="article_id")
 
 str(all_sample_transactions)
 ```
+
 
 ```{r}
 all_sample_transactions %>%
@@ -763,6 +837,7 @@ all_sample_transactions %>%
   arrange(desc(n))
 ```
 
+
 ```{r}
 library(moderndive)
 age_graphic_lm <- lm(age ~ graphical_appearance_name, data = all_sample_transactions)
@@ -770,6 +845,7 @@ age_graphic_lm <- lm(age ~ graphical_appearance_name, data = all_sample_transact
 get_regression_table(age_graphic_lm)
 get_regression_summaries(age_graphic_lm)
 ```
+
 
 ```{r}
 all_sample_transactions %>%
@@ -786,7 +862,8 @@ ggplot() +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
- #### "Front print" mature goes up young goes down, same with "mixed solid/pattern" and "placement print"
+#### "Front print" mature goes up young goes down, same with "mixed solid/pattern" and "placement print"
+
 
 ```{r}
 age_date_lm <- lm(age ~ t_dat, data = all_sample_transactions)
@@ -803,6 +880,7 @@ get_regression_table(age_price_lm)
 get_regression_summaries(age_price_lm)
 ```
 
+
 ```{r}
 age_active_lm <- lm(age ~ Active, data = all_sample_transactions)
 
@@ -810,30 +888,20 @@ get_regression_table(age_active_lm)
 get_regression_summaries(age_active_lm)
 ```
 
-```{r}
-age_post_lm <- lm(age ~ postal_code, data = all_sample_transactions)
-
-get_regression_table(age_post_lm)
-get_regression_summaries(age_post_lm)
-```
 
 ```{r}
-customers <- customers %>%
-  mutate(club_member_status = ifelse(club_member_status == "ACTIVE", 1, 0))
+age_club_lm <- lm(age ~ club_member_status, data = all_sample_transactions)
 
-customers[["club_member_status"]][is.na(customers[["club_member_status"]])] <- 0
+get_regression_table(age_club_lm)
+get_regression_summaries(age_club_lm)
 ```
 
 
 ```{r}
-customer_active_club_lm <- lm(Active ~ club_member_status, data = customers)
+age_channel_lm <- lm(age ~ sales_channel_id, data = all_sample_transactions)
 
-get_regression_table(customer_active_club_lm)
-get_regression_summaries(customer_active_club_lm)
+get_regression_table(age_channel_lm)
+get_regression_summaries(age_channel_lm)
 ```
 
-```{r}
-ggplot(customers, aes(Active, club_member_status))+
-  geom_point()
-```
 
