@@ -965,7 +965,3 @@ get_regression_summaries(age_channel_lm)
 ```
 
 
-```{r}
-
-```
-
