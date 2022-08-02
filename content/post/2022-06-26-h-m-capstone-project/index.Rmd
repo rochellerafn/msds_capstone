@@ -1,5 +1,5 @@
 ---
-title: H&M Capstone Project
+title: "Capstone Proposal" 
 author: Rochelle
 date: '2022-06-21'
 slug: h-and-m-capstone-project
