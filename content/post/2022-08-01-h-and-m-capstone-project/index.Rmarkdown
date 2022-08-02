@@ -134,3 +134,4 @@ summary(young_transactions$price)
 summary(mature_transactions$n_items)
 summary(young_transactions$n_items)
 ```
+
