@@ -918,7 +918,9 @@ ggplot() +
   geom_bar() +
   scale_fill_hue(direction = 1) +
   scale_y_log10()+
-  theme_minimal() +
+  theme(panel.background = element_blank(),
+        plot.background = element_blank(),
+        panel.grid = element_blank()) +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
@@ -963,5 +965,7 @@ age_channel_lm <- lm(age ~ sales_channel_id, data = all_sample_transactions)
 get_regression_table(age_channel_lm)
 get_regression_summaries(age_channel_lm)
 ```
+
+
 
 
