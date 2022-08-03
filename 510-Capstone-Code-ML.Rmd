@@ -5,7 +5,7 @@ date: "2022-07-26"
 output: html_document
 ---
 
-```{r, warning=FALSE, message=FALSE}
+```{r, setup, warning=FALSE, message=FALSE}
 
 library(tidyverse)
 library(tidytext)
@@ -169,6 +169,22 @@ importance <- varImp(sample_m, scale=TRUE)
 plot(importance)
 ```
 
+```{r}
+feature_importance_lm <- lm(age ~ Active + strappy + club_member_status_ACTIVE + price, data = all_sample_trans_features)
+
+get_regression_table(feature_importance_lm)
+get_regression_summaries(feature_importance_lm)
+```
+
+
+```{r}
+i_feature_importance_lm <- lm(age ~ Active * strappy * club_member_status_ACTIVE * price, data = all_sample_trans_features)
+
+get_regression_table(i_feature_importance_lm)
+get_regression_summaries(i_feature_importance_lm)
+```
+
+
 
 ```{r}
 pr_all_sample_feature <- prcomp(x = select(all_sample_trans_features,-age), scale = T, center = T)
@@ -206,12 +222,12 @@ prc_sample_features %>%
 
 
 ```{r}
-fit <- train(age ~ .,
+sample_m2 <- train(age ~ .,
              data = prc_sample_features, 
              method = "naive_bayes",
              metric = "Kappa",
              trControl = trainControl(method = "cv"))
 
-confusionMatrix(predict(fit, prc_sample_features),factor(prc_sample_features$age))
+confusionMatrix(predict(sample_m2, prc_sample_features),factor(prc_sample_features$age))
 ```
 
