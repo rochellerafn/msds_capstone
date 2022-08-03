@@ -26,12 +26,15 @@ I started this project with a very different question in mind. However. the very
 ```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
 library(ggplot2)
 customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv') 
+```
 
+```{r, warning=FALSE, message=FALSE}
 ggplot(customers, aes(age))+
   geom_bar(fill = 'black')+
   theme_bw()+
   xlim(15, 80)
 ```
+
 
 My immediate thought was that it is a group of ‘young at heart’ and fashion conscious 50 year olds. Then, as I looked a little closer at the distribution I did the math and realized the peaks moved almost identically within about 30 years of each other. That logically seems pretty close to a parent-child age gap. This lead me to the question, does the age even matter? If the 50 year olds are actually purchasing for their children the items would be virtually the same.
 
