@@ -23,12 +23,14 @@ The importance of these questions lies within the realm of demographics and mark
 
 I started this project with a very different question in mind. However. the very first thing I checked in the data was the age distribution. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 50 years old. I remember thinking, “What?? That is so bizarre.” Twice as many 50 somethings as 30 somethings seemed just, wrong. 
 
-```{r setup, include=FALSE, warning=FALSE, echo=FALSE}
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+  
 library(ggplot2)
 customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv') 
 ```
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
 ggplot(customers, aes(age))+
   geom_bar(fill = 'black')+
   theme_bw()+
@@ -84,7 +86,7 @@ To move forward with the theme of unique items I decided to take those unique it
 ![](images/young_wordcloud_u.jpeg)
 
 ### Young Top Word Count 
-```{r}
+```{r, echo=FALSE}
 library(tidyverse)
 
 young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts') %>%
