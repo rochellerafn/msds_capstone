@@ -50,16 +50,11 @@ Given the question and data that I have, I decided to make age the outcome varia
 I started with, what are the most popular items in each age group? This might show me if there are any differences. As we can see here, the top 3 items are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate a generational difference. However, the more I dug, the less significant this difference became.
 
 ### Mature Top Items
-![](images/0706016001.jpg)
-![](images/0706016002.jpg)
-![](images/0372860001.jpg)
-![](images/0610776105.jpg)
+
 
 ### Young Top Items
-![](images/0706016001.jpg)
-![](images/0706016002.jpg)
-![](images/0372860001.jpg)
-![](images/0759871002.jpg)
+
+
 
 
 ### What are the most popular unique items in each age group?
