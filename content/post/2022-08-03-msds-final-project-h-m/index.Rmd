@@ -1,15 +1,14 @@
 ---
-title: "H&M Capstone Project"
-author: "Rochelle Rafn"
-date: '2022-08-01'
-slug: h-and-m-capstone-project
-output: html_document
+title: MSDS Final Project - H&M
+author: Rochelle Rafn
+date: '2022-08-03'
+slug: msds-final-project-h-m
 categories: []
 tags: []
 ---
 
-```{r, setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 # 50 year olds shopping at H&M? What’s that all about? 
@@ -38,7 +37,6 @@ ggplot(customers, aes(age))+
   xlim(15, 80)
 ```
 
-
 My immediate thought was that it is a group of ‘young at heart’ and fashion conscious 50 year olds. Then, as I looked a little closer at the distribution I did the math and realized the peaks moved almost identically within about 30 years of each other. That logically seems pretty close to a parent-child age gap. This lead me to the question, does the age even matter? If the 50 year olds are actually purchasing for their children the items would be virtually the same.
 
 
@@ -58,9 +56,6 @@ I started with, what are the most popular items in each age group? This might sh
 
 ### Young Top Items
 
-
-
-
 ### What are the most popular unique items in each age group?
 I reduced the items even further by figuring out what each group purchased that the other did not. 
 
@@ -78,10 +73,9 @@ On the surface it seemed that the younger group was purchasing more baby clothes
 To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words of these items. As I had guessed, the unique items really did not hold any significance due to the small amount. Also, even though the items are different, there are still many purchases by both groups that have the same descriptive words despite the specific item differing.
 
 ### Mature Top Words
-![](images/mature_wordcloud.jpeg)
 
 ### Young Top Words
-![](images/young_wordcloud_u.jpeg)
+
 
 ### Young Top Word Count 
 ```{r}
@@ -93,6 +87,7 @@ young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personal
 head(young_wordcounts, 10)
 ```
 
+
 ### Mature Top Word Count
 ```{r}
 mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_wordcounts') %>%
@@ -100,6 +95,7 @@ mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-persona
 
 head(mature_wordcounts, 10)
 ```
+
 
 ## What about percentage of descriptive words?
 Knowing that there are about twice as many in the young group as the mature group I thought I would go one step further and check proportion of the popularity. Still appears that there are no major and obvious differences.
@@ -112,7 +108,6 @@ head(all_graphic_pct)
 
 ### Is there a noticeable difference in graphic appearance for each age group?
 When analyzing the number of items with certain graphical appearances it is almost eerie how mirror like the purchasing habits are. Besides two variables, they move at extremely similar rates.
-![](images/Rplot.jpeg)
 
 
 ### What is the summary of price per age group?
@@ -130,4 +125,3 @@ summary(young_transactions$price)
 summary(mature_transactions$n_items)
 summary(young_transactions$n_items)
 ```
-

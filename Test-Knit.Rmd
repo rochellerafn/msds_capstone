@@ -1,0 +1,24 @@
+---
+title: "Test"
+author: "Rochelle Rafn"
+date: "2022-08-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+
+test <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts')
+```
+
+
+```{r}
+head(test)
+```
+
