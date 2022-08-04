@@ -1,8 +1,8 @@
 ---
-title: MSDS Final Project - H&M
-author: Rochelle Rafn
-date: '2022-08-03'
-slug: msds-final-project-h-m
+title: "MSDS Final Project - H&M"
+author: "Rochelle Rafn"
+date: "2022-08-03"
+slug: "msds-final-project-h-m"
 categories: []
 tags: []
 ---
