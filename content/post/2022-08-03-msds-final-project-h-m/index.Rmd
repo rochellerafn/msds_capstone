@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ## Question
 
-For those who are unfamiliar with H&M, it’s a fast fashion retailer known for its affordable, youthful and trendy styles. My whole life I have been into fashion. Who knows? Maybe when I’m 50 I will still be shopping at H&M or similar stores, like Zara. However, even in my 30s, If I venture into H&M I feel noticeably older than everyone else there. So, where are these 50 year old and who are they? This lead me to questioning, does age actually matter for perceivably ‘younger’ and trendy stores like H&M? Are the different generational age groups actually purchasing different things? Spoiler alert, they are not. So what does this mean? Who are these 50 year olds and why are their purchase habits similar to the 20 somethings? 
+For those who are unfamiliar with H&M, it’s a fast fashion retailer known for its affordable, youthful and trendy styles. My whole life I have been into fashion. Who knows? Maybe when I’m 50 I will still be shopping at H&M or similar stores, like Zara. However, even in my 30s, if I venture into H&M I feel noticeably older than everyone else there. So, where are these 50 year old and who are they? This lead me to questioning, does age actually matter for perceivably ‘younger’ and trendy stores like H&M? Are the different generational age groups actually purchasing different things? Spoiler alert, they are not. So what does this mean? Who are these 50 year olds and why are their purchase habits similar to the 20 somethings? 
 
 
 ## Context
