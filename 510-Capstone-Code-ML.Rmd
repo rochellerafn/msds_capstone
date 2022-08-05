@@ -152,7 +152,6 @@ get_regression_summaries(front_print_lm)
 
 
 ```{r}
-
 sample_index <- createDataPartition(all_sample_trans_features$age, p = 0.8, list = FALSE)
 sample_tr <- all_sample_trans_features[ sample_index, ]
 sample_te <- all_sample_trans_features[-sample_index, ]
@@ -227,14 +226,37 @@ head(all_sample_trans_features_ml)
 
 
 ```{r}
-ctrl <- trainControl(method = "cv", number=3)
+all_sample_trans_features_ml <- dummy_cols(all_sample_trans_features_ml, select_columns = "club_member_status")
 
-fit <- train(province ~ .,
-             data = train, 
+all_sample_trans_features_ml <- all_sample_trans_features_ml %>%
+  select(-club_member_status)
+
+head(all_sample_trans_features_ml)
+```
+
+
+
+```{r}
+library(gbm)
+
+sample_index_ml <- createDataPartition(all_sample_trans_features_ml$age_group, p = 0.8, list = FALSE)
+sample_tr_ml <- all_sample_trans_features_ml[ sample_index_ml, ]
+sample_te_ml <- all_sample_trans_features_ml[-sample_index_ml, ]
+
+
+ml_ctrl <- trainControl(method = "cv", number=3)
+
+ml_fit <- train(age_group ~ .,
+             data = sample_tr_ml, 
              method = "gbm",
              verbose=FALSE,
-             trControl = ctrl)
+             trControl = ml_ctrl)
 
-fit
+ml_fit
+```
+
+
+```{r}
+confusionMatrix(factor(predict(ml_fit, newdata=sample_te_ml)),factor(sample_te_ml$age_group))
 ```
 
