@@ -1,22 +1,21 @@
 ---
-title: "H&M Capstone Project"
+title: "MSDS Final Project - H&M"
 author: "Rochelle Rafn"
-date: '2022-08-01'
-slug: h-and-m-capstone-project
-output: html_document
+date: "2022-08-03"
+slug: "msds-final-project-h-m"
 categories: []
 tags: []
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, error = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 ```
 
 # 50 year olds shopping at H&M? What’s that all about? 
 
 ## Question
 
-For those who are unfamiliar with H&M, it’s a fast fashion retailer known for its affordable, youthful and trendy styles. My whole life I have been into fashion. Who knows? Maybe when I’m 50 I will still be shopping at H&M or similar stores, like Zara. However, even in my 30s, If I venture into H&M I feel noticeably older than everyone else there. So, where are these 50 year old and who are they? This lead me to questioning, does age actually matter for perceivably ‘younger’ and trendy stores like H&M? Are the different generational age groups actually purchasing different things? Spoiler alert, they are not. So what does this mean? Who are these 50 year olds and why are their purchase habits similar to the 20 somethings? 
+For those who are unfamiliar with H&M, it’s a fast fashion retailer known for its affordable, youthful and trendy styles. My whole life I have been into fashion. Who knows? Maybe when I’m 50 I will still be shopping at H&M or similar stores, like Zara. However, even in my 30s, if I venture into H&M I feel noticeably older than everyone else there. So, where are these 50 year old and who are they? This lead me to questioning, does age actually matter for perceivably ‘younger’ and trendy stores like H&M? Are the different generational age groups actually purchasing different things? Spoiler alert, they are not. So what does this mean? Who are these 50 year olds and why are their purchase habits similar to the 20 somethings? 
 
 
 ## Context
@@ -49,9 +48,9 @@ The data set I’m analyzing comes directly from H&M spanning 1.3 million custom
 
 ## Exploratory Data Analysis
 
-Given the question and data that I have, I decided to make age the outcome variable. How can we predict the difference between the young and mature generations? To start, I split the data into the two age groups, “young” (<=39) and “mature” (>=40). This is where I would start my exploratory analysis to see what differences I could find. 
+Given the question and data that I have, I decided to make age the outcome variable. How can we predict the difference between the young and mature generations? Or can we at all? To start, I split the data into the two age groups, “young” (<=39) and “mature” (>=40). This is where I would start my exploratory analysis to see what differences I could find. 
 
-I started with, what are the most popular items in each age group? This might show me if there are any differences. As we can see here, the top 3 items are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate a generational difference. However, the more I dug, the less significant this difference became.
+I began with the most obvious, what are the most popular items in each age group? This might show me if there are any differences. As we can see here, the top 3 items for both age groups are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate a generational difference. However, the more I dug, the less significant this difference became.
 
 ### Mature Top Items
 ![](images/MATURE_top_items.jpg)

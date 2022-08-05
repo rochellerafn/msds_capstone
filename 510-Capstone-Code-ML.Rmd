@@ -5,8 +5,11 @@ date: "2022-07-26"
 output: html_document
 ---
 
-```{r, warning=FALSE, message=FALSE}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
 
+```{r}
 library(tidyverse)
 library(tidytext)
 library(ggplot2)
@@ -15,7 +18,6 @@ library(devtools)
 library(visdat)
 library(dplyr)
 library(caret)
-library(naivebayes)
 library(SnowballC)
   data(stop_words)
 
@@ -63,7 +65,7 @@ ggplot(aes(age, n_items))+
 ```
 
 ```{r}
-str(all_sample_trans_count)
+str(all_sample_trans)
 ```
 
 ```{r}
@@ -93,45 +95,20 @@ get_regression_summaries(more_than_10)
 ```{r}
 all_sample_trans_features <- all_sample_trans_count %>%
   mutate(t_dat = as.Date(t_dat)) %>%
-  mutate(strappy = as.integer(str_detect(words,"[Ss]trappy | strap"))) %>% 
-  mutate(cropped = as.integer(str_detect(words,"[Cc]ropped | crop"))) %>%
-  mutate(fitted = as.integer(str_detect(words,"[Ff]itted"))) %>%
-  mutate(front_print = as.integer(str_detect(words,"[Ff]ront | [Pp]rint"))) %>%
-  mutate(mixed_solid_p = as.integer(str_detect(words,"[Mm]ixed | [Ss]olid | [Pp]rint"))) %>%
-  mutate(placement_p = as.integer(str_detect(words,"[Pp]lacement | [Pp]rint"))) %>%
-  mutate(underwear = as.integer(str_detect(words,"[Uu]nderwear"))) %>%
-  mutate(bandeau = as.integer(str_detect(words,"[Bb]andeau"))) %>%
-  mutate(men = as.integer(str_detect(words,"[Mm]en"))) %>%
-  mutate(dusty = as.integer(str_detect(words,"[Dd]usty"))) %>%
-  select(-words, -s_age, -X, -customer_id, -age_group, -t_dat, -postal_code, -article_id)
+  mutate(strappy = as.factor(str_detect(words,"[Ss]trappy | strap"))) %>% 
+  mutate(cropped = as.factor(str_detect(words,"[Cc]ropped | crop"))) %>%
+  mutate(fitted = as.factor(str_detect(words,"[Ff]itted"))) %>%
+  mutate(front_print = as.factor(str_detect(words,"[Ff]ront | [Pp]rint"))) %>%
+  mutate(mixed_solid_p = as.factor(str_detect(words,"[Mm]ixed | [Ss]olid | [Pp]rint"))) %>%
+  mutate(placement_p = as.factor(str_detect(words,"[Pp]lacement | [Pp]rint"))) %>%
+  mutate(underwear = as.factor(str_detect(words,"[Uu]nderwear"))) %>%
+  mutate(bandeau = as.factor(str_detect(words,"[Bb]andeau"))) %>%
+  mutate(triangular = as.factor(str_detect(words,"[Tt]riangular"))) %>%
+  mutate(men = as.factor(str_detect(words,"[Mm]en"))) %>%
+  mutate(article_id = as.character(article_id)) %>%
+  select(-words, -s_age, -X)
 
 head(all_sample_trans_features)
-```
-
-
-```{r}
-library(fastDummies)
-
-all_sample_trans_features <- dummy_cols(all_sample_trans_features, select_columns = "club_member_status")
-
-head(all_sample_trans_features)
-```
-
-
-```{r}
-all_sample_trans_features <- all_sample_trans_features %>%
-  select(-club_member_status)
-
-head(all_sample_trans_features)
-```
-
-
-
-```{r}
-n_items_lm <- lm(age ~ n_items, data = all_sample_trans_features) 
-
-get_regression_table(n_items_lm)
-get_regression_summaries(n_items_lm)
 ```
 
 
@@ -140,6 +117,14 @@ strappy_crop_lm <- lm(age ~ strappy * cropped, data = all_sample_trans_features)
 
 get_regression_table(strappy_crop_lm)
 get_regression_summaries(strappy_crop_lm)
+```
+
+ 
+```{r}
+n_items_lm <- lm(age ~ n_items, data = all_sample_trans_features) 
+
+get_regression_table(n_items_lm)
+get_regression_summaries(n_items_lm)
 ```
 
 
@@ -152,11 +137,10 @@ get_regression_summaries(front_print_lm)
 
 
 ```{r}
-
 sample_index <- createDataPartition(all_sample_trans_features$age, p = 0.8, list = FALSE)
+
 sample_tr <- all_sample_trans_features[ sample_index, ]
 sample_te <- all_sample_trans_features[-sample_index, ]
-
 
 control <- trainControl(method="repeatedcv", number=5, repeats=3)
 
@@ -169,15 +153,32 @@ importance <- varImp(sample_m, scale=TRUE)
 plot(importance)
 ```
 
+```{r}
+feature_importance_lm <- lm(age ~ Active + strappy + club_member_status_ACTIVE + price, data = all_sample_trans_features)
+
+get_regression_table(feature_importance_lm)
+get_regression_summaries(feature_importance_lm)
+```
+
+ 
+```{r}
+i_feature_importance_lm <- lm(age ~ Active * strappy * club_member_status_ACTIVE * price, data = all_sample_trans_features)
+
+get_regression_table(i_feature_importance_lm)
+get_regression_summaries(i_feature_importance_lm)
+```
+
 
 ```{r}
 pr_all_sample_feature <- prcomp(x = select(all_sample_trans_features,-age), scale = T, center = T)
 summary(pr_all_sample_feature)
 ```
 
+
 ```{r}
 screeplot(pr_all_sample_feature, type = "lines")
 ```
+
 
 ```{r}
 pr_all_sample_feature$rotation
@@ -191,6 +192,7 @@ prc_sample_features <- bind_cols(select(all_sample_trans_features,age),as.data.f
   rename("Multiple-Items" = PC2) %>% 
   rename("Commando" = PC3) %>% 
   rename("Front-Mixed-Print" = PC4)
+
 head(prc_sample_features, 20)
 ```
 
@@ -206,13 +208,13 @@ prc_sample_features %>%
 
 
 ```{r}
-fit <- train(age ~ .,
+sample_m2 <- train(age ~ .,
              data = prc_sample_features, 
              method = "naive_bayes",
              metric = "Kappa",
              trControl = trainControl(method = "cv"))
 
-confusionMatrix(predict(fit, prc_sample_features),factor(prc_sample_features$age))
+confusionMatrix(predict(sample_m2, prc_sample_features),factor(prc_sample_features$age))
 ```
 
 

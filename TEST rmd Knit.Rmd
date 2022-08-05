@@ -1,11 +1,8 @@
 ---
-title: "H&M Capstone Project"
+title: "MSDS Capstone Project - H&M"
 author: "Rochelle Rafn"
-date: '2022-08-01'
-slug: h-and-m-capstone-project
+date: "2022-08-04"
 output: html_document
-categories: []
-tags: []
 ---
 
 ```{r setup, include=FALSE}
@@ -54,10 +51,10 @@ Given the question and data that I have, I decided to make age the outcome varia
 I started with, what are the most popular items in each age group? This might show me if there are any differences. As we can see here, the top 3 items are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate a generational difference. However, the more I dug, the less significant this difference became.
 
 ### Mature Top Items
-![](images/MATURE_top_items.jpg)
+![](/./TEST rmd Knit_files/MATURE_top_items.jpg)
 
 ### Young Top Items
-![](images/YOUNG_top_items.jpg)
+
 
 
 
@@ -101,7 +98,6 @@ mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-persona
 head(mature_wordcounts, 10)
 ```
 
-
 ## What about percentage of descriptive words?
 Knowing that there are about twice as many in the young group as the mature group I thought I would go one step further and check proportion of the popularity. Still appears that there are no major and obvious differences.
 ```{r}
@@ -113,7 +109,7 @@ head(all_graphic_pct)
 
 ### Is there a noticeable difference in graphic appearance for each age group?
 When analyzing the number of items with certain graphical appearances it is almost eerie how mirror like the purchasing habits are. Besides two variables, they move at extremely similar rates.
-
+![](images/Rplot.jpeg)
 
 
 ### What is the summary of price per age group?
@@ -131,4 +127,3 @@ summary(young_transactions$price)
 summary(mature_transactions$n_items)
 summary(young_transactions$n_items)
 ```
-
