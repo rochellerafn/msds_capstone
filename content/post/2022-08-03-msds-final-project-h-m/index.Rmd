@@ -76,12 +76,6 @@ I started to get a little excited again when I found some interesting difference
 ### What are the top descriptive words for the unique items in each age group?
 To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words of these items. As I had guessed, the unique items really did not hold any significance due to the small amount. Also, even though the items are different, there are still many purchases by both groups that have the same descriptive words despite the specific item differing.
 
-### Mature Top Words
-
-
-### Young Top Words
-
-
 ### Young Top Word Count 
 ```{r}
 library(tidyverse)
@@ -99,6 +93,12 @@ mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-persona
 
 head(mature_wordcounts, 10)
 ```
+
+### Mature Top Words
+
+
+### Young Top Words
+
 
 
 ## What about percentage of descriptive words?
