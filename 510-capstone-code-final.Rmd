@@ -5,8 +5,8 @@ date: '2022-07-24'
 output: html_document
 ---
 
-```{r setup, include=FALSE, warning=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 library(tidyverse)
 library(tidytext)
@@ -226,7 +226,6 @@ ggplot(mature_transactions, aes(n_items))+
   geom_boxplot()+
   scale_x_log10()
 ```
-
 
 ```{r}
 young_transactions_n <- young_transactions %>%
