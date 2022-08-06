@@ -260,3 +260,45 @@ ml_fit
 confusionMatrix(factor(predict(ml_fit, newdata=sample_te_ml)),factor(sample_te_ml$age_group))
 ```
 
+
+```{r}
+table(sample_tr_ml$age_group)
+```
+
+
+```{r}
+(2768856)/(2768856+4828076)
+```
+
+
+```{r}
+glm_fit <- train(age_group ~ .,
+             data = sample_tr_ml, 
+             trControl = ml_ctrl,
+             method = "glm",
+             family = "binomial")
+
+odds_ratio <- exp(coef(glm_fit$finalModel))
+data.frame(name = names(odds_ratio), odds_ratio = odds_ratio) %>%  
+  arrange(desc(odds_ratio)) %>% 
+  head(10)
+```
+
+
+```{r}
+sample_te_ml <- sample_te_ml %>%
+  mutate(age_group = ifelse(age_group == "mature", 1, 0))
+
+head(sample_te_ml)
+```
+
+
+```{r}
+glm_prob <- predict(glm_fit, newdata=sample_te_ml)
+glm_pred <- ifelse(glm_prob > 0.5, 1, 0)
+
+confusionMatrix(glm_pred, sample_te_ml$age_group)
+```
+
+
+
