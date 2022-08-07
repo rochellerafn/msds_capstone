@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.7)  7 AUG 2022 01:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.7)  7 AUG 2022 01:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -408,20 +408,20 @@ Package pdftex.def Info: TEST-rmd-Knit_files/figure-latex/unnamed-chunk-1-1.pdf 
 
 {/Users/rochellerafn/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 
-LaTeX Warning: File `images/MATURE_top_items.jpg' not found on input line 161.
+LaTeX Warning: File `/./TEST rmd Knit_files/MATURE_top_items.jpg' not found on input line 161.
 
 
-! Package pdftex.def Error: File `images/MATURE_top_items.jpg' not found: using draft setting.
+! Package pdftex.def Error: File `/./TEST rmd Knit_files/MATURE_top_items.jpg' not found: using draft setting.
 
 See the pdftex.def package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.161 ...ludegraphics{images/MATURE_top_items.jpg}
+l.161 ...TEST rmd Knit_files/MATURE_top_items.jpg}
                                                    
 Here is how much of TeX's memory you used:
  10479 strings out of 479983
- 165420 string characters out of 5887131
+ 165934 string characters out of 5887131
  463797 words of memory out of 5000000
  28499 multiletter control sequences out of 15000+600000
  502513 words of font info for 51 fonts, out of 8000000 for 9000

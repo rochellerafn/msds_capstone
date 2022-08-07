@@ -11,6 +11,7 @@ slug: "test-rmd-knit"
 ```{r setup, include=FALSE}
 options(tinytex.verbose = TRUE)
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(dplyr)
 ```
 
 # 50 year olds shopping at H&M? What’s that all about? 
@@ -55,10 +56,10 @@ Given the question and data that I have, I decided to make age, or age group, th
 I began with the most obvious, what are the most popular items in each age group? Hoping this might show me any key differences. As we can see here, the top 3 items for both age groups are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate an intuitive generational difference. Mature customers purchased a basic t-shirt, where the young customers purchased a "strappy cropped" top. However, the more I dug, the less significant this difference became.
 
 ### Mature Top Items
-![](images/MATURE_top_items.jpg)
+![](/./TEST rmd Knit_files/MATURE_top_items.jpg)
 
 ### Young Top Items
-![](images/YOUNG_top_items.jpg)
+![](/./TEST rmd Knit_files/YOUNG_top_items.jpg)
 
 
 
@@ -66,10 +67,10 @@ I began with the most obvious, what are the most popular items in each age group
 From the top items per group, I filtered down even further. I chose to compare the purchases between the two groups to find unique items. What items did the young purchase that the mature did not, and vice versa?   
 
 ### Mature Unique Items
-![](images/MATURE_unique_items.jpg)
+![](/./TEST rmd Knit_files/MATURE_unique_items.jpg)
 
 ### Young Unique Items
-![](images/YOUNG_unique_items.jpg)
+![](/./TEST rmd Knit_files/YOUNG_unique_items.jpg)
 
 
 I started to get a little excited again when I found some interesting differences between the two groups. In the top items for the young group there were several baby items. But then the mature group had primarily items that would be appropriate for an adult child. What if each group potentially purchases for themselves and their children. For the mature it would make sense becaue they now have adult children, meaning they would have no need to purchase baby clothes. However, when I pulled the counts for these top items each was only purchased at most 86 times out of more than 21million items purchased. Unfortunately the math here is not significant enough to consider.
