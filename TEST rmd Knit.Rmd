@@ -151,9 +151,21 @@ Here is an interesting visualization to really let the eerie similarity sink in.
 ## Modeling this information
 After all of this analysis I took everything that I found and ran simple linear regression models to see if I could find any relationships. Here are the features and results...
 
+![](images/2022 - MSDS Capstone Update - K.017.jpeg)
 
+Everything had an R-Squared of virtually zero. This means there is no relationship regarding any of these features. I did continue to attempt more machine learning methods by using the unsupervised principal component analysis to see if it could find anything. It did create some groupings, but still, nothiing significant enough to be able to predict age or age group.
 
+## What does this mean and why is it important?
+The most important takeaway from this is that, yes, age does matter... however, you need to know who they are buying for. I find it highly unlikely that 52 year old women are purchasing exactly the same clothing items as the 20 year olds to wear for themselves. For some reason strappy crop tops just don't seem to fit for that demographic. Who knows? I could be wrong. Although, I do believe that the most likely explanation for all of this is my initial theory. The 50 year olds purchasing identical clothes as the 20 year olds are purchasing *for* the 20 year olds. 
 
-## What now? What does this mean and why is it important?
+## What next? 
+The biggest thing H&M can do is recognize that they are not marketing to 50 years olds as a new target segment, for themselves. Marketing to a 50 year old purchasing for herself and one purchasing for an adult child is a very different objective. My recommendations for H&M are to lean into the idea that they are frequent shoppers looking for gifts. 
 
+### Customer Account Connections
+We all know social media has completely changed how people interact and connect. So, why not integrate the shopping experience even more? We're already seeing ads in our feeds based on our web browsing history. But, what if in H&M's own website they allow customers to connect their accounts with friends and family? They can identify and establish connections with other accounts to share desired items, birthdays, anniversaries, graduations and other important dates. 
+
+### Leverage Wishlists
+Once the customers have these connections and important event dates saved, increase the functionality of wishlists. Increase a users' capability so that they can create public and shareable wishlists with their connections. Not only would the other customers have access, but now the company knows what items their customers are looking at but also potential purchasers outside of the primary customer. The company could then send email notifications to connections as the customer's birthday or special event gets closer, sending suggested gifts based on these lists or previous purchases. 
+
+Depending on the age of the primary customer, H&M could also target the more mature connections with ad campaigns promoting back-to-school sales, or holiday gifts. These suggestion could come from the wishlists, or if their wishlists are un-populated, suggested popular items. 
 
