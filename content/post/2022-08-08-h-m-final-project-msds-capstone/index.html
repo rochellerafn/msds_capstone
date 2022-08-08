@@ -1,5 +1,5 @@
 ---
-title: "H&M Final Project - MSDS Capstone"
+title: "MSDS Final Project - H&M"
 author: "Rochelle Rafn"
 date: "2022-08-03"
 slug: "msds-final-project-h-m"
@@ -17,22 +17,22 @@ tags: []
 </div>
 <div id="context" class="section level2">
 <h2>Context</h2>
-<p>This question is important for demographic and marketing research. Traditionally we believe that location, age, gender all matter and make a difference. And… they do. But, context is everything. In order to make appropriate and informed decisions it is important to do proper analysis to make sure we’re not assuming something about someones age or gender that ends up being incorrect. For instance, are frequent shoppers purchasing items for themselves or someone else? That is the beauty of data. We can dive in the deep end and really see what is beneath the surface of human bias.</p>
+<p>This question is important for demographic and marketing research. Traditionally we believe that location, age, gender all matter and make a difference. And… they do. But, humans are complex and context is everything. In order to make appropriate and informed decisions it is important to do proper analysis to make sure we’re not assuming something about someone’s age or gender that ends up being incorrect. For instance, are frequent shoppers purchasing items for themselves or someone else? That is the beauty of data. We can dive in the deep end and really see what is beneath the surface of human bias.</p>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
-<p>I started this project with a very different question in mind. However, after starting at the broadest level, my motivation changed. I chose to begin with the age distribution of all the customers in the data set and this is what changed everything. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 52 years old. I remember thinking, “What?? That is so bizarre.” Almost twice as many 50 somethings as 30 somethings seemed just… wrong.</p>
+<p>I began this project with a very different question in mind. However, after starting at the broadest level, my motivation changed. I chose to begin with the age distribution of all the customers in the data set and this is what changed everything. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 52 years old. I remember thinking, “What?? That is so bizarre.” Almost twice as many 50 somethings as 30 somethings seemed just… wrong.</p>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<p>My immediate thought was that it is a group of ‘young at heart’ and fashion conscious 50 year olds. Then, as I looked a little closer at the distribution I did the math and realized the peaks moved at very similar shapes within about 30 years of each other. That logically seems pretty close to a parent-child age gap. Leading me to question, who are they actually buying for? My assumption is if the 50 year olds are actually purchasing for their children, the items would be virtually the same. If they are actually purchasing for themselves, I should be able to find some key indicators to predict age.</p>
+<p>My immediate thought was that it is a group of ‘young at heart’ and fashion conscious 50 year olds. Then, as I looked a little closer at the distribution I did the math and realized the peaks moved at very similar shapes within about ~30 years of each other. That logically seems pretty close to a parent-child age gap. Leading me to question, who are they actually buying for? My assumption is if the 50 year olds are actually purchasing for their children, the items would be virtually the same. If they are actually purchasing for themselves, I should be able to find some key indicators to predict age.</p>
 </div>
 <div id="data-description" class="section level2">
 <h2>Data Description</h2>
-<p>The data set I’m analyzing comes directly from H&amp;M spanning 1.3 million customers (ages 16-99), 53 online markets, 4,850 retail stores and 31 million transactions over 2 years. It came with three relational data frames with details on Customers, Articles (clothing items) and Transactions.</p>
+<p>The data set I’m analyzing comes directly from H&amp;M spanning 1.3 million customers (ages 16-99), 53 online markets, 4,850 retail stores and 31 million item in 9 million transactions over 2 years. It came with three relational data frames with details on Customers, Articles (clothing items) and Transactions. Customer information was filled with customer id, age, member status, and whether or not that customer is active. The Articles set had the article id and at least a dozen columns with descriptive words regarding the clothes. Transactions was the table relative to both Customers and Articles. It gave the date, customer id, articel id and some other information like, sales channel (1 or 2, I’m assuming in store or online).</p>
 </div>
 <div id="exploratory-data-analysis" class="section level2">
 <h2>Exploratory Data Analysis</h2>
 <p>For my exploration I decided to make age, or age group, the outcome variable. The mystery of this second curve was just too interesting to me. How can we predict the difference between the young and mature generations? Or can we at all? To start, I split the data into the two age groups, “young” (&lt;=39) and “mature” (&gt;=40). This would help me get organized to see what differences I could find.</p>
-<p>I began with high level questions and analysis. Is there are pricepoint difference between the two groups? Is one group purchasing more items per transaction that the other?</p>
+<p>I began with high level questions and analysis. Is there are price point difference between the two groups? Is one group purchasing more items per transaction that the other?</p>
 <div id="price-summary-per-age-group" class="section level3">
 <h3>Price summary per age group</h3>
 <p>We can see that price is pretty similar across the board. I did also check to make sure the distribution was normal to be sure I wasn’t missing hidden gems, like I found with the age distribution. Unfortunately nothing significant here.</p>
@@ -43,7 +43,7 @@ tags: []
 </div>
 <div id="number-of-items-per-transaction-per-group" class="section level3">
 <h3>Number of items per transaction per group</h3>
-<p>Similar to price, most of the information here looks similar. The one difference I found to be interesting is that the 3rd quartile and mean have a slight difference. I chose to engineer the feature “10 Plus Items” to see if that would generate a meaningful difference.</p>
+<p>Similar to price, most of the information here looks similar. The one difference I found to be interesting is that the 3rd quartile and mean have a slight difference. I chose to hold on to the 10 or more items and engineer a prediction feature with it later on. Maybe since the “young” group is more likely to purchase more items in a transaction that could help predict a difference.</p>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     1.0     3.0     5.0     6.6     8.0   336.0</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -77,7 +77,7 @@ tags: []
 </div>
 <div id="what-about-the-top-descriptive-words-for-the-unique-items-in-each-age-group" class="section level2">
 <h2>What about the top descriptive words for the unique items in each age group?</h2>
-<p>To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words. Perhaps I can find some key descriptors within broader categories that will differentiate the two groups? Despite it appearing some items were unique to each group, they were clearly still purchasing different items with very similar descriptions. Meaning, maybe each group did not purchase the exact same item, but perhaps a similar one in a different color, graphical appearance or a similar style.</p>
+<p>To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words. Perhaps I can find some key descriptors that will differentiate the two groups? Despite it appearing some items were unique to each group, they were clearly still purchasing different items with very similar descriptions. Meaning, maybe each group did not purchase the exact same item, but perhaps a similar one in a different color, graphical appearance or a similar style.</p>
 <div id="young-top-descriptive-words" class="section level3">
 <h3>Young Top Descriptive Words</h3>
 <pre><code>##            word
@@ -105,8 +105,8 @@ tags: []
 ## 8         solid
 ## 9        jersey
 ## 10        front</code></pre>
-<p>As we can see from the top 10 words in each group, there are a couple of unqiue words on each side. But again, if we dig deeper we find there is no significance and zooming out shows us how similar these groups really are.</p>
-<p>After finding the top words from the unique items, I took a sample of the all items from each group and ran sentiment analysis on all descriptive words. As we can see, even the unique words in the top word lists above still show up as significant on the other side.<br />
+<p>As we can see from the top 10 words in each group, there are a couple of unique words on each side. But again, if we dig deeper we find there is no significance and zooming out shows us how similar these groups really are.</p>
+<p>After finding the top words from the unique items, I took a sample of the all items from each group and ran sentiment analysis on all descriptive words. As we can see, even the unique words in the top word lists above still show up as significant in the group.<br />
 <img src="images/2022%20-%20MSDS%20Capstone%20Update%20-%20K.015.jpeg" /></p>
 </div>
 </div>
@@ -123,7 +123,7 @@ tags: []
 ## 6                    Lace      2.048154       1.506038          0.5421161</code></pre>
 <div id="what-graphic-appearances-do-the-groups-like" class="section level3">
 <h3>What graphic appearances do the groups like?</h3>
-<p>Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the “young” and “mature” customers purchasing items that are striped or lace or solid or embroidered, etc. The details of the graphic descriptors on the x-axis, however, are less important, what is most important is just glancing at the general shape of each graph. The graphs move at nearly identical rates, proving the proportions of graphical appearnce and descriptor popularity being proportionately the same.
+<p>Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How many times have the “young” and “mature” customers purchased items that are striped or lace or solid or embroidered, etc. The details of the graphic descriptors on the x-axis, however, are less important, what is most important is just glancing at the general shape of each graph. The graphs move at nearly identical rates, proving the proportions of graphical appearance and descriptor popularity being proportionately the same.
 <img src="images/Rplot.jpeg" /></p>
 </div>
 </div>
@@ -131,24 +131,26 @@ tags: []
 <h2>Modeling this information</h2>
 <p>After all of this analysis I took everything that I found and ran simple linear regression models to see if I could find any relationships. Here are the features and results…
 <img src="images/2022%20-%20MSDS%20Capstone%20Update%20-%20K.017.jpeg" /></p>
-<p>Everything had an R-Squared of virtually zero. This means there is no relationship regarding any of these features. I did continue to attempt more machine learning methods by using the unsupervised principal component analysis to see if it could find anything. It did create some groupings, but still, nothiing significant enough to be able to predict age or age group.</p>
-</div>
-<div id="what-does-this-mean-and-why-is-it-important" class="section level2">
-<h2>What does this mean and why is it important?</h2>
-<p>The most important takeaway from this is that, yes, age does matter… however, you need to know who they are buying for. <em>Why</em> are they shopping with you? I find it highly unlikely that 52 year old women are purchasing exactly the same clothing items as the 20 year olds to wear for themselves. For some reason strappy crop tops just don’t seem to fit for that demographic. Who knows? I could be wrong. Although, I do believe that the most likely explanation for all of this is my initial theory. The 50 year olds purchasing identical clothes as the 20 year olds are purchasing <em>for</em> the 20 year olds. It is important to do this research in order to know how to market to customers appropriately. On the flipside, if I had discovered significant and meaningful differences that indicated the mature group was purchasing for themselves, it also would not be good to assume they are shopping for a their child just because of their age. Demographics are tricky, motivations are tricky.</p>
-<p>After the exploratory analysis it would also be good to conclude this with actual market research. Find a good sample of customers that fall within the most common mature range and simply survey them on their purchases. Create email campaigns, similar to “rate this item”, that simply ask, “Was this item for you or someone else?”. This would be an even more solid way to actually prove the theory.</p>
+<p>Everything had an R-Squared of virtually zero. This means there is no relationship regarding any of these features. I did continue to attempt more machine learning methods by using the unsupervised principal component analysis to see if it could find anything. It did create some groupings, but still, nothing significant enough to be able to predict age or age group.</p>
 </div>
 <div id="what-next" class="section level2">
 <h2>What next?</h2>
-<p>The biggest thing H&amp;M can do is recognize that they are not marketing to 50 years olds as a new target segment, for themselves. Marketing to a 50 year old purchasing for herself and one purchasing for an adult child is a very different objective. My recommendations for H&amp;M are to lean into the idea that they are frequent shoppers looking for gifts.</p>
+<div id="market-research" class="section level3">
+<h3>Market Research</h3>
+<p>After this exploratory analysis the best thing H&amp;M can do is perform some actual market research. Find a good sample of customers that fall within the most common mature range and simply survey them on their purchases. Create email campaigns, similar to “rate this item”, maybe add the question, “Was this item for you or someone else?”. This would be an even more solid way to actually prove the theory.</p>
+</div>
 <div id="customer-account-connections" class="section level3">
 <h3>Customer Account Connections</h3>
-<p>We all know social media has completely changed how people interact and connect. So, why not integrate the shopping experience even more? We’re already seeing ads in our feeds based on our web browsing history. But, what if in H&amp;M’s own website they allow customers to connect their accounts with friends and family? Or create a “sign in through Facebook” feature as many other companies have implemented. By doing this they can identify and establish connections with other accounts to share desired items, birthdays, anniversaries, graduations and other important dates.</p>
+<p>We all know social media has completely changed how people interact and connect. So, why not integrate the shopping experience even more? We’re already seeing ads in our feeds based on our web browsing history. But, what if H&amp;M’s own website allowed customers to connect their accounts with friends and family? Or create a “sign in through Facebook” feature as many other companies have implemented automatically integrating. By doing this they can identify and establish connections with other accounts to share desired items, birthdays, anniversaries, graduations and other important dates.</p>
 </div>
 <div id="leverage-wishlists" class="section level3">
 <h3>Leverage Wishlists</h3>
-<p>Once the customers have made these connections and have saved their important dates, H&amp;M should increase the functionality of wishlists. Currently on H&amp;M’s website customers can simply “heart” an item that goes into one big wishlist. They should allow users’ to create multiple lists and their connections. Not only would the other customers have access, but now the company knows what items their customers are looking at but also potential purchasers outside of the primary customer. The company could then send email notifications to connections as the customer’s birthday or special event gets closer, sending suggested gifts based on these lists or previous purchases.</p>
-<p>Depending on the age of the primary customer, H&amp;M could also target the more mature connections with ad campaigns promoting back-to-school sales, or holiday gifts. These suggestion could come from the wishlists, or if their wishlists are un-populated, suggested popular items.</p>
+<p>Once the customers have made these connections and have saved their important dates, H&amp;M should increase the functionality of wishlists. Currently on H&amp;M’s website customers can simply “heart” an item that goes into one big wishlist. They should allow users’ to create multiple lists and their connections. Not only would the other customers have access, but now the company knows what items their customers are looking at and also potential connected purchasers aside from the primary customer. The company could then send email notifications to connections as the customer’s birthday or special event gets closer. They could send suggested gifts based on these lists or previous purchases.</p>
+<p>Depending on the age of the primary customer, H&amp;M could also target the more mature connections with ad campaigns promoting back-to-school sales, or holiday gifts. These suggestion could come from the wishlists, or if their wishlists are un-populated, general suggested popular or top items.</p>
 </div>
+</div>
+<div id="takeaway" class="section level2">
+<h2>Takeaway</h2>
+<p>The most important takeaway from this is that, yes, age does matter… however, you need to know who they are buying for. <em>Why</em> are they shopping with you? I find it highly unlikely that 52 year old women are purchasing exactly the same clothing items as the 20 year olds to wear for themselves. For some reason strappy crop tops just don’t seem to fit for that demographic. Who knows? I could be wrong. Although, I do believe that the most likely explanation for all of this is my initial theory. The 50 year olds purchasing identical clothes as the 20 year olds are purchasing <em>for</em> the 20 year olds. It is important to do this research in order to know how to market to customers appropriately. On the flip side, if I had discovered significant and meaningful differences that indicated the mature group was purchasing for themselves, it also would not be good to assume they are shopping for a their child just because of their age. Demographics are tricky, motivations are tricky. The best way to predict these type of things is through actual purchasing behavior.</p>
 </div>
 </div>
