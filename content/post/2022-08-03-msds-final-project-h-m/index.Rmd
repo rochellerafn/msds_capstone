@@ -143,5 +143,14 @@ all_graphic_pct <- all_graphic_pct %>%
 head(all_graphic_pct)
 ```
 
-Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. This confirms the proportions above as you can see the graphs move at nearly identical rates.
+
+Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. The details of the graphic descriptors on the x-axis, however, are less important, what is most important is just glancing at the general shape of each graph. The graphs move at nearly identical rates, proving the proportions of graphical appearnce and descriptor popularity being proportionately the same.
+
+![](images/Rplot.jpeg)
+
+
+## Modeling this information
+
+
+## What next?
 
