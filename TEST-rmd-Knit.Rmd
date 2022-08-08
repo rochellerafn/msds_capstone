@@ -80,7 +80,6 @@ To move forward with the theme of unique items I decided to take those unique it
 ### Young Top Word Count 
 ```{r}
 library(tidyverse)
-library(dplyr)
 
 young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts') %>%
   select(-X)
