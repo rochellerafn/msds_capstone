@@ -53,6 +53,7 @@ For my exploration I decided to make age, or age group, the outcome variable. Th
 
 I began with high level questions and analysis. Is there are pricepoint difference between the two groups? Is one group purchasing more items per transaction that the other? 
 
+
 ### Price summary per age group
 We can see that price is pretty similar across the board. I did also check to make sure the distribution was normal to be sure I wasn't missing hidden gems, like I found with the age distribution. Unfortunately nothing significant here.
 ```{r}
@@ -139,7 +140,8 @@ all_graphic_pct <- all_graphic_pct %>%
 head(all_graphic_pct)
 ```
 
-Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. The details of the graphic descriptors on the x-axis, however, are less important, what is most important is just glancing at the general shape of each graph. The graphs move at nearly identical rates, proving the proportions of graphical appearnce and descriptor popularity being proportionately the same.
+### What graphic appearances do the groups like?
+Below is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. The details of the graphic descriptors on the x-axis, however, are less important, what is most important is just glancing at the general shape of each graph. The graphs move at nearly identical rates, proving the proportions of graphical appearnce and descriptor popularity being proportionately the same.
 
 ![](images/Rplot.jpeg)
 
@@ -155,6 +157,7 @@ Everything had an R-Squared of virtually zero. This means there is no relationsh
 The most important takeaway from this is that, yes, age does matter... however, you need to know who they are buying for. *Why* are they shopping with you? I find it highly unlikely that 52 year old women are purchasing exactly the same clothing items as the 20 year olds to wear for themselves. For some reason strappy crop tops just don't seem to fit for that demographic. Who knows? I could be wrong. Although, I do believe that the most likely explanation for all of this is my initial theory. The 50 year olds purchasing identical clothes as the 20 year olds are purchasing *for* the 20 year olds. It is important to do this research in order to know how to market to customers appropriately. On the flipside, if I had discovered significant and meaningful differences that indicated the mature group was purchasing for themselves, it also would not be good to assume they are shopping for a their child just because of their age. Demographics are tricky, motivations are tricky. 
 
 After the exploratory analysis it would also be good to conclude this with actual market research. Find a good sample of customers that fall within the most common mature range and simply survey them on their purchases. Create email campaigns, similar to "rate this item", that simply ask, "Was this item for you or someone else?". This would be an even more solid way to actually prove the theory. 
+
 
 ## What next? 
 The biggest thing H&M can do is recognize that they are not marketing to 50 years olds as a new target segment, for themselves. Marketing to a 50 year old purchasing for herself and one purchasing for an adult child is a very different objective. My recommendations for H&M are to lean into the idea that they are frequent shoppers looking for gifts. 
