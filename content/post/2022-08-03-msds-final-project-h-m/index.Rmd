@@ -16,17 +16,17 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 
 ## Question
 
-For those who are unfamiliar with H&M, it’s a fast fashion retailer known for its affordable, youthful and trendy styles. I've always loved staying current with fashion and who knows? Maybe when I’m 50 I will still be shopping at H&M or similar stores, like Zara. However, even in my 30s, if I venture into H&M I feel noticeably older than everyone else there. So, why are there twice as many 50 year olds as people my age and where are they? This lead me to question, does age actually matter for trendy stores like H&M that are perceived as 'younger'? Are the different generational age groups actually purchasing different things? Spoiler alert, they are not. So what does this mean? Who are these 50 year olds and why are their purchase habits similar to the 20 somethings? 
+For those who are unfamiliar with H&M, it’s a fast fashion retailer known for its affordable, youthful and trendy styles. I've always loved staying current with fashion and who knows? Maybe when I’m 50 I will still be shopping at H&M or similar stores, like Zara. However, even in my 30s, if I venture into H&M I feel noticeably older than everyone else there. So, why are there twice as many 50 year olds as people my age shopping at H&M, and where are they? This led me to question, does age actually matter for trendy stores like H&M that are perceived as 'younger'? Are the different generational age groups actually purchasing different things? Spoiler alert, they are not. So what does this mean? Who are these 50 year olds and why are their purchase habits similar to the 20 somethings? 
 
 
 ## Context
 
-The importance of these questions lies within the realm of demographics and marketing. Traditionally we believe that location, age, gender all matter and make a difference. And… they do. But, context is everything. In order to make appropriate and informed decisions it is important to do proper analysis to make sure we’re not assuming something about someones age or gender that ends up being incorrect. For instance, is frequent shopper purchasing these things for themselves or someone else? That is the beauty of data. We can dive in the deep end and really see what is beneath the surface of human bias. 
+This question is important for demographic and marketing research. Traditionally we believe that location, age, gender all matter and make a difference. And… they do. But, context is everything. In order to make appropriate and informed decisions it is important to do proper analysis to make sure we’re not assuming something about someones age or gender that ends up being incorrect. For instance, are frequent shoppers purchasing items for themselves or someone else? That is the beauty of data. We can dive in the deep end and really see what is beneath the surface of human bias. 
 
 
 ## Summary
 
-I started this project with a very different question in mind. However, after starting at the broadest level questions, my motivation changed. I chose to begin with the age distribution of all the customers in the dataset. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 52 years old. I remember thinking, “What?? That is so bizarre.” Twice as many 50 somethings as 30 somethings seemed just... wrong. 
+I started this project with a very different question in mind. However, after starting at the broadest level, my motivation changed. I chose to begin with the age distribution of all the customers in the data set and this is what changed everything. I really only did this to verify my own assumption that it would peak somewhere in the mid 20s and then continue to taper off as age increased. I was definitely surprised to see this somewhat bimodal distribution with a second peak around 52 years old. I remember thinking, “What?? That is so bizarre.” Almost twice as many 50 somethings as 30 somethings seemed just... wrong. 
 
 ```{r} 
 library(ggplot2)
@@ -49,9 +49,9 @@ The data set I’m analyzing comes directly from H&M spanning 1.3 million custom
 
 ## Exploratory Data Analysis
 
-Given the question and data that I have, I decided to make age, or age group, the outcome variable. How can we predict the difference between the young and mature generations? Or can we at all? To start, I split the data into the two age groups, “young” (<=39) and “mature” (>=40). This is where I would start my exploratory analysis to see what differences I could find. 
+For my exploration I decided to make age, or age group, the outcome variable. The mystery of this second curve was just too interesting to me. How can we predict the difference between the young and mature generations? Or can we at all? To start, I split the data into the two age groups, “young” (<=39) and “mature” (>=40). This would help me get organized to see what differences I could find. 
 
-I began with the most obvious, what are the most popular items in each age group? Hoping this might show me any key differences. As we can see here, the top 3 items for both age groups are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate an intuitive generational difference. Mature customers purchased a basic t-shirt, where the young customers purchased a "strappy cropped" top. However, the more I dug, the less significant this difference became.
+I began with the most obvious, what are the most popular items in each age group? I hoped this might show me some obvious and key differences. As we can see here, the top 3 items for both age groups are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate an intuitive generational difference. Mature customers purchased a basic t-shirt, where the young customers purchased a "strappy cropped" top. However, the more I dug, the less significant this difference became.
 
 ### Mature Top Items
 ![](images/MATURE_top_items.jpg)
@@ -60,9 +60,8 @@ I began with the most obvious, what are the most popular items in each age group
 ![](images/YOUNG_top_items.jpg)
 
 
-
-### What are the most popular unique items in each age group?
-From the top items per group, I filtered down even further. I chose to compare the purchases between the two groups to find unique items. What items did the young purchase that the mature did not, and vice versa?   
+## What about the most popular unique items in each age group?
+After researching top items, I filtered down even further. I chose to compare the purchases between the two groups to find unique items. What items did the young purchase that the mature did not, and vice versa?   
 
 ### Mature Unique Items
 ![](images/MATURE_unique_items.jpg)
@@ -71,29 +70,34 @@ From the top items per group, I filtered down even further. I chose to compare t
 ![](images/YOUNG_unique_items.jpg)
 
 
-I started to get a little excited again when I found some interesting differences between the two groups. In the top items for the young group there were several baby items. But then the mature group had primarily items that would be appropriate for an adult child. What if each group potentially purchases for themselves and their children. For the mature it would make sense becaue they now have adult children, meaning they would have no need to purchase baby clothes. However, when I pulled the counts for these top items each was only purchased at most 86 times out of more than 21million items purchased. Unfortunately the math here is not significant enough to consider.
+I started to get a little excited again when I found some interesting differences between the two groups. In the top items for the "young" group there were several baby items. But then the mature group had primarily items that would be appropriate for an adult. What if each group is purchasing for either themselves and/or their own children. For the mature it would make sense because they now have adult children, meaning they would have no need to purchase baby clothes. There were also a lot of underwear purchases in the top 20 for the "mature" group, but none in the top 20 for the "young". However, when I pulled the counts for these top unique items each was only purchased at most 86 times out of more than 21 million items purchased. Unfortunately the math here is not significant enough to consider.
 
 
-### What are the top descriptive words for the unique items in each age group?
-To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words of these items. As I had guessed, the unique items really did not hold any significance due to the small amount. Also, even though the items are different, there are still many purchases by both groups that have the same descriptive words despite the specific item differing.
+## What about the top descriptive words for the unique items in each age group?
+To move forward with the theme of unique items I decided to take those unique items even deeper by analyzing the descriptive words. Perhaps I can find some key descriptors within broader categories that will differentiate the two groups? Despite it appearing some items were unique to each group, they were clearly still purchasing different items with very similar descriptions. Meaning, maybe each group did not purchase the exact same item, but perhaps a similar one in a different color, graphical appearance or a similar style.
 
-### Young Top Word Count 
+### Young Top Descriptive Words 
 ```{r}
 library(tidyverse)
+library(dplyr)
 
 young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts') %>%
-  select(-X)
+  select(-X, -n)
 
 head(young_wordcounts, 10)
 ```
 
-### Mature Top Word Count
+### Mature Top Descriptive Words
 ```{r}
 mature_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_wordcounts') %>%
-  select(-X)
+  select(-X, -n)
 
 head(mature_wordcounts, 10)
 ```
+
+As we can see from the top 10 words in each group, there are a couple of unqiue words on each side. But again, if we dig deeper we find there is no significance and zooming out shows us how similar these groups really are.
+
+After finding the top words from the unique items, I took a sample of the all items from each group and ran sentiment analysis on all descriptive words. As we can see, even the unique words in the top word lists above still show up as significant on the other side.  
 
 ### Mature Top Words
 
@@ -103,16 +107,22 @@ head(mature_wordcounts, 10)
 
 
 ## What about percentage of descriptive words?
-Knowing that there are about twice as many in the young group as the mature group I thought I would go one step further and check proportion of the popularity. Still appears that there are no major and obvious differences.
+Circling back to the proportion of "young" versus "mature" customers, I went another level deeper. After confirming that the descriptive words are very similar, what about proportion? This is an easier way to see if certain words are more popular than others by group. Since we can't compare the counts due to the difference in group sizes, what about the proportion in which these words are used? 
+
+Yet again we can see extremely small differences. To the point where they are almost identical. Only a 3% difference between the "young" and "mature" with the top descriptor, "solid". From there, each word shows only a 1% or less difference. 
 ```{r}
 all_graphic_pct <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/all_graphic_pct')
+
+all_graphic_pct <- all_graphic_pct %>%
+  mutate('Percent Difference' = pct_difference, 'Young Percent' = y_graphic_pct, 'Mature Percent' = m_graphic_pct, 'Graphic Appearance Name' = graphical_appearance_name) %>%
+  select(-X, -y_graphic_count, -m_graphic_count, -pct_difference, -y_graphic_pct, -m_graphic_pct, -graphical_appearance_name) %>%
+  relocate('Graphic Appearance Name', 'Young Percent', 'Mature Percent')
 
 head(all_graphic_pct)
 ```
 
+Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. This confirms the proportions above as you can see the graphs move at nearly identical rates.
 
-### Is there a noticeable difference in graphic appearance for each age group?
-When analyzing the number of items with certain graphical appearances it is almost eerie how mirror like the purchasing habits are. Besides two variables, they move at extremely similar rates.
 
 
 
