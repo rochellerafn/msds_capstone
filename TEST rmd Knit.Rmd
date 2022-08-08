@@ -51,7 +51,29 @@ The data set I’m analyzing comes directly from H&M spanning 1.3 million custom
 
 For my exploration I decided to make age, or age group, the outcome variable. The mystery of this second curve was just too interesting to me. How can we predict the difference between the young and mature generations? Or can we at all? To start, I split the data into the two age groups, “young” (<=39) and “mature” (>=40). This would help me get organized to see what differences I could find. 
 
-I began with the most obvious, what are the most popular items in each age group? I hoped this might show me some obvious and key differences. As we can see here, the top 3 items for both age groups are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate an intuitive generational difference. Mature customers purchased a basic t-shirt, where the young customers purchased a "strappy cropped" top. However, the more I dug, the less significant this difference became.
+I began with high level questions and analysis. Is there are pricepoint difference between the two groups? Is one group purchasing more items per transaction that the other? 
+
+### Price summary per age group
+We can see that price is pretty similar across the board. I did also check to make sure the distribution was normal to be sure I wasn't missing hidden gems, like I found with the age distribution. Unfortunately nothing significant here.
+```{r}
+mature_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
+young_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
+
+summary(mature_transactions$price)
+summary(young_transactions$price)
+```
+
+
+### Number of items per transaction per group
+Similar to price, most of the information here looks similar. The one difference I found to be interesting is that the 3rd quartile and mean have a slight difference. I chose to engineer the feature "10 Plus Items" to see if that would generate a meaningful difference.
+```{r}
+summary(mature_transactions$n_items)
+summary(young_transactions$n_items)
+```
+
+
+## Items Purchased 
+Next, I asked, what are the most popular items in each age group? I hoped this might show me some obvious and key differences. As we can see here, the top 3 items for both age groups are identical. However, the fourth item is different. This piqued my interest since that fourth items seems to indicate an intuitive generational difference. Mature customers purchased a basic t-shirt, where the young customers purchased a "strappy cropped" top. However, the more I dug, the less significant this difference became.
 
 ### Mature Top Items
 ![](images/MATURE_top_items.jpg)
@@ -123,22 +145,4 @@ head(all_graphic_pct)
 
 Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. This confirms the proportions above as you can see the graphs move at nearly identical rates.
 
-
-
-
-### What is the summary of price per age group?
-```{r}
-mature_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/mature_transactions')
-young_transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_transactions')
-
-summary(mature_transactions$price)
-summary(young_transactions$price)
-```
-
-
-### How many items are each group purchasing per transaction?
-```{r}
-summary(mature_transactions$n_items)
-summary(young_transactions$n_items)
-```
 

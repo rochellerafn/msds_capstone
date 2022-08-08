@@ -949,19 +949,28 @@ get_regression_summaries(age_graphic_lm)
 
 
 ```{r}
-all_sample_transactions %>%
-  filter(!is.na(graphical_appearance_name)) %>%
-ggplot() +
-  aes(
-    x = graphical_appearance_name,
-    fill = graphical_appearance_name
-  ) +
-  geom_bar() +
-  scale_fill_hue(direction = 1) +
+all_sample_graphic_count <- all_sample_transactions %>%
+  group_by(age_group, graphical_appearance_name) %>%
+  count(graphical_appearance_name) %>%
+  filter(!is.na(graphical_appearance_name))
+
+all_sample_graphic_count <- rename(all_sample_graphic_count, n_items = n)
+
+all_sample_graphic_count
+```
+
+
+```{r}
+ggplot(all_sample_graphic_count, 
+          aes(x= graphical_appearance_name,
+              y=n_items,
+              fill=graphical_appearance_name)) +
+  geom_col() +
   scale_y_log10()+
   theme(panel.background = element_blank(),
         plot.background = element_blank(),
-        panel.grid = element_blank()) +
+        panel.grid = element_blank(),
+        plot.title = element_text(face = "bold")) +
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
