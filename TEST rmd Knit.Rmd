@@ -149,8 +149,11 @@ Here is an interesting visualization to really let the eerie similarity sink in.
 
 
 ## Modeling this information
+After all of this analysis I took everything that I found and ran simple linear regression models to see if I could find any relationships. Here are the features and results...
 
 
-## What next?
+
+
+## What now? What does this mean and why is it important?
 
 
