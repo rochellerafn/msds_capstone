@@ -120,12 +120,7 @@ head(mature_wordcounts, 10)
 As we can see from the top 10 words in each group, there are a couple of unqiue words on each side. But again, if we dig deeper we find there is no significance and zooming out shows us how similar these groups really are.
 
 After finding the top words from the unique items, I took a sample of the all items from each group and ran sentiment analysis on all descriptive words. As we can see, even the unique words in the top word lists above still show up as significant on the other side.  
-
-### Mature Top Words
-
-
-### Young Top Words
-
+![](images/2022 - MSDS Capstone Update - K.015.jpeg)
 
 
 ## What about percentage of descriptive words?
@@ -144,13 +139,11 @@ head(all_graphic_pct)
 ```
 
 Here is an interesting visualization to really let the eerie similarity sink in. This graph is showing the distribution of graphical appearance names split by age group. How often are the "young" and "mature" customers purchasing items that are striped or lace or solid or embroidered, etc. The details of the graphic descriptors on the x-axis, however, are less important, what is most important is just glancing at the general shape of each graph. The graphs move at nearly identical rates, proving the proportions of graphical appearnce and descriptor popularity being proportionately the same.
-
 ![](images/Rplot.jpeg)
 
 
 ## Modeling this information
 After all of this analysis I took everything that I found and ran simple linear regression models to see if I could find any relationships. Here are the features and results...
-
 ![](images/2022 - MSDS Capstone Update - K.017.jpeg)
 
 Everything had an R-Squared of virtually zero. This means there is no relationship regarding any of these features. I did continue to attempt more machine learning methods by using the unsupervised principal component analysis to see if it could find anything. It did create some groupings, but still, nothiing significant enough to be able to predict age or age group.
@@ -170,4 +163,3 @@ We all know social media has completely changed how people interact and connect.
 Once the customers have made these connections and have saved their important dates, H&M should increase the functionality of wishlists. Currently on H&M's website customers can simply "heart" an item that goes into one big wishlist. They should allow users' to create multiple lists and  their connections. Not only would the other customers have access, but now the company knows what items their customers are looking at but also potential purchasers outside of the primary customer. The company could then send email notifications to connections as the customer's birthday or special event gets closer, sending suggested gifts based on these lists or previous purchases. 
 
 Depending on the age of the primary customer, H&M could also target the more mature connections with ad campaigns promoting back-to-school sales, or holiday gifts. These suggestion could come from the wishlists, or if their wishlists are un-populated, suggested popular items. 
-

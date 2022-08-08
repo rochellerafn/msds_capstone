@@ -121,11 +121,7 @@ As we can see from the top 10 words in each group, there are a couple of unqiue 
 
 After finding the top words from the unique items, I took a sample of the all items from each group and ran sentiment analysis on all descriptive words. As we can see, even the unique words in the top word lists above still show up as significant on the other side.  
 
-### Mature Top Words
-
-
-### Young Top Words
-
+![](images/2022 - MSDS Capstone Update - K.015.jpeg)
 
 
 ## What about percentage of descriptive words?
