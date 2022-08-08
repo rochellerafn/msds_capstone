@@ -61,6 +61,7 @@ str(transactions)
 ggplot(customers, aes(age))+
   geom_bar(fill = 'black')+
   theme_bw()+
+  theme(panel.grid = element_blank())+
   xlim(15, 80)
 ```
 
@@ -68,6 +69,15 @@ ggplot(customers, aes(age))+
 ```{r}
 library(skimr)
 skim(customers)
+```
+
+
+```{r}
+customers %>%
+ select(age) %>%
+ group_by(age) %>%
+ count() %>%
+ filter(age %in% c(32:55))
 ```
 
 
@@ -88,7 +98,8 @@ str(young_customers)
 ```{r}
 ggplot(young_customers, aes(age))+
   geom_bar(fill="black")+
-  theme_bw()
+  theme_bw()+
+  theme(panel.grid = element_blank())
 ```
 
 
@@ -104,6 +115,7 @@ str(mature_customers)
 ggplot(mature_customers, aes(age))+
   geom_bar(fill="black")+
   theme_bw()+
+  theme(panel.grid = element_blank())+
   xlim(39,80)
 ```
 
@@ -172,6 +184,13 @@ summary(young_transactions$n_items)
 
 
 ```{r}
+ggplot(young_transactions, aes(x=n_items))+
+  geom_bar()+
+  scale_x_log10()
+```
+
+
+```{r}
 ggplot(young_transactions, aes(n_items))+
   geom_boxplot()+
   scale_x_log10()
@@ -222,6 +241,13 @@ summary(mature_transactions$n_items)
 
 
 ```{r}
+ggplot(mature_transactions, aes(x=n_items))+
+  geom_bar()+
+  scale_x_log10()
+```
+
+
+```{r}
 ggplot(mature_transactions, aes(n_items))+
   geom_boxplot()+
   scale_x_log10()
@@ -249,7 +275,23 @@ summary(young_transactions_n$price)
 
 
 ```{r}
+ggplot(young_transactions, aes(x=price))+
+  geom_bar()+
+  scale_x_log10()+
+  scale_y_log10()
+```
+
+
+```{r}
 summary(mature_transactions_n$price)
+```
+
+
+```{r}
+ggplot(mature_transactions, aes(x=price))+
+  geom_bar()+
+  scale_x_log10()+
+  scale_y_log10()
 ```
 
 
