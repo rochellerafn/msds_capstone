@@ -9,6 +9,9 @@ tags: []
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(dplyr)
 ```
 
 # 50 year olds shopping at H&M? What’s that all about? 
@@ -99,9 +102,6 @@ To move forward with the theme of unique items I decided to take those unique it
 
 ### Young Top Descriptive Words 
 ```{r}
-library(tidyverse)
-library(dplyr)
-
 young_wordcounts <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/young_wordcounts') %>%
   select(-X, -n)
 
