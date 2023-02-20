@@ -19,9 +19,9 @@ library(caret)
 library(SnowballC)
   data(stop_words)
 
-articles <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/articles.csv')
-customers <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/customers.csv')
-transactions <- read.csv('/Users/rochellerafn/RStudio Files/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
+articles <- read.csv('/Users/rochellerafn/RStudio_Files/h-and-m-personalized-fashion-recommendations/articles.csv')
+customers <- read.csv('/Users/rochellerafn/RStudio_Files/h-and-m-personalized-fashion-recommendations/customers.csv')
+transactions <- read.csv('/Users/rochellerafn/RStudio_Files/h-and-m-personalized-fashion-recommendations/transactions_train.csv')
 ```
 
 
@@ -971,7 +971,7 @@ ggplot(all_sample_graphic_count,
         plot.background = element_blank(),
         panel.grid = element_blank(),
         plot.title = element_text(face = "bold")) +
-  ylabs("Count")+
+  ylab("Count")+
   scale_x_discrete(guide = guide_axis(angle = 90))+
   facet_wrap(vars(age_group))
 ```
